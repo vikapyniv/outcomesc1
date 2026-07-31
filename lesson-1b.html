@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1B Urban Tales</title>
+<style>
+  :root{
+    --bg:#eaf8f5;
+    --card:#ffffff;
+    --ink:#103f39;
+    --muted:#5b7873;
+    --line:#c9e8e2;
+    --accent:#10b9a7;
+    --accent-soft:#dff8f3;
+    --highlight:#c8f3e9;
+    --good:#dff3e4;
+    --bad:#f9dddd;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:radial-gradient(circle at 82% 8%,rgba(16,185,167,.14),transparent 28%),linear-gradient(145deg,#f3fffc,var(--bg) 52%,#def4ef);
+    color:var(--ink);
+    line-height:1.55;
+  }
+  header{
+    position:sticky;
+    top:0;
+    z-index:30;
+    padding:12px max(18px,6vw);
+    border-bottom:1px solid var(--line);
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(14px);
+    display:flex;
+    align-items:center;
+    gap:15px;
+  }
+  h1{margin:0;font-size:18px}
+  header p{margin:0;color:var(--muted)}
+  .back-link{display:inline-flex;padding:8px 12px;border:1px solid #a9dfd6;border-radius:999px;background:var(--accent-soft);color:#087d72;text-decoration:none;font-weight:800}
+  main{width:min(1120px,92vw);margin:28px auto 60px}
+  section{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:24px;
+    margin-bottom:24px;
+    box-shadow:0 10px 28px rgba(5,92,82,.08);
+  }
+  h2{margin-top:0;font-size:24px}
+  h3{margin:0 0 10px;font-size:18px}
+  .note{color:var(--muted);font-size:14px}
+  .question{
+    padding:18px 0;
+    border-top:1px solid var(--line);
+  }
+  .question:first-of-type{border-top:none}
+  .statement{font-weight:700;margin-bottom:10px}
+  .option{
+    display:block;
+    padding:10px 12px;
+    margin:8px 0;
+    border:1px solid var(--line);
+    border-radius:10px;
+    cursor:pointer;
+    background:#fff;
+  }
+  .option:hover{background:#f8f8f8}
+  .option input{margin-right:8px}
+  button{
+    padding:10px 16px;
+    border:0;
+    border-radius:10px;
+    background:var(--accent);
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .feedback{margin-top:8px;font-weight:700}
+  .bank{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:14px 0 20px;
+  }
+  .chip{
+    border:1px solid var(--accent);
+    background:var(--accent-soft);
+    color:#087d72;
+    border-radius:999px;
+    padding:8px 13px;
+    font-weight:700;
+    cursor:grab;
+    user-select:none;
+  }
+
+  .chip{
+    transition:background .18s ease, border-color .18s ease, color .18s ease;
+  }
+  .chip .meaning{
+    font-weight:600;
+    opacity:.9;
+  }
+
+  .categories{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-top:18px;
+  }
+  .category{
+    min-height:255px;
+    border:2px dashed #8fd8cd;
+    border-radius:14px;
+    padding:14px;
+    background:#f3fbf9;
+  }
+  .category h3{
+    min-height:52px;
+    color:var(--accent);
+    font-size:16px;
+  }
+  .dropzone{min-height:175px}
+  .reading-block{
+    display:grid;
+    grid-template-columns:minmax(0,1.7fr) minmax(280px,0.8fr);
+    gap:20px;
+    padding:22px 0;
+    border-top:1px solid var(--line);
+  }
+  .reading-block:first-of-type{border-top:none}
+  .text{
+    background:linear-gradient(145deg,#ffffff,#f1faf8);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:24px;
+    box-shadow:0 7px 20px rgba(5,92,82,.06);
+  }
+  .text p{font-size:1.02rem;line-height:1.78;margin:0 0 1.05em}
+  .questions{
+    background:var(--accent-soft);
+    border:1px solid #b9e4dc;
+    border-radius:16px;
+    padding:18px;
+    align-self:start;
+    position:sticky;
+    top:12px;
+  }
+  mark{
+    background:linear-gradient(180deg,transparent 18%,var(--highlight) 18%,var(--highlight) 92%,transparent 92%);
+    color:#075f57;
+    padding:1px 4px;
+    border-radius:5px;
+    font-weight:750;
+    box-decoration-break:clone;
+    -webkit-box-decoration-break:clone;
+  }
+  .binomial{
+    display:inline;
+    font-weight:850;
+    color:white;
+    background:linear-gradient(135deg,#10b9a7,#087d72);
+    padding:2px 7px;
+    border-radius:999px;
+    box-decoration-break:clone;
+    -webkit-box-decoration-break:clone;
+  }
+  .highlight-legend{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 24px;padding:13px 15px;background:#f3fbf9;border:1px solid var(--line);border-radius:13px}
+  .legend-item{font-size:.86rem;color:var(--muted)}
+  .legend-topic,.legend-binomial{display:inline-block;margin-right:6px;padding:3px 8px;border-radius:999px;font-weight:850}
+  .legend-topic{background:var(--highlight);color:#075f57}.legend-binomial{background:linear-gradient(135deg,#10b9a7,#087d72);color:white}
+  .story-block .text p:not(:first-of-type){padding:14px 16px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px}
+  ul{padding-left:20px}
+  li{margin-bottom:10px}
+  .key{
+    margin-top:12px;
+    padding:12px;
+    background:#f4f4f4;
+    border-radius:10px;
+    display:none;
+  }
+  @media(max-width:950px){
+    .categories{grid-template-columns:repeat(2,1fr)}
+    .reading-block{grid-template-columns:1fr}
+    .questions{position:static}
+  }
+  @media(max-width:580px){
+    .categories{grid-template-columns:1fr}
+    h1{font-size:28px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <a class="back-link" href="./">← Back to Unit 1</a>
+  <h1>1B. Urban tales</h1>
+</header>
+
+<main>
+
+<section>
+  <h2>1. Choose the sentence with the correct binomial</h2>
+  <p class="note">Choose the sentence that expresses the original meaning correctly. Then discuss the statement.</p>
+
+  <div class="question" data-answer="a">
+    <div class="statement">1. Urban legends are generally created to entertain people, but they can also reveal what society is afraid of.</div>
+    <label class="option"><input type="radio" name="q1" value="a">a) By and large, urban legends are created to entertain people, but they can also reveal what society is afraid of.</label>
+    <label class="option"><input type="radio" name="q1" value="b">b) Far and wide, urban legends are created to entertain people, but they can also reveal what society is afraid of.</label>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="question" data-answer="a">
+    <div class="statement">2. Fear, mystery and exaggeration are an essential part of a successful urban legend.</div>
+    <label class="option"><input type="radio" name="q2" value="a">a) Fear, mystery and exaggeration are part and parcel of a successful urban legend.</label>
+    <label class="option"><input type="radio" name="q2" value="b">b) Fear, mystery and exaggeration are cut and dried in a successful urban legend.</label>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="question" data-answer="b">
+    <div class="statement">3. Stories that sound realistic can spread over a very large area through cities, schools and social media.</div>
+    <label class="option"><input type="radio" name="q3" value="a">a) Stories that sound realistic can spread time and again through cities, schools and social media.</label>
+    <label class="option"><input type="radio" name="q3" value="b">b) Stories that sound realistic can spread far and wide through cities, schools and social media.</label>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="question" data-answer="a">
+    <div class="statement">4. The difference between an urban legend, a rumour and fake news is not always completely clear.</div>
+    <label class="option"><input type="radio" name="q4" value="a">a) The difference between an urban legend, a rumour and fake news is not always cut and dried.</label>
+    <label class="option"><input type="radio" name="q4" value="b">b) The difference between an urban legend, a rumour and fake news is not always first and foremost.</label>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="question" data-answer="b">
+    <div class="statement">5. Urban legends are mainly complete stories with a beginning, a middle and an end.</div>
+    <label class="option"><input type="radio" name="q5" value="a">a) Urban legends are by and large complete stories with a beginning, a middle and an end.</label>
+    <label class="option"><input type="radio" name="q5" value="b">b) Urban legends are first and foremost complete stories with a beginning, a middle and an end.</label>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="question" data-answer="a">
+    <div class="statement">6. The same frightening plots appear repeatedly in different countries and generations.</div>
+    <label class="option"><input type="radio" name="q6" value="a">a) The same frightening plots appear time and again in different countries and generations.</label>
+    <label class="option"><input type="radio" name="q6" value="b">b) The same frightening plots appear part and parcel in different countries and generations.</label>
+    <div class="feedback"></div>
+  </div>
+
+  <button onclick="checkTask1()">Check answers</button>
+</section>
+
+<section>
+  <h2>2. Sort all 22 binomials</h2>
+  <p class="note">Drag every expression into the category where it fits best. Some categories are broad because several binomials can be used in more than one context.</p>
+
+  <div class="bank" id="bank">
+    <div class="chip" draggable="true" data-category="general" data-definition="generally">by and large</div>
+    <div class="chip" draggable="true" data-category="general" data-definition="most importantly">first and foremost</div>
+    <div class="chip" draggable="true" data-category="general" data-definition="essential part">part and parcel</div>
+    <div class="chip" draggable="true" data-category="general" data-definition="repeatedly">time and again</div>
+    <div class="chip" draggable="true" data-category="general" data-definition="clear and fixed">cut and dried</div>
+
+    <div class="chip" draggable="true" data-category="place" data-definition="busy city activity">hustle and bustle</div>
+    <div class="chip" draggable="true" data-category="place" data-definition="in various places">here and there</div>
+    <div class="chip" draggable="true" data-category="place" data-definition="active outside">out and about</div>
+    <div class="chip" draggable="true" data-category="place" data-definition="back and forth">to and fro</div>
+    <div class="chip" draggable="true" data-category="place" data-definition="over a large area">far and wide</div>
+    <div class="chip" draggable="true" data-category="place" data-definition="calm and silence">peace and quiet</div>
+
+    <div class="chip" draggable="true" data-category="society" data-definition="official requirements">rules and regulations</div>
+    <div class="chip" draggable="true" data-category="society" data-definition="public order">law and order</div>
+    <div class="chip" draggable="true" data-category="society" data-definition="power controls">checks and balances</div>
+    <div class="chip" draggable="true" data-category="society" data-definition="honest behaviour">straight and narrow</div>
+
+    <div class="chip" draggable="true" data-category="states" data-definition="growth and decline">rise and fall</div>
+    <div class="chip" draggable="true" data-category="states" data-definition="very carefully">long and hard</div>
+    <div class="chip" draggable="true" data-category="states" data-definition="inconsistent">hit and miss</div>
+    <div class="chip" draggable="true" data-category="states" data-definition="unharmed">safe and sound</div>
+    <div class="chip" draggable="true" data-category="states" data-definition="extremely annoyed">sick and tired</div>
+    <div class="chip" draggable="true" data-category="states" data-definition="intermittently">on and off</div>
+    <div class="chip" draggable="true" data-category="states" data-definition="small mixed items">bits and pieces</div>
+  </div>
+
+  <div class="categories">
+    <div class="category" data-category="general">
+      <h3>General meaning, emphasis and repetition</h3>
+      <div class="dropzone"></div>
+    </div>
+    <div class="category" data-category="place">
+      <h3>Place, movement and activity</h3>
+      <div class="dropzone"></div>
+    </div>
+    <div class="category" data-category="society">
+      <h3>Rules, order and behaviour</h3>
+      <div class="dropzone"></div>
+    </div>
+    <div class="category" data-category="states">
+      <h3>States, change, decisions and results</h3>
+      <div class="dropzone"></div>
+    </div>
+  </div>
+
+  <div style="margin-top:18px">
+    <button onclick="checkSorting()">Check sorting</button>
+    <button onclick="resetSorting()" style="background:#777">Reset</button>
+  </div>
+  <div class="key" id="sortingFeedback"></div>
+</section>
+
+<section>
+  <h2>3. Read and discuss</h2>
+  <p class="note">The complete text is divided into four parts. Topic vocabulary and binomials use separate visual highlights.</p>
+  <div class="highlight-legend">
+    <span class="legend-item"><span class="legend-topic">Topic vocabulary</span> useful words from the text</span>
+    <span class="legend-item"><span class="legend-binomial">Binomial</span> fixed two-part expressions</span>
+  </div>
+
+  <div class="reading-block">
+    <div class="text">
+      <h3>Part 1. The origin of the term</h3>
+      <p>
+        ‘<mark>Urban legend</mark>’ is a term popularized by Professor Jan Brunvand in collections such as
+        <em>The Choking Doberman and Other ‘New’ Urban Legends</em>. Brunvand taught
+        <mark>folklore studies</mark>, a subject which <mark>encompasses</mark> a wide range of traditions and culture
+        typically <mark>passed on from generation to generation</mark> by <mark>word of mouth</mark> or by imitation
+        rather than the written word. One area of folklore is <mark>fairy tales and myths</mark>, such as those collected
+        by the Brothers Grimm in the early 19th century, which typically involve magic or monsters and
+        <mark>carry a moral</mark>. In his early days at Utah University, Brunvand found that students saw folklore as
+        fundamentally old and not something that was <span class="binomial">part and parcel</span> of modern life.
+        Partly to <mark>counteract this attitude</mark>, he introduced his students to the idea of the urban legend.
+      </p>
+      <p>
+        Brunvand argued there were many stories that <mark>circulate</mark> in our own society and function in much the same
+        way as fairy tales. He started collecting these urban legends and asked his students to contribute stories they
+        heard or saw reported in the media.
+      </p>
+    </div>
+    <div class="questions">
+      <h3>Discuss</h3>
+      <ul>
+        <li>Why did Brunvand want to <strong>counteract</strong> his students’ attitude to folklore?</li>
+        <li>Which traditions or stories are still passed on by <strong>word of mouth</strong> where you live?</li>
+        <li>Do you agree that folklore is <strong>part and parcel</strong> of modern life?</li>
+        <li>What kind of <strong>moral</strong> can an urban legend carry?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="reading-block">
+    <div class="text">
+      <h3>Part 2. Similarities with myths and fairy tales</h3>
+      <p>
+        <strong>Similarities with myths and fairy tales</strong>
+      </p>
+      <p>
+        Listeners might not immediately recognize urban legends as essentially modern fairy tales because they are
+        typically introduced as happening to ‘a friend of a friend’ rather than set ‘Once upon a time’. Other
+        <mark>realistic details</mark> are added by the teller, such as setting the events in a real city, using common names
+        or reporting specific dialogue. However, while these additions vary from place to place, the
+        <mark>core plot</mark> remains the same everywhere and as these same stories are told so
+        <span class="binomial">far and wide</span>, they are clearly as fictional as any fairy tale.
+      </p>
+      <p>
+        Similarly, the modern-life contexts of most urban legends – crime, office work, <mark>sewage systems</mark>,
+        suburban homes – may give an <mark>air of authenticity</mark> but, on closer examination, the stories actually
+        share many unreal features of older legends: magic, monsters, violence and horror. For example, the ‘magic’ may
+        be the mystery of someone returning a ‘lost’ item only to find the owner has been dead for some time; the
+        monster may be a spider living in a woman’s <mark>hairdo</mark>; the violence and horror could be a burglar being
+        <mark>maimed</mark> by a dog, or a boyfriend coming to a <mark>grisly end</mark> after he abandons his partner.
+      </p>
+      <p>
+        And just as stories such as Medusa or Hansel and Gretel may have reflected those societies’
+        <mark>misogynistic attitudes</mark> or fear of famine, Brunvand suggested urban legends may reveal something
+        about the <mark>darker side of city life</mark> and what we are afraid of in <mark>contemporary society</mark>.
+      </p>
+    </div>
+    <div class="questions">
+      <h3>Discuss</h3>
+      <ul>
+        <li>Which <strong>realistic details</strong> can give a story an <strong>air of authenticity</strong>?</li>
+        <li>Why can the same <strong>core plot</strong> spread <strong>far and wide</strong>?</li>
+        <li>Which modern settings make urban legends more believable: crime, offices, sewage systems or suburban homes?</li>
+        <li>What does the expression <strong>the darker side of city life</strong> mean to you?</li>
+        <li>Which fears in contemporary society could become the basis of a new urban legend?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="reading-block">
+    <div class="text">
+      <h3>Part 3. Differences from rumour and conspiracy</h3>
+      <p>
+        <strong>Differences to rumour and conspiracy</strong>
+      </p>
+      <p>
+        Urban myths have much in common with <mark>rumours</mark>, <mark>conspiracy theories</mark> or
+        <mark>fake news</mark>, and the boundaries between them are not <span class="binomial">cut and dried</span>.
+        They are all fictions that get retold orally or through social media, but,
+        <span class="binomial">by and large</span>, rumours and conspiracy theories arise in response to particular
+        events which we feel threatened by. For example, a rumour could ‘explain’ why a building has collapsed or what
+        might replace it. Rumours are often pieces of information, whereas urban myths are
+        <span class="binomial">first and foremost</span> ‘horror’ or entertainment stories with a beginning, middle and end.
+      </p>
+    </div>
+    <div class="questions">
+      <h3>Discuss</h3>
+      <ul>
+        <li>Why are the boundaries between urban myths, rumours and fake news not <strong>cut and dried</strong>?</li>
+        <li><strong>By and large</strong>, what kinds of events cause rumours and conspiracy theories to appear?</li>
+        <li>Are urban myths <strong>first and foremost</strong> entertainment, or can they influence real behaviour?</li>
+        <li>What is the main difference between a complete story and a single piece of information?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="reading-block story-block">
+    <div class="text">
+      <h3>Part 4. Urban legend examples</h3>
+      <p><strong>Urban Legend examples</strong></p>
+      <p>
+        <strong>The babysitter:</strong> a babysitter gets phone calls <span class="binomial">time and again</span>
+        telling them to check the kids who are sleeping upstairs. The babysitter phones the police who
+        <mark>trace the next call</mark> to the same house the babysitter is in.
+      </p>
+      <p>
+        <strong>Cockroach eggs in drinking straws:</strong> someone in a fast food restaurant notices their coke tastes
+        off and finds lots of tiny specks. Subsequent research reveals an <mark>epidemic</mark> of
+        <mark>cockroach eggs</mark> in fast food straw dispensers throughout the city.
+      </p>
+      <p>
+        <strong>The jogger’s wallet:</strong> a man chases down a <mark>mugger</mark> and reclaims his wallet … only to
+        find his own wallet is actually at home.
+      </p>
+      <p>
+        <strong>Alligators in the sewers:</strong> wild animals – usually gators, but also wild pigs! – are discovered by
+        labourers doing work on the city sewer.
+      </p>
+    </div>
+    <div class="questions">
+      <h3>Discuss</h3>
+      <ul>
+        <li>Which of these stories have you heard <strong>time and again</strong>?</li>
+        <li>Which story has the strongest <strong>air of authenticity</strong>? Why?</li>
+        <li>Which details make the stories frightening or memorable?</li>
+        <li>What moral or warning could each story contain?</li>
+        <li>Which story would spread most easily through social media today?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+function checkTask1(){
+  document.querySelectorAll('.question[data-answer]').forEach(q=>{
+    const chosen = q.querySelector('input[type="radio"]:checked');
+    const feedback = q.querySelector('.feedback');
+    q.querySelectorAll('.option').forEach(o=>o.style.background="#fff");
+    if(!chosen){
+      feedback.textContent = "Choose an answer.";
+      feedback.style.color = "#a33";
+      return;
+    }
+    const label = chosen.closest('.option');
+    if(chosen.value === q.dataset.answer){
+      label.style.background = "var(--good)";
+      feedback.textContent = "Correct.";
+      feedback.style.color = "#237a3b";
+    } else {
+      label.style.background = "var(--bad)";
+      feedback.textContent = "Try again.";
+      feedback.style.color = "#a33";
+    }
+  });
+}
+
+
+let dragged = null;
+
+function phraseOnly(chip){
+  return chip.dataset.phrase || chip.textContent.trim().split(" = ")[0];
+}
+
+function setChipState(chip, state){
+  const phrase = phraseOnly(chip);
+  chip.dataset.phrase = phrase;
+
+  if(state === "correct"){
+    chip.innerHTML = `${phrase} <span class="meaning">= ${chip.dataset.definition}</span>`;
+    chip.style.background = "var(--good)";
+    chip.style.borderColor = "#5b9b69";
+    chip.style.color = "#174d25";
+  } else if(state === "wrong"){
+    chip.textContent = phrase;
+    chip.style.background = "var(--bad)";
+    chip.style.borderColor = "#c56b6b";
+    chip.style.color = "#7b2020";
+  } else {
+    chip.textContent = phrase;
+    chip.style.background = "var(--accent-soft)";
+    chip.style.borderColor = "var(--accent)";
+    chip.style.color = "#087d72";
+  }
+}
+
+document.querySelectorAll('.chip').forEach(chip=>{
+  chip.dataset.phrase = chip.textContent.trim();
+
+  chip.addEventListener('dragstart', ()=>{
+    dragged = chip;
+    setTimeout(()=>chip.style.opacity=".45",0);
+  });
+
+  chip.addEventListener('dragend', ()=>{
+    chip.style.opacity="1";
+    dragged = null;
+  });
+});
+
+document.querySelectorAll('.category, #bank').forEach(zone=>{
+  zone.addEventListener('dragover', e=>e.preventDefault());
+
+  zone.addEventListener('drop', e=>{
+    e.preventDefault();
+    if(!dragged) return;
+
+    if(zone.id === "bank"){
+      zone.appendChild(dragged);
+      setChipState(dragged, "neutral");
+      return;
+    }
+
+    const target = zone.querySelector('.dropzone');
+    target.appendChild(dragged);
+
+    if(dragged.dataset.category === zone.dataset.category){
+      setChipState(dragged, "correct");
+    } else {
+      setChipState(dragged, "wrong");
+    }
+  });
+});
+
+function checkSorting(){
+  let correct = 0;
+  const all = document.querySelectorAll('.chip');
+
+  document.querySelectorAll('.category').forEach(cat=>{
+    cat.querySelectorAll('.chip').forEach(chip=>{
+      if(chip.dataset.category === cat.dataset.category){
+        setChipState(chip, "correct");
+        correct++;
+      } else {
+        setChipState(chip, "wrong");
+      }
+    });
+  });
+
+  document.querySelectorAll('#bank .chip').forEach(chip=>setChipState(chip, "neutral"));
+
+  const box = document.getElementById('sortingFeedback');
+  box.style.display = "block";
+  box.textContent = `${correct} of ${all.length} are in the intended category.`;
+}
+
+function resetSorting(){
+  const bank = document.getElementById('bank');
+
+  document.querySelectorAll('.chip').forEach(chip=>{
+    bank.appendChild(chip);
+    setChipState(chip, "neutral");
+  });
+
+  document.getElementById('sortingFeedback').style.display="none";
+}
+</script>
+</body>
+</html>
