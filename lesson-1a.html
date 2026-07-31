@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intensifying Adverbs and Adjectives — Cities</title>
+  <style>
+    :root{
+      --bg:#eaf8f5;
+      --card:#ffffff;
+      --text:#103f39;
+      --muted:#5b7873;
+      --border:#c9e8e2;
+      --accent:#10b9a7;
+      --accent-soft:#dff8f3;
+      --green:#168c67;
+      --green-soft:#e1f7ee;
+      --red:#b33a3a;
+      --red-soft:#fff0f0;
+      --shadow:0 14px 36px rgba(5,92,82,.12);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at 82% 7%,rgba(16,185,167,.14),transparent 28%),linear-gradient(145deg,#f3fffc,#eaf8f5 52%,#def4ef);
+      color:var(--text);
+      line-height:1.55;
+    }
+    button{font:inherit;cursor:pointer}
+    .topbar{
+      position:sticky;top:0;z-index:20;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar-inner{
+      max-width:1160px;margin:auto;padding:12px 20px;
+      display:grid;grid-template-columns:1fr minmax(220px,420px) auto;gap:18px;align-items:center
+    }
+    .brand{font-weight:800;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    .back-link{display:inline-flex;align-items:center;color:#087d72;text-decoration:none;background:#dff8f3;border:1px solid #a9dfd6;border-radius:999px;padding:7px 11px;font-size:.78rem;font-weight:850}
+    .back-link:hover{background:#c9f2eb}
+    .brand small{display:block;color:var(--muted);font-weight:500;font-size:.78rem}
+    .progress{height:9px;background:#d8ede9;border-radius:999px;overflow:hidden}
+    .progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),#54e0cb);transition:.3s}
+    .indicator{font-size:.82rem;color:var(--muted)}
+    main{max-width:1160px;margin:auto;padding:34px 20px 80px}
+    .hero,.panel{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow)
+    }
+    .hero{display:grid;grid-template-columns:1.35fr .65fr;gap:24px;padding:34px;margin-bottom:24px}
+    .eyebrow{
+      display:inline-block;background:var(--accent-soft);color:var(--accent);
+      border-radius:999px;padding:7px 12px;font-weight:800;font-size:.82rem
+    }
+    h1{font-size:clamp(2rem,4vw,3.5rem);line-height:1.04;letter-spacing:-.04em;margin:18px 0}
+    .lead{font-size:1.08rem;color:var(--muted);max-width:760px}
+    .author{margin-top:24px;padding-top:18px;border-top:1px solid var(--border);color:var(--muted);font-size:.9rem}
+    .hero-card{background:linear-gradient(145deg,#063f3a,#0a8f81);color:white;border-radius:18px;padding:24px}
+    .hero-card h2{margin-top:0;font-size:1.15rem}
+    .hero-card p{margin:10px 0 0;opacity:.9}
+    .panel{padding:28px;margin-top:24px}
+    .section-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:20px}
+    .section-head h2{margin:0;font-size:1.5rem}
+    .section-head p{margin:5px 0 0;color:var(--muted)}
+    .tag{font-size:.78rem;background:var(--accent-soft);color:var(--accent);padding:7px 10px;border-radius:999px;font-weight:800;white-space:nowrap}
+    .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .option{
+      width:100%;text-align:left;background:white;border:1px solid var(--border);
+      border-radius:16px;padding:16px;min-height:78px;transition:.2s
+    }
+    .option:hover{transform:translateY(-2px);border-color:#75d8ca}
+    .option.selected{border:2px solid var(--accent);background:var(--accent-soft)}
+    .option.correct{border:2px solid var(--green);background:var(--green-soft)}
+    .option.wrong{border:2px solid var(--red);background:var(--red-soft)}
+    .option strong{display:block;margin-bottom:5px}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .btn{border:0;border-radius:13px;padding:10px 15px;font-weight:800}
+    .btn-primary{background:var(--accent);color:white}
+    .btn-secondary{background:#e3f1ee;color:var(--text)}
+    .feedback{display:none;margin-top:16px;padding:14px 16px;border:1px solid var(--border);border-radius:14px;background:#f1faf8}
+    .feedback.show{display:block}
+    .feedback.success{background:var(--green-soft);border-color:#b9e4d0;color:#145b3d}
+    .feedback.warning{background:#fff7df;border-color:#efdfac;color:#745100}
+    .scale-box{border:1px solid var(--border);border-radius:18px;padding:20px;background:#f4fcfa}
+    .scale-line{
+      display:flex;align-items:center;justify-content:space-between;gap:8px;margin:24px 0 12px
+    }
+    .scale-step{flex:1;text-align:center;padding:12px;border-radius:12px;background:#e6f3f0;font-weight:750}
+    .scale-step:nth-child(2){background:#d5f4ee}
+    .scale-step:nth-child(3){background:#bcebe3}
+    .scale-step:nth-child(4){background:#79d9cb}
+    .scale-step:nth-child(5){background:var(--accent);color:white}
+    .rule-result{margin-top:14px;padding:14px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 12px 12px 0}
+    .matching-wrap{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .match-col{display:grid;gap:9px}
+    .match-btn{
+      border:1px solid var(--border);background:white;border-radius:13px;padding:11px 13px;text-align:left
+    }
+    .match-btn.active{border:2px solid var(--accent);background:var(--accent-soft)}
+    .match-btn.matched{border-color:#9ed6bc;background:var(--green-soft);opacity:.75}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+    .tab{border:1px solid var(--border);background:white;border-radius:999px;padding:9px 13px}
+    .tab.active{background:var(--accent);color:white;border-color:var(--accent)}
+    .tab-panel{display:none}.tab-panel.active{display:block}
+    .chunk-result{
+      display:none;margin-top:14px;padding:13px 15px;background:var(--green-soft);
+      border:1px solid #bde4d1;border-radius:13px
+    }
+    .chunk-result.show{display:block}
+    .chunk-card{border:1px solid var(--border);border-radius:16px;padding:18px;background:#f4fcfa}
+    .chunk-card h3{margin:0 0 10px}
+    .mini-rule{
+      border:1px solid var(--border);border-radius:16px;padding:18px;background:white
+    }
+    .mini-rule b{display:block;margin-bottom:6px}
+
+    .inline-gloss{
+      font-size:.88em;color:var(--muted);font-weight:600
+    }
+    .built-phrases{
+      padding:12px 14px;border-radius:13px;background:var(--accent-soft);
+      border:1px solid #a9dfd6
+    }
+    .built-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+    .built-chip{
+      display:inline-block;background:white;border:1px solid #98d8ce;
+      color:var(--accent);font-weight:800;border-radius:999px;padding:7px 10px
+    }
+
+    .footer-note{text-align:center;color:var(--muted);font-size:.85rem;margin-top:26px}
+
+    .speaking-list{display:grid;gap:18px}
+    .speaking-card{
+      display:grid;grid-template-columns:1.25fr .75fr;gap:20px;
+      border:1px solid var(--border);border-radius:18px;padding:20px;background:#f4fcfa
+    }
+    .speaking-main{display:grid;gap:14px}
+    .sentence-box{
+      background:white;border:1px solid var(--border);border-radius:15px;padding:16px
+    }
+    .sentence-box p{margin:0}
+    .key-phrase{
+      background:var(--accent-soft);color:var(--accent);font-weight:800;
+      padding:2px 6px;border-radius:7px
+    }
+    .meaning{
+      display:inline-block;margin-top:10px;font-size:.86rem;color:var(--muted)
+    }
+    .meaning strong{color:var(--text)}
+    .mini-match{
+      display:grid;grid-template-columns:1fr 1fr;gap:12px
+    }
+    .mini-match-col{display:grid;gap:8px}
+    .mini-match h4{margin:0 0 4px;font-size:.9rem;color:var(--muted)}
+    .pair-choice{
+      border:1px solid var(--border);background:white;border-radius:12px;
+      padding:10px 12px;text-align:left
+    }
+    .pair-choice.active{border:2px solid var(--accent);background:var(--accent-soft)}
+    .pair-choice.matched{border-color:#9ed6bc;background:var(--green-soft);opacity:.8}
+    .speaking-side{
+      background:white;border:1px solid var(--border);border-radius:15px;padding:16px
+    }
+    .speaking-side h3{margin:0 0 10px;font-size:1rem}
+    .speaking-side ol{margin:0;padding-left:20px}
+    .speaking-side li+li{margin-top:10px}
+    .language-prompt{
+      margin-top:14px;padding:11px 12px;background:var(--accent-soft);
+      border-radius:12px;font-size:.9rem
+    }
+
+    @media(max-width:800px){
+      .topbar-inner{grid-template-columns:1fr;gap:8px}
+      .indicator{display:none}
+      .hero,.grid-2,.grid-3,.matching-wrap,.speaking-card{grid-template-columns:1fr}
+      .hero{padding:24px}
+      .panel{padding:22px}
+      .scale-line{flex-direction:column}
+      .scale-step{width:100%}
+    }
+  </style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><a class="back-link" href="./">← Back to Unit 1</a><span>Intensifying adverbs and adjectives<small>Cities · guided discovery</small></span></div>
+    <div class="progress"><span id="progressFill"></span></div>
+    <div class="indicator" id="indicator">Introduction</div>
+  </div>
+</header>
+
+<main>
+  <section class="hero lesson-section" data-title="Introduction">
+    <div>
+      <span class="eyebrow">Grammar discovery</span>
+      <h1>How do advanced speakers make descriptions stronger?</h1>
+      <p class="lead">This lesson explores how intensifiers combine with different types of adjectives, how ordinary adjectives become stronger, and how natural C1 collocations are built.</p>
+      <div class="author">Created by Viktoriia Pyniv<br>AI-assisted educational resource developed with ChatGPT (OpenAI).</div>
+    </div>
+    <aside class="hero-card">
+      <h2>Key idea</h2>
+      <p>English does not use one intensifier for everything. Natural combinations depend on meaning, strength and collocation.</p>
+    </aside>
+  </section>
+
+  <section class="panel lesson-section" data-title="Beautiful or stunning?">
+    <div class="section-head">
+      <div><h2>1. Which two combinations sound the most natural and conventional?</h2><p>Select two answers, then check.</p></div>
+      <span class="tag">Notice</span>
+    </div>
+    <div class="grid-2" id="openingQuiz">
+      <button class="option" data-correct="true"><strong>very beautiful</strong>The city was very beautiful.</button>
+      <button class="option" data-correct="false"><strong>absolutely beautiful</strong>The city was absolutely beautiful.</button>
+      <button class="option" data-correct="false"><strong>very stunning</strong>The city was very stunning.</button>
+      <button class="option" data-correct="true"><strong>absolutely stunning</strong>The city was absolutely stunning.</button>
+    </div>
+    <div class="actions">
+      <button class="btn btn-primary" id="checkOpening">Check</button>
+      <button class="btn btn-secondary" id="resetOpening">Reset</button>
+    </div>
+    <div class="feedback" id="openingFeedback"></div>
+
+    <div class="scale-box" style="margin-top:22px">
+      <h3>Look at the difference</h3>
+      <div class="scale-line">
+        <div class="scale-step">beautiful</div>
+        <div class="scale-step">very beautiful</div>
+        <div class="scale-step">extremely beautiful</div>
+        <div class="scale-step">incredibly beautiful</div>
+        <div class="scale-step">stunning</div>
+      </div>
+      <div class="rule-result">
+        <strong>Beautiful is gradable.</strong><br>
+        <strong>Stunning is ungradable.</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel lesson-section" data-title="Build the groups">
+    <div class="section-head">
+      <div><h2>2. Build the two groups</h2><p>Match each adjective with the intensifier that sounds most natural.</p></div>
+      <span class="tag">Matching</span>
+    </div>
+
+    <div class="grid-2">
+      <div class="chunk-card">
+        <h3>Gradable adjectives (= beautiful)</h3>
+        <p style="color:var(--muted)">Choose from: very · extremely · incredibly · really</p>
+        <div id="gradableMatch" class="matching-wrap"></div>
+        <div class="chunk-result" id="gradableResult"></div>
+      </div>
+
+      <div class="chunk-card">
+        <h3>Ungradable adjectives (= stunning)</h3>
+        <p style="color:var(--muted)">Choose from: absolutely · completely · totally · utterly · really</p>
+        <div id="ungradableMatch" class="matching-wrap"></div>
+        <div class="chunk-result" id="ungradableResult"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel lesson-section" data-title="Strong equivalents">
+    <div class="section-head">
+      <div><h2>3. Match ordinary adjectives with stronger equivalents</h2><p>After each correct match, notice the natural intensifier + adjective chunk.</p></div>
+      <span class="tag">Upgrade</span>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="round1">Physical states</button>
+      <button class="tab" data-tab="round2">People & reactions</button>
+      <button class="tab" data-tab="round3">Places & opinions</button>
+    </div>
+
+    <div class="tab-panel active" id="round1">
+      <div class="matching-wrap">
+        <div class="match-col" id="r1left"></div>
+        <div class="match-col" id="r1right"></div>
+      </div>
+      <div class="chunk-result" id="r1result"></div>
+    </div>
+
+    <div class="tab-panel" id="round2">
+      <div class="matching-wrap">
+        <div class="match-col" id="r2left"></div>
+        <div class="match-col" id="r2right"></div>
+      </div>
+      <div class="chunk-result" id="r2result"></div>
+      <div class="rule-result"><strong>Rolling-in-it</strong> is very informal and usually describes a person who has a lot of money.</div>
+    </div>
+
+    <div class="tab-panel" id="round3">
+      <div class="matching-wrap">
+        <div class="match-col" id="r3left"></div>
+        <div class="match-col" id="r3right"></div>
+      </div>
+      <div class="chunk-result" id="r3result"></div>
+    </div>
+  </section>
+
+  <section class="panel lesson-section" data-title="C1 collocations">
+    <div class="section-head">
+      <div><h2>4. Choose the more conventional C1 collocation</h2><p>Each answer reveals a short meaning note.</p></div>
+      <span class="tag">Collocation</span>
+    </div>
+    <div class="grid-2" id="collocationQuiz"></div>
+  </section>
+
+
+  <section class="panel lesson-section" data-title="Speaking practice">
+    <div class="section-head">
+      <div>
+        <h2>5. Speaking practice: What is the city like?</h2>
+        <p>Read each city description, notice the key phrase, build two natural intensifier + adjective combinations, then answer the questions.</p>
+      </div>
+      <span class="tag">Speak</span>
+    </div>
+
+    <div id="speakingCards" class="speaking-list"></div>
+  </section>
+
+  <section class="panel lesson-section" data-title="Mini rules">
+    <div class="section-head">
+      <div><h2>6. Mini rules</h2><p>Useful extensions of the main pattern.</p></div>
+      <span class="tag">Quick reference</span>
+    </div>
+    <div class="grid-2">
+      <div class="mini-rule"><b>Really works with both groups</b>really good · really amazing</div>
+      <div class="mini-rule"><b>The system is not absolute</b>very happy · totally happy</div>
+      <div class="mini-rule"><b>Adjective + noun</b>an absolute mess · complete shock · total chaos · an utter disaster</div>
+      <div class="mini-rule"><b>Combine intensifiers</b>totally and utterly unfair · a complete and utter disgrace</div>
+      <div class="mini-rule"><b>Repeat for emphasis</b>very, very · really, really · a total, total shock</div>
+      <div class="mini-rule"><b>Informal super</b>super interesting · super cool</div>
+    </div>
+  </section>
+
+  <p class="footer-note">Interactive prototype · ready for further editing</p>
+</main>
+
+<script>
+  const openingOptions=[...document.querySelectorAll('#openingQuiz .option')];
+  openingOptions.forEach(btn=>btn.addEventListener('click',()=>btn.classList.toggle('selected')));
+  document.getElementById('checkOpening').addEventListener('click',()=>{
+    const chosen=openingOptions.filter(x=>x.classList.contains('selected'));
+    const ok=chosen.length===2 && chosen.every(x=>x.dataset.correct==='true');
+    openingOptions.forEach(x=>{
+      x.classList.remove('correct','wrong');
+      if(x.classList.contains('selected')) x.classList.add(x.dataset.correct==='true'?'correct':'wrong');
+    });
+    const f=document.getElementById('openingFeedback');
+    f.className='feedback show '+(ok?'success':'warning');
+    f.innerHTML=ok
+      ? '<strong>Correct.</strong> The most conventional contrast is <em>very beautiful</em> versus <em>absolutely stunning</em>.'
+      : '<strong>Try again.</strong> Think about which adjective already carries the meaning “extremely beautiful”.';
+  });
+  document.getElementById('resetOpening').addEventListener('click',()=>{
+    openingOptions.forEach(x=>x.classList.remove('selected','correct','wrong'));
+    document.getElementById('openingFeedback').className='feedback';
+  });
+
+  function shuffle(arr){return [...arr].sort(()=>Math.random()-.5)}
+
+  function buildSimpleMatching(containerId, items, resultId){
+    const container=document.getElementById(containerId);
+    const left=document.createElement('div');
+    const right=document.createElement('div');
+    left.className='match-col'; right.className='match-col';
+    container.append(left,right);
+    let active=null, matched=0;
+    items.forEach(item=>{
+      const b=document.createElement('button');
+      b.className='match-btn'; b.textContent=item.adj; b.dataset.answer=item.intensifier;
+      b.addEventListener('click',()=>{
+        if(b.classList.contains('matched')) return;
+        left.querySelectorAll('.match-btn').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active'); active=b;
+      });
+      left.appendChild(b);
+    });
+    shuffle(items).forEach(item=>{
+      const b=document.createElement('button');
+      b.className='match-btn'; b.textContent=item.intensifier;
+      b.addEventListener('click',()=>{
+        if(!active || b.classList.contains('matched')) return;
+        const res=document.getElementById(resultId);
+        if(active.dataset.answer===b.textContent){
+          const phrase=`${b.textContent} ${active.textContent}`;
+          active.classList.remove('active'); active.classList.add('matched'); b.classList.add('matched');
+          matched++; active=null;
+          res.classList.add('show'); res.innerHTML=`<strong>${phrase}</strong>`;
+        } else {
+          res.classList.add('show'); res.textContent='Try another intensifier.';
+        }
+      });
+      right.appendChild(b);
+    });
+  }
+
+  buildSimpleMatching('gradableMatch',[
+    {adj:'beautiful',intensifier:'very'},
+    {adj:'tired',intensifier:'extremely'},
+    {adj:'crowded',intensifier:'really'},
+    {adj:'interesting',intensifier:'incredibly'},
+    {adj:'expensive',intensifier:'very'}
+  ],'gradableResult');
+
+  buildSimpleMatching('ungradableMatch',[
+    {adj:'stunning',intensifier:'absolutely'},
+    {adj:'exhausted',intensifier:'completely'},
+    {adj:'packed',intensifier:'totally'},
+    {adj:'brilliant',intensifier:'absolutely'},
+    {adj:'fascinating',intensifier:'really'},
+    {adj:'enormous',intensifier:'absolutely'},
+    {adj:'pointless',intensifier:'utterly'}
+  ],'ungradableResult');
+
+  document.querySelectorAll('.tab').forEach(tab=>tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  }));
+
+  function buildPairMatching(leftId,rightId,resultId,pairs){
+    const left=document.getElementById(leftId), right=document.getElementById(rightId), result=document.getElementById(resultId);
+    let active=null;
+    pairs.forEach(p=>{
+      const b=document.createElement('button');
+      b.className='match-btn'; b.textContent=p.a; b.dataset.answer=p.b;
+      b.addEventListener('click',()=>{
+        if(b.classList.contains('matched')) return;
+        left.querySelectorAll('.match-btn').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active'); active=b;
+      });
+      left.appendChild(b);
+    });
+    shuffle(pairs).forEach(p=>{
+      const b=document.createElement('button');
+      b.className='match-btn'; b.textContent=p.b;
+      b.addEventListener('click',()=>{
+        if(!active || b.classList.contains('matched')) return;
+        const original=pairs.find(x=>x.a===active.textContent);
+        if(active.dataset.answer===b.textContent){
+          active.classList.remove('active'); active.classList.add('matched'); b.classList.add('matched');
+          result.classList.add('show'); result.innerHTML=`<strong>${original.chunk}</strong>`;
+          active=null;
+        } else {
+          result.classList.add('show'); result.textContent='Not this pair. Try again.';
+        }
+      });
+      right.appendChild(b);
+    });
+  }
+
+  buildPairMatching('r1left','r1right','r1result',[
+    {a:'cold',b:'freezing',chunk:'absolutely freezing'},
+    {a:'hot',b:'boiling',chunk:'absolutely boiling'},
+    {a:'tasty',b:'delicious',chunk:'absolutely delicious'},
+    {a:'tired',b:'exhausted',chunk:'completely exhausted'},
+    {a:'hungry',b:'starving',chunk:'absolutely starving'}
+  ]);
+
+  buildPairMatching('r2left','r2right','r2result',[
+    {a:'angry',b:'furious',chunk:'absolutely furious'},
+    {a:'funny',b:'hilarious',chunk:'absolutely hilarious'},
+    {a:'surprised',b:'flabbergasted',chunk:'completely flabbergasted'},
+    {a:'rich',b:'rolling-in-it',chunk:'absolutely rolling-in-it'},
+    {a:'poor',b:'penniless',chunk:'completely penniless'}
+  ]);
+
+  buildPairMatching('r3left','r3right','r3result',[
+    {a:'old',b:'ancient',chunk:'absolutely ancient'},
+    {a:'crowded',b:'packed',chunk:'totally packed'},
+    {a:'loud',b:'deafening',chunk:'absolutely deafening'},
+    {a:'interesting',b:'fascinating',chunk:'absolutely fascinating'},
+    {a:'important',b:'crucial / vital / essential',chunk:'absolutely crucial / vital / essential'},
+    {a:'big',b:'enormous / huge / massive',chunk:'absolutely enormous / huge / massive'},
+    {a:'small',b:'tiny / minute',chunk:'absolutely tiny / minute'},
+    {a:'good',b:'amazing / awesome / fantastic / brilliant',chunk:'absolutely amazing / awesome / fantastic / brilliant'},
+    {a:'bad',b:'awful / terrible',chunk:'utterly awful / terrible'}
+  ]);
+
+  const collocations=[
+    {
+      title:'Competitive',
+      options:['utterly competitive','fiercely competitive','completely competitive'],
+      answer:'fiercely competitive',
+      note:'Fiercely means with strong determination and intensity.'
+    },
+    {
+      title:'Honest',
+      options:['brutally honest','totally honest','fiercely honest'],
+      answer:'brutally honest',
+      note:'Brutally honest means very direct, even if the truth may hurt.'
+    },
+    {
+      title:'Missed',
+      options:['sorely missed','utterly missed','fiercely missed'],
+      answer:'sorely missed',
+      note:'Sorely missed means missed very deeply.'
+    },
+    {
+      title:'Disappointed',
+      options:['bitterly disappointed','totally disappointed','highly disappointed'],
+      answer:'bitterly disappointed',
+      note:'Bitterly disappointed means extremely disappointed and upset.'
+    },
+    {
+      title:'Happy',
+      options:['blissfully happy','utterly happy','sorely happy'],
+      answer:'blissfully happy',
+      note:'Blissfully happy means completely and peacefully happy.'
+    },
+    {
+      title:'Suspicious',
+      options:['highly suspicious','fiercely suspicious','sorely suspicious'],
+      answer:'highly suspicious',
+      note:'Highly suspicious means very doubtful or distrustful.'
+    }
+  ];
+
+  const cq=document.getElementById('collocationQuiz');
+  collocations.forEach((c,i)=>{
+    const card=document.createElement('div');
+    card.className='chunk-card';
+    card.innerHTML=`<h3>${c.title}</h3>`;
+    c.options.forEach(opt=>{
+      const b=document.createElement('button');
+      b.className='option'; b.style.margin='7px 0'; b.textContent=opt;
+      b.addEventListener('click',()=>{
+        [...card.querySelectorAll('.option')].forEach(x=>x.classList.remove('correct','wrong'));
+        const ok=opt===c.answer;
+        b.classList.add(ok?'correct':'wrong');
+        const note=card.querySelector('.collocation-note');
+        note.className='feedback show '+(ok?'success':'warning');
+        note.innerHTML=ok?`<strong>${c.answer}</strong><br>${c.note}`:'Try another combination.';
+      });
+      card.appendChild(b);
+    });
+    const note=document.createElement('div');
+    note.className='feedback collocation-note';
+    card.appendChild(note);
+    cq.appendChild(card);
+  });
+
+
+const speakingData = [
+    {
+      sentence:'There are new businesses <span class="key-phrase">springing up</span> <span class="inline-gloss">(= appear quickly)</span> all over the place. There’s <span class="key-phrase">a real buzz</span> <span class="inline-gloss">(= an exciting, lively atmosphere)</span> about the place.',
+      pairs:[['fiercely','competitive'],['absolutely','stunning'],['really','fascinating']],
+      questions:[
+        'Would you enjoy living in an area like this? Why or why not?',
+        'What usually makes a neighbourhood feel lively and attractive?'
+      ]
+    },
+    {
+      sentence:'The northern district is <span class="key-phrase">affluent</span> <span class="inline-gloss">(= wealthy and prosperous)</span> and extremely <span class="key-phrase">well-run</span> <span class="inline-gloss">(= organised and managed efficiently)</span>, with reliable public services, attractive green spaces and very little crime.',
+      pairs:[['fiercely','competitive'],['absolutely','brilliant'],['highly','suspicious']],
+      questions:[
+        'What makes a district feel genuinely well-run rather than simply affluent?',
+        'Would you prefer to live in a wealthy, highly organised area or somewhere more lively and unpredictable?'
+      ]
+    },
+    {
+      sentence:'They’ve invested heavily in the <span class="key-phrase">transport infrastructure</span> <span class="inline-gloss">(= the systems and facilities used for travel)</span>, including trams and a metro system, and it all <span class="key-phrase">runs very smoothly</span> <span class="inline-gloss">(= works efficiently without problems)</span>.',
+      pairs:[['absolutely','crucial'],['totally','brilliant'],['completely','flabbergasted']],
+      questions:[
+        'How important is efficient public transport in a modern city?',
+        'What is the best transport system you have ever used?'
+      ]
+    },
+    {
+      sentence:'The <span class="key-phrase">smog</span> <span class="inline-gloss">(= polluted air hanging over a city)</span> is awful because of the traffic and the climate. You have to wear a mask or you’d <span class="key-phrase">choke on the fumes</span> <span class="inline-gloss">(= struggle to breathe because of polluted air)</span>.',
+      pairs:[['utterly','awful'],['bitterly','disappointed'],['absolutely','furious']],
+      questions:[
+        'Could you live in a city with air pollution this serious?',
+        'What should local authorities do first to reduce smog?'
+      ]
+    },
+    {
+      sentence:'There’s <span class="key-phrase">not a trace of rubbish</span> <span class="inline-gloss">(= no rubbish at all)</span> on the pavements. Apparently, you can get <span class="key-phrase">heavily fined</span> <span class="inline-gloss">(= made to pay a large fine)</span> for littering.',
+      pairs:[['brutally','honest'],['absolutely','amazing'],['completely','spotless']],
+      questions:[
+        'Should people receive heavy fines for littering?',
+        'What makes some cities much cleaner than others?'
+      ]
+    },
+    {
+      sentence:'It takes ages to get anywhere because the transport infrastructure is so poor. The traffic often <span class="key-phrase">grinds to a halt</span> <span class="inline-gloss">(= gradually stops moving completely)</span> and you get everyone <span class="key-phrase">sounding their horns</span> <span class="inline-gloss">(= repeatedly using car horns)</span>.',
+      pairs:[['totally','packed'],['absolutely','deafening'],['completely','exhausted']],
+      questions:[
+        'How does heavy traffic affect people’s quality of life?',
+        'What could make transport in this city more effective?'
+      ]
+    },
+    {
+      sentence:'It was quite working class, but it’s experiencing <span class="key-phrase">gentrification</span> <span class="inline-gloss">(= an area becoming wealthier, often with rising prices)</span> now, with a lot of middle-class professionals <span class="key-phrase">settling down</span> <span class="inline-gloss">(= beginning a stable life in one place)</span> there and investing in the area.',
+      pairs:[['blissfully','happy'],['absolutely','vital'],['completely','penniless']],
+      questions:[
+        'Is gentrification mainly positive or mainly negative?',
+        'Who usually benefits, and who may lose out when an area changes?'
+      ]
+    },
+    {
+      sentence:'The city centre was once quite grand, but it’s been somewhat <span class="key-phrase">neglected</span> <span class="inline-gloss">(= not properly cared for)</span> and you see a lot of <span class="key-phrase">peeling paint</span> <span class="inline-gloss">(= paint coming off a surface)</span> and <span class="key-phrase">derelict buildings</span> <span class="inline-gloss">(= abandoned buildings in very poor condition)</span>.',
+      pairs:[['absolutely','ancient'],['sorely','missed'],['utterly','pointless']],
+      questions:[
+        'Should old city centres be restored or redeveloped completely?',
+        'What gives an old area character rather than making it look run-down?'
+      ]
+    },
+    {
+      sentence:'It is a <span class="key-phrase">sprawling</span> <span class="inline-gloss">(= spreading over a very large area)</span> city. The centre is <span class="key-phrase">vibrant</span> <span class="inline-gloss">(= lively and full of energy)</span> and <span class="key-phrase">up-and-coming</span> <span class="inline-gloss">(= becoming more successful and fashionable)</span>, but some outer districts are heavily <span class="key-phrase">congested</span> <span class="inline-gloss">(= crowded with traffic)</span>, <span class="key-phrase">deprived</span> <span class="inline-gloss">(= lacking money, services and opportunities)</span> and <span class="key-phrase">run-down</span> <span class="inline-gloss">(= in poor condition because of neglect)</span>.',
+      pairs:[['extremely','crowded'],['utterly','awful'],['absolutely','crucial']],
+      questions:[
+        'Can a sprawling city remain well connected and easy to live in?',
+        'How should a city support deprived and run-down districts without forcing local residents out?'
+      ]
+    },
+    {
+      sentence:'There are hundreds of blocks <span class="key-phrase">crammed into</span> <span class="inline-gloss">(= packed tightly into a limited space)</span> a small area with lots of narrow, dark and <span class="key-phrase">dingy streets</span> <span class="inline-gloss">(= dark, dirty and unattractive streets)</span>.',
+      pairs:[['absolutely','tiny'],['extremely','crowded'],['absolutely','terrible']],
+      questions:[
+        'How would living in an area like this affect your mood?',
+        'What changes would make this neighbourhood more liveable?'
+      ]
+    }
+  ];
+
+  function renderSpeakingCards(){
+    const root=document.getElementById('speakingCards');
+    speakingData.forEach((item,index)=>{
+      const card=document.createElement('article');
+      card.className='speaking-card';
+
+      const left=document.createElement('div');
+      left.className='speaking-main';
+      left.innerHTML=`
+        <div class="sentence-box">
+          <p><strong>${index+1}.</strong> ${item.sentence}</p>
+        </div>
+      `;
+
+      const match=document.createElement('div');
+      match.className='mini-match';
+      const intCol=document.createElement('div');
+      const adjCol=document.createElement('div');
+      intCol.className='mini-match-col';
+      adjCol.className='mini-match-col';
+      intCol.innerHTML='<h4>Intensifiers</h4>';
+      adjCol.innerHTML='<h4>Adjectives</h4>';
+
+      let active=null;
+      item.pairs.forEach(([intensifier, adjective])=>{
+        const b=document.createElement('button');
+        b.className='pair-choice';
+        b.textContent=intensifier;
+        b.dataset.answer=adjective;
+        b.addEventListener('click',()=>{
+          if(b.classList.contains('matched')) return;
+          intCol.querySelectorAll('.pair-choice').forEach(x=>x.classList.remove('active'));
+          b.classList.add('active');
+          active=b;
+        });
+        intCol.appendChild(b);
+      });
+
+      shuffle(item.pairs).forEach(([intensifier, adjective])=>{
+        const b=document.createElement('button');
+        b.className='pair-choice';
+        b.textContent=adjective;
+        b.addEventListener('click',()=>{
+          if(!active || b.classList.contains('matched')) return;
+          if(active.dataset.answer===adjective){
+            const phrase=`${active.textContent} ${adjective}`;
+            active.classList.remove('active');
+            active.classList.add('matched');
+            b.classList.add('matched');
+            const chip=document.createElement('span');
+            chip.className='built-chip';
+            chip.textContent=phrase;
+            built.querySelector('.built-list').appendChild(chip);
+            active=null;
+          } else {
+            b.classList.add('wrong');
+            setTimeout(()=>b.classList.remove('wrong'),450);
+          }
+        });
+        adjCol.appendChild(b);
+      });
+
+      match.append(intCol,adjCol);
+      left.appendChild(match);
+
+      const built=document.createElement('div');
+      built.className='built-phrases';
+      built.innerHTML='<strong>Your phrases:</strong><div class="built-list"></div>';
+      left.appendChild(built);
+
+      const right=document.createElement('aside');
+      right.className='speaking-side';
+      right.innerHTML=`
+        <h3>Discuss</h3>
+        <ol>
+          <li>${item.questions[0]}</li>
+          <li>${item.questions[1]}</li>
+        </ol>
+        <div class="language-prompt"><strong>Use all three phrases</strong> from the matching task in your answers.</div>
+      `;
+
+      card.append(left,right);
+      root.appendChild(card);
+    });
+  }
+  renderSpeakingCards();
+
+
+  const sections=[...document.querySelectorAll('.lesson-section')];
+  const fill=document.getElementById('progressFill'), indicator=document.getElementById('indicator');
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const i=sections.indexOf(entry.target);
+        fill.style.width=`${((i+1)/sections.length)*100}%`;
+        indicator.textContent=entry.target.dataset.title;
+      }
+    });
+  },{rootMargin:'-30% 0px -55% 0px'});
+  sections.forEach(s=>observer.observe(s));
+</script>
+</body>
+</html>
