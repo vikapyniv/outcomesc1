@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Outcomes — My Learning Platform</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --panel: #ffffff;
+      --text: #20252b;
+      --muted: #6e7781;
+      --line: #dfe4e8;
+      --accent: #e65f42;
+      --accent-dark: #c94b31;
+      --soft-accent: #fff1ed;
+      --green: #2f8f68;
+      --shadow: 0 12px 30px rgba(29, 38, 48, 0.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    button { font: inherit; }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 290px minmax(0, 1fr);
+    }
+
+    main {
+      padding: 34px clamp(20px, 4vw, 58px) 60px;
+      overflow-x: hidden;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 20px;
+      background: #20252b;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      box-shadow: 8px 0 30px rgba(22, 27, 33, 0.12);
+    }
+
+    .brand {
+      padding: 10px 10px 24px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+
+    .brand-kicker {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      color: #c8ced4;
+      margin-bottom: 7px;
+    }
+
+    .brand-title {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+
+    .brand-subtitle {
+      margin-top: 7px;
+      color: #bfc6cc;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      border: 0;
+      color: #dce1e5;
+      background: transparent;
+      padding: 13px 14px;
+      border-radius: 12px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      transition: .2s ease;
+    }
+
+    .nav-btn:hover { background: rgba(255,255,255,.08); }
+    .nav-btn.active { background: var(--accent); color: white; }
+    .nav-icon { width: 24px; text-align: center; }
+
+    .sidebar-note {
+      margin-top: auto;
+      background: rgba(255,255,255,.07);
+      padding: 14px;
+      border-radius: 14px;
+      color: #cbd1d6;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 5vw, 56px);
+      line-height: .98;
+      margin: 0;
+      letter-spacing: -.045em;
+    }
+
+    .intro {
+      max-width: 650px;
+      margin: 14px 0 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+
+    .book-badge {
+      min-width: 180px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 15px 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .book-badge strong { display: block; font-size: 15px; }
+    .book-badge span { color: var(--muted); font-size: 12px; }
+
+    .units-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(160px, 1fr));
+      gap: 14px;
+      margin-bottom: 34px;
+    }
+
+    .unit-chip {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 14px;
+      padding: 16px;
+      min-height: 88px;
+      text-align: left;
+      cursor: pointer;
+      transition: .2s ease;
+      box-shadow: 0 5px 18px rgba(36, 45, 54, .04);
+    }
+
+    .unit-chip:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .unit-chip.active { border-color: var(--accent); background: var(--soft-accent); }
+    .unit-chip.empty { color: #a1a8ae; }
+    .unit-number { font-size: 12px; font-weight: 800; color: var(--accent); }
+    .unit-name { margin-top: 8px; font-weight: 750; }
+    .unit-status { margin-top: 5px; font-size: 11px; color: var(--muted); }
+
+    .section-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .unit-hero {
+      padding: 28px;
+      display: grid;
+      grid-template-columns: minmax(220px, .85fr) minmax(300px, 1.4fr);
+      gap: 28px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(135deg, #fff 0%, #fff8f5 100%);
+    }
+
+    .unit-title-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 210px;
+    }
+
+    .unit-label {
+      display: inline-flex;
+      width: fit-content;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .unit-main-title {
+      font-size: clamp(42px, 6vw, 76px);
+      margin: 15px 0 8px;
+      line-height: .95;
+      letter-spacing: -.055em;
+    }
+
+    .unit-summary {
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .syllabus {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .syllabus-block {
+      padding: 15px 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid #eee3df;
+    }
+
+    .syllabus-block h3 {
+      margin: 0 0 8px;
+      font-size: 12px;
+      letter-spacing: .12em;
+      color: var(--accent-dark);
+    }
+
+    .syllabus-block ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #4f5860;
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    .lessons { padding: 25px 28px 30px; }
+    .lessons h2 { margin: 0 0 18px; font-size: 22px; }
+
+    .lesson-row {
+      display: grid;
+      grid-template-columns: minmax(190px, 1.2fr) minmax(150px, .8fr) minmax(170px, .9fr);
+      gap: 12px;
+      align-items: stretch;
+      margin-bottom: 12px;
+    }
+
+    .lesson-btn,
+    .hw-btn,
+    .extra-btn,
+    .vocab-btn,
+    .assessment-btn {
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 15px 17px;
+      cursor: pointer;
+      transition: .2s ease;
+      text-align: left;
+      background: #fff;
+    }
+
+    .lesson-btn:hover, .hw-btn:hover, .extra-btn:hover, .vocab-btn:hover { transform: translateY(-1px); border-color: #cbd2d8; }
+    .lesson-btn { font-weight: 800; }
+    .hw-btn { color: var(--accent-dark); font-weight: 750; background: #fff9f7; }
+    .extra-btn { color: #5d6770; background: #f8fafb; }
+
+
+
+    .vocab-btn {
+      color: #fff;
+      background: linear-gradient(135deg, #e65f42, #c94b31);
+      border-color: transparent;
+      font-weight: 850;
+      letter-spacing: .015em;
+      box-shadow: 0 8px 18px rgba(230, 95, 66, .2);
+    }
+    .vocab-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(230, 95, 66, .28); }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(19, 23, 28, .72);
+      backdrop-filter: blur(5px);
+    }
+    .vocab-modal {
+      width: min(1040px, 100%);
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 24px 70px rgba(0,0,0,.28);
+    }
+    .vocab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 24px 28px;
+      color: #fff;
+      background: linear-gradient(135deg, #20252b, #343b43);
+    }
+    .vocab-kicker { color: #ffb8a8; font-size: 12px; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; }
+    .vocab-header h2 { margin: 5px 0 0; font-size: clamp(25px, 4vw, 38px); }
+    .modal-close {
+      flex: 0 0 auto;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 50%;
+      color: #fff;
+      background: rgba(255,255,255,.08);
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .vocab-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 28px;
+      border-bottom: 1px solid var(--line);
+      background: #fff8f5;
+    }
+    .vocab-count { font-size: 13px; color: var(--muted); }
+    .vocab-search {
+      width: min(360px, 100%);
+      padding: 11px 14px;
+      border: 1px solid #d8dde1;
+      border-radius: 11px;
+      outline: none;
+    }
+    .vocab-search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(230,95,66,.12); }
+    .vocab-content {
+      overflow-y: auto;
+      padding: 24px 28px 34px;
+      background: #f6f7f8;
+    }
+    .vocab-entry {
+      margin-bottom: 15px;
+      padding: 19px 21px;
+      border: 1px solid #e1e5e8;
+      border-left: 5px solid var(--accent);
+      border-radius: 15px;
+      background: #fff;
+      box-shadow: 0 5px 16px rgba(29,38,48,.05);
+    }
+    .vocab-entry.hidden-entry { display: none; }
+    .vocab-headword {
+      margin: 0 0 10px;
+      color: var(--accent-dark);
+      font-size: 21px;
+      line-height: 1.35;
+      font-weight: 900;
+    }
+    .vocab-body { color: #414951; line-height: 1.62; font-size: 14px; white-space: pre-line; }
+    .vocab-body strong { color: #20252b; }
+    .vocab-word { display:block; font-size:24px; font-weight:900; }
+    .vocab-phonetic { display:block; margin-top:5px; color:#6f7780; font-size:15px; }
+    .vocab-pos { display:inline-block; margin-top:8px; padding:4px 9px; border-radius:999px; background:var(--soft-accent); color:var(--accent-dark); font-size:12px; font-weight:850; text-transform:uppercase; }
+    .vocab-definition { margin:0 0 12px; font-weight:800; color:#20252b; }
+    .vocab-meta { margin:10px 0 5px; font-weight:750; }
+    .vocab-examples { margin:5px 0 0; font-style:italic; color:#59616a; }
+    .vocab-entry.binomial-entry { border:2px solid #efb19f; background:linear-gradient(135deg,#fffaf8,#fff2ed); }
+    .vocab-section-title {
+      margin: 25px 0 14px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: #20252b;
+      color: #fff;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+    @media (max-width: 650px) {
+      .modal-backdrop { padding: 0; }
+      .vocab-modal { max-height: 100vh; height: 100vh; border-radius: 0; }
+      .vocab-header, .vocab-content { padding-left: 18px; padding-right: 18px; }
+      .vocab-toolbar { align-items: stretch; flex-direction: column; padding-left: 18px; padding-right: 18px; }
+      .vocab-search { width: 100%; }
+    }
+
+    .assessment-wrap {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+    }
+
+    .assessment-btn {
+      width: 100%;
+      color: white;
+      background: #2b3036;
+      border-color: #2b3036;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+    }
+
+    .assessment-btn span:last-child { color: #cbd1d6; font-weight: 500; font-size: 13px; }
+
+    .placeholder-panel {
+      min-height: 460px;
+      background: white;
+      border: 1px dashed #cfd5da;
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+    }
+
+    .placeholder-panel h2 { color: var(--text); margin-bottom: 8px; }
+
+    .toast {
+      position: fixed;
+      left: 28px;
+      bottom: 28px;
+      background: #20252b;
+      color: #fff;
+      padding: 13px 17px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: .25s ease;
+      z-index: 50;
+      max-width: 340px;
+    }
+
+    .toast.show { opacity: 1; transform: translateY(0); }
+    [hidden] { display: none !important; }
+
+    @media (max-width: 980px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar {
+        position: fixed;
+        left: 0; right: 0; bottom: 0; top: auto;
+        height: auto;
+        z-index: 20;
+        padding: 10px 12px;
+      }
+      .brand, .sidebar-note { display: none; }
+      .nav { flex-direction: row; overflow-x: auto; }
+      .nav-btn { flex: 0 0 auto; padding: 10px 12px; font-size: 12px; }
+      main { padding-bottom: 110px; }
+      .units-grid { grid-template-columns: repeat(2, 1fr); }
+      .unit-hero { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 650px) {
+      .topbar { flex-direction: column; }
+      .book-badge { width: 100%; }
+      .units-grid { grid-template-columns: 1fr 1fr; }
+      .unit-chip { min-height: 78px; }
+      .syllabus { grid-template-columns: 1fr; }
+      .lesson-row { grid-template-columns: 1fr; }
+      .assessment-btn { align-items: flex-start; gap: 8px; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-kicker">Personal platform</div>
+        <div class="brand-title">OUTCOMES</div>
+        <div class="brand-subtitle">Lessons, homework, tests and progress in one simple space.</div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-btn active" data-view="homeView"><span class="nav-icon">⌂</span>Home</button>
+        <button class="nav-btn" data-view="bookView"><span class="nav-icon">ⓘ</span>About the book</button>
+        <button class="nav-btn" data-view="progressView"><span class="nav-icon">◔</span>Progress</button>
+        <button class="nav-btn" data-view="lessonsView"><span class="nav-icon">▤</span>My lessons</button>
+        <button class="nav-btn" data-view="mistakesView"><span class="nav-icon">!</span>My mistakes</button>
+        <button class="nav-btn" data-view="classesView"><span class="nav-icon">▦</span>Classes</button>
+      </nav>
+
+      <div class="sidebar-note">Unit 1 is ready as the structural template. The other units can be filled in one by one without changing the platform design.</div>
+    </aside>
+
+    <main>
+      <section id="homeView" class="view">
+        <div class="topbar">
+          <div>
+            <div class="eyebrow">My Outcomes platform</div>
+            <h1>Coursebook and materials</h1>
+            <p class="intro">All lessons, homework tasks, assessments and vocabulary materials are collected in one place. Unit 1 is currently complete, while the remaining units are ready to be developed later.</p>
+          </div>
+          <div class="book-badge">
+            <strong>Outcomes</strong>
+            <span>16 units · personal learning space</span>
+          </div>
+        </div>
+
+        <div class="units-grid" id="unitGrid"></div>
+
+        <section class="section-card" id="unitContent">
+          <div class="unit-hero">
+            <div class="unit-title-wrap">
+              <div>
+                <span class="unit-label">Unit 1</span>
+                <h2 class="unit-main-title">Cities</h2>
+              </div>
+              <p class="unit-summary">Explore city life, urban stories, local experiences, development plans and the language used to reinforce, emphasize and exemplify ideas.</p>
+            </div>
+
+            <div class="syllabus">
+              <div class="syllabus-block">
+                <h3>SPEAKING</h3>
+                <ul>
+                  <li>Describe and relate your experiences of a city</li>
+                  <li>Tell stories and share urban myths</li>
+                  <li>Work together to create a plan to improve a city</li>
+                  <li>Developing conversations: reinforcing, emphasizing and exemplifying a point</li>
+                </ul>
+              </div>
+              <div class="syllabus-block">
+                <h3>GRAMMAR</h3>
+                <ul>
+                  <li>Intensifying adverbs and adjectives</li>
+                  <li>Passive structures for plans and predictions</li>
+                  <li>Urban plans and policies</li>
+                </ul>
+              </div>
+              <div class="syllabus-block">
+                <h3>VOCABULARY</h3>
+                <ul>
+                  <li>City life</li>
+                  <li>Binomials</li>
+                </ul>
+              </div>
+              <div class="syllabus-block">
+                <h3>READING & LISTENING</h3>
+                <ul>
+                  <li>A wiki entry explaining urban legends</li>
+                  <li>Two conversations about cities</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="lessons">
+            <h2>Lessons and practice</h2>
+
+            <div class="lesson-row">
+              <button class="lesson-btn" data-message="Lesson 1A will open here once the finished material is added.">1A. A real buzz about the place</button>
+              <button class="hw-btn" data-message="Homework 1A will be connected here.">HW 1A</button>
+              <button class="extra-btn vocab-btn" data-vocab="1A">Vocabulary</button>
+            </div>
+
+            <div class="lesson-row">
+              <button class="lesson-btn" data-message="Lesson 1B will open here once the finished material is added.">1B. Urban tales</button>
+              <button class="hw-btn" data-message="Homework 1B will be connected here.">HW 1B</button>
+              <button class="extra-btn vocab-btn" data-vocab="1B">Vocabulary</button>
+            </div>
+
+            <div class="lesson-row">
+              <button class="lesson-btn" data-message="Lesson 1C will open here once the finished material is added.">1C. Urban planning</button>
+              <button class="hw-btn" data-message="Homework 1C will be connected here.">HW 1C</button>
+              <button class="extra-btn vocab-btn" data-vocab="1C">Vocabulary</button>
+            </div>
+
+            <div class="assessment-wrap">
+              <button class="assessment-btn" data-message="Unit 1 Assessment will be connected here.">
+                <span>UNIT 1 ASSESSMENT</span>
+                <span>A radio discussion about an urban project</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="placeholder-panel" id="emptyUnitContent" hidden>
+          <div><h2>Unit</h2><p>This unit is ready to be developed.</p></div>
+        </section>
+      </section>
+
+      <section id="bookView" class="view" hidden>
+        <div class="placeholder-panel">
+          <div><h2>About the book</h2><p>This section is ready. Content will be added later.</p></div>
+        </div>
+      </section>
+
+      <section id="progressView" class="view" hidden>
+        <div class="placeholder-panel">
+          <div><h2>Progress tracking</h2><p>This section is currently empty. Completed lessons, results and overall statistics will appear here later.</p></div>
+        </div>
+      </section>
+
+      <section id="lessonsView" class="view" hidden>
+        <div class="placeholder-panel">
+          <div><h2>My lessons</h2><p>This section is ready for a list of all completed lessons.</p></div>
+        </div>
+      </section>
+
+      <section id="mistakesView" class="view" hidden>
+        <div class="placeholder-panel">
+          <div><h2>My mistakes</h2><p>This section can later store a personal list of mistakes, examples and corrections.</p></div>
+        </div>
+      </section>
+
+      <section id="classesView" class="view" hidden>
+        <div class="placeholder-panel">
+          <div><h2>Classes</h2><p>This section is reserved for the future class schedule and timetable.</p></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="modal-backdrop" id="vocabBackdrop" hidden>
+    <section class="vocab-modal" role="dialog" aria-modal="true" aria-labelledby="vocabTitle">
+      <header class="vocab-header">
+        <div><div class="vocab-kicker" id="vocabKicker">Unit 1 vocabulary</div><h2 id="vocabTitle">Vocabulary</h2></div>
+        <button class="modal-close" id="closeVocab" aria-label="Close vocabulary">×</button>
+      </header>
+      <div class="vocab-toolbar">
+        <div class="vocab-count" id="vocabCount"></div>
+        <input class="vocab-search" id="vocabSearch" type="search" placeholder="Search a word, phrase or example…" />
+      </div>
+      <div class="vocab-content" id="vocabContent"></div>
+    </section>
+  </div>
+
+
+  <script>
+    const units = [
+      'Cities', 'Unit 2', 'Unit 3', 'Unit 4',
+      'Unit 5', 'Unit 6', 'Unit 7', 'Unit 8',
+      'Unit 9', 'Unit 10', 'Unit 11', 'Unit 12',
+      'Unit 13', 'Unit 14', 'Unit 15', 'Unit 16'
+    ];
+
+    const unitGrid = document.getElementById('unitGrid');
+    units.forEach((name, index) => {
+      const btn = document.createElement('button');
+      btn.className = 'unit-chip ' + (index === 0 ? 'active' : 'empty');
+      btn.innerHTML = `
+        <div class="unit-number">UNIT ${index + 1}</div>
+        <div class="unit-name">${name}</div>
+        <div class="unit-status">${index === 0 ? 'Open unit' : 'Coming later'}</div>`;
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.unit-chip').forEach(chip => chip.classList.remove('active'));
+        btn.classList.add('active');
+
+        if (index === 0) {
+          document.getElementById('unitContent').hidden = false;
+          document.getElementById('emptyUnitContent').hidden = true;
+          document.getElementById('unitContent').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          document.getElementById('unitContent').hidden = true;
+          const emptyPanel = document.getElementById('emptyUnitContent');
+          emptyPanel.hidden = false;
+          emptyPanel.querySelector('h2').textContent = `Unit ${index + 1}`;
+          emptyPanel.querySelector('p').textContent = 'This unit is ready to be developed. Its lessons, homework and vocabulary materials will appear here.';
+          emptyPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+      unitGrid.appendChild(btn);
+    });
+
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const views = document.querySelectorAll('.view');
+
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        navButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        views.forEach(view => view.hidden = true);
+        document.getElementById(btn.dataset.view).hidden = false;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    document.querySelectorAll('[data-message]').forEach(btn => {
+      btn.addEventListener('click', () => showToast(btn.dataset.message));
+    });
+
+
+    const vocabularyData = {"1A": "affluent /ˈæfluːənt/ Adjective\nif someone is affluent, they have a lot of money and are able to live comfortably. If a district is\naffluent, it has expensive houses and shops that sell good quality items, and the people who live\nthere are quite rich\nCollocates: an affluent suburb/neighbourhood/area | an affluent lifestyle | an affluent family\nan affluent district in the west of the city | most towns have private schools for the children of\naffluent families | Egremont developed as an affluent residential area in the early 19th century |\nshe had a well-paid job and enjoyed an affluent lifestyle\nNoun: affluence\nshe climbed out of poverty to greater affluence | the family lived in relative affluence\nbring up /brɪŋ ˈʌp/ Phrasal verb\nto raise or care for a child until they are grown\nCollocate: bring up children\nshe had to bring up three children on her own | it’s not easy to bring up children in such a\nbusy city | they want to bring up their kids in the countryside\nbuzz /bʌz/ Noun\nif a place has a buzz, lots of exciting and interesting things happen there. A buzz is also the\nfeeling of excitement and happiness that you get from doing something exciting\nCollocates: a real buzz | a buzz about something\nit’s expensive to live there, but London has a real buzz | I get a real buzz every time I step onto\nthe stage (start performing in public) | there’s a fantastic buzz about Cardiff at the moment\nVerb: buzz | Adjective: buzzing\nthe club was still buzzing at three in the morning | in the 1960s, London was the crazy, buzzing\ncapital of fashion\nchaotic /keɪˈɒtɪk/ Adjective\na chaotic situation is one in which lots of things are happening at the same time and in a very\nconfused and disorganized way\nthe city is busy, chaotic, and noisy | it gets very chaotic in the shop during the weeks before\nChristmas | conditions at the airport were chaotic, with travellers sleeping on the floor for a\nsecond night | it was difficult to stay calm in such a chaotic situation\nAdverb: chaotically | Noun: chaos\nCollocates: in chaos | chaos reigns\nthe station was chaotically busy on Friday evening | the house was chaotically full of books |\na heavy snowfall caused chaos on the roads last night | chaos reigned as the banks all stopped\nlending money | the meeting ended in chaos | the defeat of the government led to a period\nof political chaos\nchoke /tʃəʊk/ Verb\nif you choke, you have a lot of difficulty breathing because you cannot get air into your lungs\neasily\nCollocates: choke on something | choke to death\nthe smog here is awful – you have to wear a mask or you’d choke on the fumes | Isabel nearly\nchoked on a piece of meat | he lay in bed, coughing and choking | two of the prisoners choked\nto death on the toxic smoke\nUnit 1 Vocabulary Builder 1\nUse the Text Notes tool to add\nUse the Text Notes tool to add\nyour own notes and translations.\nyour own notes and translations.\ncongested /kənˈdʒestɪd/ Adjective\nroads that are congested have a lot of traffic on them, so everybody moves very slowly\nthe M25 around Heathrow is always congested | the congested streets of Bangkok | Oxford’s roads\nare congested, polluted and dangerous | plan your journey in advance to avoid congested areas\nNoun: congestion\nCollocates: ease congestion | avoid congestion | traffic congestion | heavy congestion\nthe government brought in controls on car use to try to ease congestion | traffic congestion is\na serious problem here\ncrammed /kræmd/ Adjective\ncrammed means too full of people or things\nthe bus was so crammed I couldn’t find a seat\nVerb: cram\nCollocate: cram into\nthey’ve crammed a lot of study into such a short period of time | we all crammed into his tiny\ncar for the trip\ncrawl /krɔːl/ Verb\nwhen cars, buses, and lorries are crawling, they are moving very slowly because there is a lot of\ntraffic. When people crawl, they move slowly along the ground on their hands and knees\nthe traffic is terrible and the cars just crawl along most of the time | we spent over an hour in\nthe taxi crawling along – we should have walked | babies learn to crawl when they are about\nsix months old | we had to crawl through the entrance to the tent\nNoun: crawl\nCollocate: at a crawl\ntraffic was moving at a crawl (very slowly) through the Blackwall Tunnel\ncrumble /ˈkrʌmbəl/ Verb\nto break apart into small pieces is to crumble\nthe old wall started to crumble after the rain | the cookie crumbled in my hand | many of the\nbuildings in the area are old and starting to crumble\ndeprived /dɪˈpraɪvd/ Adjective\ndeprived means lacking the things needed for a good or healthy life\nthat part of the city is known as a deprived area | many charities work to help deprived children\nget an education\nVerb: deprive\nthey were deprived of sunlight living so far up north\nderelict /ˈderəlɪkt/ Adjective\nwhen a building is derelict, it is abandoned and falling apart, and not taken care of\nthere are a few derelict buildings at the end of the street | it’s sad to see such a beautiful house\nbecome derelict | the old factory has been derelict for years\ndevelopment /dɪˈveləpmənt/ Noun\na development is a new building or set of buildings\nCollocate: housing development\nthere’s a new residential development being built near the park | the residential development\nwill have shops and cafés on the ground floor | I’ve heard that the development has already sold\nout most of its apartments\nVerb: develop | Noun: developer\nthere are plans to develop that side of town | developers bought the house, did some\nrenovations and then sold it for a profit\ndingy /ˈdɪndʒi/ Adjective\nwhen a place is dingy, it is dark and not clean, and it is a bit depressing\nthe basement room was dark and dingy | I don’t like that bar, it’s too dingy | she’s hoping to\nmove out of her dingy apartment soon\ndrawback /ˈdrɔːbæk/ Noun\na disadvantage or problem is a drawback\nthe main drawback of the house is that it’s near a busy road | one drawback of living in the city\nis the noise\n2\nUse the Text Notes tool to add\nyour own notes and translations.\ndull /dʌl/ Adjective\na place that is dull is boring or not interesting\nthat’s a dull neighbourhood with not much going on | the movie was so dull, I almost fell asleep\nfine /faɪn/ Verb\nto make someone pay money as punishment for something\nCollocates: be fined for\nif you park here, you’ll get fined | he was fined heavily for littering in the park | if you don’t\nwear a seatbelt, you might get fined\nNoun: fine\nhe got a fine for speeding\nflash /flæʃ/ Verb\nto flash is to shine brightly for a short time, then stop, then shine again\nthe neon lights were flashing outside the club | lightning flashed across the sky\nNoun: flash\nshe covered her eyes to shield them from the camera flash\nfume /fjuːm/ Noun\nfumes are gases and smoke from fires, burning chemicals, car engines, etc. that are unhealthy\nand unpleasant to breathe, and that can make people ill\nCollocates: toxic/poisonous fumes | petrol/diesel/exhaust/traffic fumes\nthe smog is so bad you need a mask, otherwise you’d choke on the fumes | chemicals which\ngive off nasty fumes | a petrol engine producing poisonous fumes | a cloud of toxic fumes | he\nwas overcome by fumes (made unconscious by them)\ngated /ˈɡeɪtɪd/ Adjective\nif a place is gated, it is surrounded by a fence with a gate, usually to keep people out\nhe lives in a gated community for extra safety | gated houses are pretty common in this\nneighbourhood\nNoun: gate\nhe pushed open the garden gate\ngentrification /ˌdʒentrɪfɪˈkeɪʃən/ Noun uncount\ngentrification is the process of richer people moving into a poor area and making it more upscale\nthis neighbourhood has seen a lot of gentrification recently | gentrification can push out local\nresidents because of rising rents | that café is a sure sign of gentrification\nVerb: gentrify\nthe village has been gentrified in recent years\ngrand /ɡrænd/ Adjective\nif something is grand, it is big and impressive\nlook at that grand house on the hill | the event was held at a grand hotel in the city\ngrind /ɡraɪnd/ Verb\nto grind means to slowly stop or get stuck\nCollocate: grind to a halt\nour holiday plans ground to a halt because of the weather | the old machine started to grind\nafter years of use\nhalt /hɔːlt/ Verb\nif you halt something or if it halts, it stops happening or developing. Halt is a formal word. In\nordinary spoken English, people usually say stop\nthey are to receive funding to halt the decline that has taken place over a number of years | the\nnew policy failed to halt the spread of anti-government feeling | progress on the new building\nwas halted by storms that lasted over a week | production at the factory halted while the\naccident was investigated\nNoun: halt\nCollocates: come to a halt | call a halt (to something) | put a halt to something\nthe epidemic finally came to a halt after six months | Sam called a halt just after dark and we\nstarted to put up the tent | the train came to a sudden halt | the accident put a halt to further\nflight tests\nUnit 1 Vocabulary Builder 3\nUse the Text Notes tool to add\nyour own notes and translations.\nhorn /hɔːrn/ Noun\na horn is a device that makes a loud noise, especially on a vehicle\nCollocate: sound your horn\nit’s rude to use your horn without a good reason | if you’re in danger, sound your horn\nhumid /ˈhjuːmɪd/ Adjective\nair that has a lot of water in it, making it feel wet, is humid\nit’s so humid outside, I’m sweating already | the weather gets really humid in the summer here |\nI can’t stand humid climates, they make me feel uncomfortable\nNoun: humidity\nthe humidity made my hair go curly\ninfrastructure /ˈɪnfrəstrʌktʃər/ Noun\ninfrastructure is the basic systems and structures a place needs to work well\nthe city needs to improve its transport infrastructure | a country’s infrastructure includes roads,\nbridges, and power supplies\ninsane /ɪnˈseɪn/ Adjective\nsomeone who is insane has a very serious mental illness which means they do not behave in a\nnormal way. In informal English, if you refer to a person as insane, you mean they are wild or\nfoolish, and if you refer to a situation or behaviour as insane, you mean that it is very extreme\nor dangerous\nthe way people drive here is insane | the bureaucracy is enough to drive you insane | an\ninstitution for the criminally insane | he was totally insane and rarely had any idea where or who\nhe was | no person who is insane may give evidence in court\nAdverb: insanely | Noun: insanity || Opposite – Adjective: sane\nGame of Thrones was an insanely popular series (extremely popular) | he was found not guilty\non the grounds of temporary insanity | doctors agreed he was rational and perfectly sane\nlittering /ˈlɪtərɪŋ/ Noun uncount\nlittering is the act of leaving rubbish around instead of putting it in the bin\nNoun: litter\nlitter is rubbish that is dropped in public places and which makes those places look untidy\nCollocates: litter bin | drop litter\nthere’s not a trace of litter or chewing gum on the pavements | the streets are covered in litter |\ndon’t drop litter in the street | pick your litter up | a litter bin | clear up all the litter in the park\nVerb: litter\nbroken bottles littered the beach | the entrance to the station was littered with fast food containers\nlively /ˈlaɪvli/ Adjective\nif a place is lively, it is full of life, energy, or activity\nthe market square is always so lively on weekends | they live in a lively part of town with lots of\nbars and restaurants | there’s always something going on, it’s such a lively place\nmask /mɑːsk/ Noun\na mask is something you wear over your face for protection or disguise\nCollocate: face mask\nduring the health crisis, everyone wore face masks in public places | you should wear a mask in\nthe workshop or you’ll choke on the fumes | she wore a mask to the fancy-dress party\nmetro system /’metroʊ ˈsɪstəm/ Noun\na metro system is a network of electric trains that run underground in a city\nusing the metro system is the quickest way to get around the city | there’s a metro system map\nat every station\nneglected /nɪˈɡlektɪd/ Adjective\nif someone or something is neglected, they have not been looked after properly and are not in\na good condition\nthe whole area has become neglected and needs rebuilding | a wild and neglected garden that\nshe had brought back to life | a charity that helps abandoned and neglected children\nVerb: neglect\nif you neglect your schoolwork you won’t make it to university | the farmer was accused of\ncruelly neglecting his horses | he criticized parents who neglected their children’s education\n4\nUse the Text Notes tool to add\nyour own notes and translations.\nneon /ˈniːɒn/ Adjective\nbright, glowing colours often used in signs are neon\nCollocate: neon lights\nthe street was lit up by neon lights from the bars | she bought a neon pink shirt for the party\noutskirts /ˈaʊtskɜːts/ Noun plural\nthe parts of a town or city that are furthest from the centre are the outskirts\nCollocate: on the outskirts\nthey live on the outskirts of the city where it’s quieter | the factory is located on the outskirts, so\nnot many people go there | there’s a big shopping centre on the outskirts with free parking\npacked /pækt/ Adjective\nwhen somewhere is packed, it is very crowded\nthe train was so packed I couldn’t find a seat | the beach is always packed on sunny days |\nthe concert was packed with fans\nresidential /ˌrezɪˈdenʃəl/ Adjective\nresidential is related to where people live, for example, an area in a part of town\nthat’s a quiet residential area with lots of families | there’s a mix of commercial and residential\nbuildings on that street | the council wants to turn the old school into residential apartments\nNoun: resident\nhe’s been a resident at the care home for over ten years\nrun-down /ˌrʌn ˈdaʊn/Adjective\nif a place is run-down, it is in a bad condition because no one has been looking after it for a\nwhile\nthe city centre seems very run-down | it’s a bit more run-down where I live, but at least it’s\nlively | a run-down restaurant near the station | the house was very run-down when we bought\nit, but we’ve transformed it over the last two years\nseek /siːk/ Verb\nto try to find or get something is to seek it\nmany families seek more space as their kids grow up | she’s seeking advice on her career\noptions\nsettle down /ˈsetl daʊn/ Phrasal verb\nto settle down means to start living a more settled life, often in one place or with one person\nafter travelling the world, she decided to settle down in Spain | they settled down in the\nsuburbs after their child was born\nsmog /smɒɡ/ Noun\nsmog is dirty air that looks like fog, made by pollution\nthe city is known for its bad smog in summer | smog levels today are really high | pollution from\ncars contributes to the smog\nsmoothly /ˈsmuːðli/ Adverb\nwhen something is happening without problems or interruptions, it is running smoothly\nCollocate: run smoothly\nI hope the transport systems keep running smoothly during the festival | everything went\nsmoothly at the airport\nAdjective: smooth\nthe yoghurt has a smooth texture\nspotless /ˈspɒtləs/ Adjective\nsomething that is spotless is very clean\nthe hotel room was absolutely spotless | the streets are spotless, but it’s also very dull there |\nhe was wearing a spotless white suit\nAdverb: spotlessly\nCollocate: spotlessly clean\nher shirt was old but spotlessly clean | a spotlessly white handkerchief\nUnit 1 Vocabulary Builder 5\nUse the Text Notes tool to add\nyour own notes and translations.\nsprawling /ˈsprɔːlɪŋ/ Adjective\na sprawling place or building spreads out over a large area in an untidy or uncontrolled way\nthe sprawling suburbs of the capital city | the sprawling Cairo district of Nasr City | Tokyo is exciting\nbecause it is a sprawling urban environment to explore | it was a sprawling, four-storey hotel that\ncould house 2,000 guests | the college moved to a sprawling campus on the outskirts of Chennai\nNoun: sprawl | Verb: sprawl\nCollocate: urban sprawl\nthe city has seen population growth and considerable urban sprawl | the city sprawls out over\n43 square miles | there is a definite tourist area which sprawls along the coast\nspring up /ˌsprɪŋ ˈʌp/ Phrasal verb\nif something springs up, it suddenly starts to exist somewhere\nthere are new businesses springing up all over the place | new luxury hotels are springing up\neverywhere | several more airports have sprung up across the country | a large town had sprung\nup around the gold mines\ntake someone by surprise /teɪk ˈsʌmwʌn baɪ səˈpraɪz/ Idiom\nto take someone by surprise is to shock or surprise someone unexpectedly\nthe sudden thunderstorm took us all by surprise | his decision to move abroad took his family\nby surprise\ntrace /treɪs/ Noun\nsomewhere\na trace of something is a very small amount of it, or a sign that shows it had existed or been\nCollocates: a trace of something | without trace\nthere’s not a trace of litter or chewing gum on the pavements | the product contained traces of\nhorse meat | the air we breathe contains traces of carbon | tiny traces of blood were found at\nthe scene | he simply disappeared without trace (no one could find out where he had gone)\ntram /træm/ Noun\na tram is a vehicle that runs on tracks in the street and carries people\nI take the tram to work every day | trams are a common sight in many European cities | you can\nbuy a tram ticket at the station\nunbearably /ʌnˈbeərəbli/ Adverb\nto an extreme or intolerable degree\nit’s unbearably hot today | the music was unbearably loud at the club\nAdjective: unbearable\nthe sound of someone chewing is unbearable for me\nup-and-coming /ˌʌpənˈkʌmɪŋ/ Adjective\nif a place is up-and-coming, it is becoming more popular or successful\nthe northern part of the city is really up-and-coming now | he’s an up-and-coming artist you might\nwant to keep an eye on | that’s definitely an up-and-coming area with so many new shops opening\nutter /ˈʌtə/ Adjective\ncomplete or absolute\nthe whole idea is an utter nonsense | that’s an utter waste of time | the play was an utter disaster\nAdverb: utterly\nthe weather is utterly awful | I’m utterly exhausted after that long walk | the film was utterly\nbrilliant\nvibrant /ˈvaɪbrənt/ Adjective\na vibrant place is one where lots of exciting and interesting things are always happening. People\nwho are vibrant have a lot of energy and are always doing interesting things\nCollocates: vibrant nightlife | a vibrant city\na lively city with a vibrant nightlife | Brazil’s most culturally vibrant city | a young, vibrant and\ndynamic company | we promote strong families and vibrant communities here | the children ran\naround all afternoon, vibrant and full of life\nwell-run /ˌwel ˈrʌn/ Adjective\nsomething that is well-run is properly organized\nwe stayed in a very well-run hotel in the city centre | the school had been very well run until a\ncouple of years ago | a well-run factory that provides jobs for local people", "1B": "aspect /ˈæspɛkt/ Noun\nan aspect is a particular part or feature of a situation or thing\none important aspect of the job is communication | she’s studying different aspects of the\ncountry’s culture\nauthenticity /ˌɔːθenˈtɪsɪti/ Noun\nauthenticity is the quality of being genuine or true\nshe questioned the authenticity of the old painting | the restaurant is known for its authenticity\nin making traditional dishes\nAdjective: authentic\nit’s important to listen to the conversation for authentic language\nby and large /baɪ ənd lɑːdʒ/ Binomial\ngenerally or for the most part\nby and large, the project was a success | the weather this summer has been, by and large, quite\ngood | by and large, the feedback was positive, but there were a few criticisms\nby word of mouth /baɪ wɜːd əv maʊθ/ Idiom\ninformation passed on by people talking rather than in writing or through media\nI heard about that restaurant by word of mouth | the band got popular mainly by word of\nmouth | she found her job by word of mouth from a friend\nchecks and balances /ʧeks ənd ˈbælənsɪz/ Binomial\nways of making sure power is shared and not used unfairly in a system\nthe system of checks and balances keeps one group from having too much power in the\ngovernment | she learned about the importance of checks and balances in her political science\nclass | the president has a lot of power, but checks and balances help keep it under control\ncirculate /ˈsɜːkjʊleɪt/ Verb\nto circulate is to go around or be passed around from person to person\nthere’s a rumour circulating around the office | I saw that photo circulating on social media\ncockroach /ˈkɒkrəʊtʃ/ Noun\na cockroach is a small insect that lives in dirty or humid places, especially where food is kept\nyou need to keep food sealed or cockroaches will get to it | the apartment was infested with\ncockroaches\nconspiracy /kənˈspɪrəsi/ Noun\na conspiracy is a plan by a group to do something harmful or illegal\nCollocate: conspiracy theory\nhe’s always talking about some wild conspiracy theories | there was a conspiracy to rob\nthe bank\ncontaminate /kənˈtæmɪneɪt/ Adjective\nto contaminate is to make something less pure or dirty, especially by adding unwanted or\nharmful substances\ndon’t let the raw chicken contaminate other food in the fridge | the river was contaminated by\nwaste from the factory\nNoun: contamination\nplease wear protective clothing to avoid contamination of the area\ncounteract /ˌkaʊntərˈækt/ Verb\nto counteract is to reduce or get rid of the effect of something unwanted\ndrinking water can counteract the effects of too much coffee | the medicine is taken to\ncounteract the side effects of the treatment\ncut and dried /kʌt ənd draɪd/ Binomial\nalready decided and unlikely to be changed, clear and definite\nI thought our plans were cut and dried, but now there’s a change | the rules are cut and dried –\nthere’s no room for negotiation\nUnit 1 Vocabulary Builder 7\nUse the Text Notes tool to add\nyour own notes and translations.\ndispenser /dɪˈspensər/ Noun\na dispenser is a machine or container that you can get something from\nthe water dispenser in the office is broken again | I bought a new soap dispenser for\nthe bathroom\nVerb: dispense\nthat cash machine isn’t dispensing cash – it’s broken\nepidemic /ˌepɪˈdemɪk/ Noun\nan epidemic is a situation in which a disease spreads very quickly and affects many people\nthe health department is working to control the epidemic | rumours of an epidemic caused\npanic in the city\nWORD BUILDING: BINOMIALS\nevery now and then\nif something happens every now and then or every now and again, it happens occasionally\nbut not very often\nthe roof needs repairing, and water comes through every now and then\nfirst and foremost\nyou use first and foremost to emphasize what you think is most important about a place,\nperson, or organization\nRonaldo is, first and foremost, a fantastic athlete\nhere and there\nthings that are present here and there exist in a few different places in an area, but not\neverywhere\nit’s an affluent area, but there are pockets of poverty here and there | I’ve seen him here and\nthere, but I don’t know him well | she’s been travelling and picking up jobs here and there\non and off\nsomething that happens on and off or off and on doesn’t happen all the time, but happens\nsometimes or for parts of a period of time\nI’ve been learning Russian now for six years, on and off\npeace and quiet\npeace and quiet is a quiet atmosphere with no loud activity, in contrast to a busy, noisy\natmosphere\nall she wanted was some peace and quiet after a long journey on a crowded train\nsick and tired\nif you are sick and tired of something, you really don’t like it and think it has been happening\nfor too long\nshe was sick and tired of their endless complaining\nfake news /feɪk njuːz/ Noun\nfalse information presented as news is fake news\nyou can’t believe everything online, there’s a lot of fake news out there | he was accused of\nspreading fake news on social media | fake news can cause unnecessary panic among people\nfar and wide /fɑːr ənd waɪd/ Binomial\neverywhere or in many different places\npeople came from far and wide to see the show | his reputation was known far and wide\nfolklore /ˈfəʊklɔː/ Noun uncount\nthe stories, customs, and beliefs of a community passed down through generations is folklore\ndifferent cultures have their own folklore and traditions | she’s studying the folklore of\nindigenous tribes in South America\ngrisly /ˈgrɪzli/ Adjective\ngrisly means very unpleasant or causing horror, often related to death or injury\nCollocate: a grisly end\nthe newspaper showed the grisly details of the crime scene | he told us a grisly tale of a haunted\nhouse | the movie had a particularly grisly end that was hard to watch\n8\nUse the Text Notes tool to add\nyour own notes and translations.\nhairdo /ˈhɛəduː/ Noun\na hairdo is a particular style of cutting and arranging someone’s hair\nI love your new hairdo, it really suits you | she spent hours getting the perfect hairdo for the\nwedding | my hairdo got ruined in the rain\nhit or miss /hɪt ɔː mɪs/ Binomial\nwhen something is hit or miss, it is sometimes good or successful, and sometimes not\nthe weather here is a bit hit or miss in the spring | their team’s performance is hit or miss this\nseason\nhustle and bustle /ˈhʌsl ənd ˈbʌsl/ Binomial\na lot of activity and noise, usually in a busy place, is hustle and bustle\nI love the hustle and bustle of the city markets | during the holidays, there’s a lot of hustle and\nbustle in the shopping centres | some people prefer the calm countryside over the hustle and\nbustle of city life\nimitation /ˌɪmɪˈteɪʃən/ Noun\na thing that’s made to look like something else, usually to deceive or for fun is an imitation\nthat’s not real gold, it’s just an imitation | her dress looks like an imitation of a designer brand |\nkids often learn by imitation, copying what adults do\nVerb: imitate\nthe musician was imitating his hero\nlaw and order /lɔː ənd ˈɔːdə/ Binomial\nlaw and order is a peaceful state of affairs in which people obey the law\nit’s the job of the police to keep law and order | the city has been working on improving law\nand order | there’s been a decline in law and order in the area lately\nlegend /ˈlɛdʒənd/ Noun\na legend is a story from the past that is believed by many people but cannot be proven\nCollocate: urban legend\nthe legend of King Arthur is famous all over the world | according to legend, the city was built\nby giants | have you heard the urban legend about the ghost in the school?\nlong and hard /phonetics/ Binomial\nif you do something long and hard, you put a lot of effort into it over a long period of time\nI thought long and hard about it before making a decision | you need to think long and hard\nabout this job offer | I’ve been working long and hard on this project\nmaim /meɪm/ Verb\nto injure someone severely, often causing a permanent disability\nmany soldiers were maimed in the explosion | the accident maimed him for life, costing him an\narm | he was maimed by a dog when he was a child\nmisogynistic /mɪˌsɒdʒɪˈnɪstɪk/ Adjective\nif someone is misogynistic, they have or show a strong dislike or lack of respect for women\nhis comments were criticized as being misogynistic | some old movies have a surprisingly\nmisogynistic tone\nNoun: misogynist\nthe writer displayed misogynist attitudes in his writing\nmugger /ˈmʌgər/ Noun\na person who attacks someone to steal their money is a mugger\nhe was attacked by a mugger on his way home | always be cautious at night, there might be\nmuggers around | she handed over her purse when the mugger threatened her with a knife\nVerb: mug\nhe was mugged for his wallet\nout and about /aʊt ənd əˈbaʊt/ Binomial\nout and about means being active and doing things outside of your home\nit’s sunny, so everyone’s out and about in the park | I haven’t seen you for ages! are you getting\nout and about these days? | after his illness, it was good to see him out and about again\nUnit 1 Vocabulary Builder 9\nUse the Text Notes tool to add\nyour own notes and translations.\npart and parcel /pɑːt ənd ˈpɑːsəl/ Binomial\na necessary part of something\nstudying is part and parcel of student life | risks are part and parcel of any business venture |\ndealing with stress is part and parcel of a manager’s job\npass on / pɑːs ˈɒn/ Phrasal verb\nto give information or knowledge to someone else or to the next generation is to pass on\nmy grandmother passed on her recipes to my mom | he wanted to pass on his knowledge of\ncarpentry to his son | it’s important to pass on traditions and stories to the next generation\nrise and fall /raɪz ənd fɔːl/ Binomial\nrise and fall is the repeated movement of going up and then down\nI could hear the rise and fall of his breathing as he slept | the rise and fall of empires is a\ncommon topic in history classes | watching the rise and fall of the waves is so calming\nrules and regulations /ruːlz ənd ˌrɛgjʊˈleɪʃənz/ Binomial\nrules and regulations are the rules or laws in a particular place or in a particular organization.\nPeople usually use the term rules and regulations when they think there are too many of them\nand that they are not sensible or helpful\nthe city is being ruined by the ever-growing number of rules and regulations\nrumour /ˈruːmə/ Noun\na rumour is a piece of information or story that people talk about, but that may not be true\nCollocates: hear a rumour | spread a rumour\nthere’s a rumour going around that they’re going to close the school | did you hear the rumour\nabout the celebrity couple breaking up? | she spread rumours about her colleague quitting\nsafe and sound /seɪf ənd saʊnd/ Binomial\nsafe and sound means without being harmed or damaged in any way\nthey arrived home safe and sound after their adventure | I was worried about the package, but\nit arrived safe and sound\nsewage /ˈsuːɪdʒ/ Noun\nsewage is waste material, especially liquid, from homes and factories, which flows away\nthrough sewers\nthe sewage system in this city needs an upgrade | raw sewage was found to be leaking into the\nriver | a sewage treatment plant is being built to handle the waste\nshaken /ˈʃeɪkən/ Adjective\nif someone is shaken, they are upset or shocked by something bad that has happened\nshe was really shaken by the accident | after hearing the news, he looked visibly shaken\nspeck /spek/ Noun\na speck is a very small spot or mark\nthere’s a speck of dirt on your shirt | I could see specks of gold in the sand\nstraight and narrow /streɪt ənd ˈnærəʊ/ Binomial\nstraight and narrow is a way of honest and moral behaviour\nhe’s been on the straight and narrow since he got that new job | my parents always advised me\nto stick to the straight and narrow\nsubsequent /ˈsʌbsɪkwənt/ Adjective\nhappening or coming after something else\nthe movie and its subsequent sequels were very successful | the accident and the subsequent\ninvestigation kept the town on edge\nAdverb: subsequently\nshe was rude to the client and subsequently got fired\nthreatened /ˈθrɛtənd/ Adjective\nif you feel threatened, you have a feeling that someone might harm you\nshe felt threatened when he raised his voice | many animals are threatened by habitat loss\nVerb: threaten | Noun: threat\nshe threatened to steal his wallet | the threat was serious enough for him to call the police\n10\nUse the Text Notes tool to add\nyour own notes and translations.\nto and fro /tuː ənd frəʊ/ Binomial\nmoving from one place to another and back again\nshe paced to and fro, waiting for the news | the children ran to and fro all afternoon in\nthe garden, playing tag\ntrace /treɪs/ Verb\nto find or discover someone or something by looking for them, or it, carefully\nthe police were trying to trace the missing girl | she traced her family tree back to the 1800s |\nthey managed to trace the call back to a public phone box\nwidespread /ˈwaɪdˌspred/ Adjective\nexisting or happening in many places or situations\nthere’s widespread agreement on the issue | after the storm, there were widespread power\noutages | the news caused widespread panic in the city", "1C": "back seat /bæk siːt/ Noun\na back seat is a position of less importance or a position not in control\nCollocate: take a back seat\nI’m used to taking a back seat and letting others lead | she’s been in a back seat role for years,\nbut now she’s in charge\nbankrupt /ˈbæŋkrʌpt/ Adjective\nif you are bankrupt, you do not have enough money to pay what you owe\nmany businesses went bankrupt during the pandemic | if we don’t change our spending habits,\nwe’ll go bankrupt\nbeacon /ˈbiːkən/ Noun\na beacon is something that attracts attention because it is very good, successful, or important\nCollocate: become a beacon for\nthe new building has become a beacon for modern architecture | the city has become a beacon\nfor green technology | she’s a beacon of hope in difficult times\nbounds /baʊndz/ Idiom\nthe bounds are the limits of what is reasonable or acceptable\nCollocate: within the bounds of what’s possible\nyou’re pushing the bounds of what’s possible | that’s within the bounds of reason | her\ndemands are beyond the bounds of what we can offer\nbreakthrough /ˈbreɪkθruː/ Noun\na breathrough is an important development that may lead to an achievement or solution\nCollocate: make a breakthrough\nthe scientists made a breakthrough in their research | the new battery technology was a major\nbreakthrough | after months of negotiations, there was finally a breakthrough\ncommission /kəˈmɪʃ(ə)n/ Verb\nif you commission someone, you formally ask them to do an important piece of work, such\nas write an expert report, paint a portrait, or design a building. A commission is the job that\nhas to be done. The group of people who work on preparing such a report are also called a\ncommission\nwho was the report commissioned by? | we’ve commissioned some research into the matter |\naudience figures were good and the BBC commissioned a second series | in 1998, NPG began\ncommissioning portraits of presidents, starting with George H. W. Bush | according to a report\ncommissioned by Greenpeace, a serious accident could occur\nNoun: commission\nshe has received several public commissions | another commission was established to investigate\nthe bank’s failure | the commission had 30 days in which to submit its report\nUnit 1 Vocabulary Builder 11\nUse the Text Notes tool to add\nyour own notes and translations.\nconsultation /ˌkɒnsəlˈteɪʃən/ Noun\na consultation is a process in which someone discusses something with someone else to get\nadvice, or to see if they agree with an idea or plan\nthe project was developed in close consultation with the community | she took the decision\nafter a consultation with her team | there should be a consultation before making big changes\nVerb: consult\nwe’ve hired a team to consult on the project\ncredit /ˈkredɪt/ Verb\nif you credit something to something else, you mean that the first thing succeeded because of\nthe second thing. If someone is credited with something good, they were responsible for its\nsuccess\nCollocates: credit something to someone or something\nthe mayor’s new policy was credited with reversing the trend | the Conservative’s majority\nvictory in 2019 was largely credited to the appeal of Boris Johnson | she credited her success to\nthe team who supported her throughout the campaign\ndemographic /ˌdeməˈɡræfɪk/ Noun\na particular group of people within a society, such as those of a particular age, gender, or social\nclass is a demographic\nthe product is popular among the younger demographic | advertisers often target a specific\ndemographic | the city’s demographic has shifted over the years\ndemolish /dɪˈmɒlɪʃ/ Verb\nto demolish a building means to destroy it completely, for example because it is old and no\nlonger safe or because you are going to put a new building there. Demolish is a formal word; in\nordinary spoken English, people usually say knock down\nthe slums were demolished to make way for a golf course | they demolished the old cinema\nlast week | the old school is going to be demolished | most of the remaining buildings were\ndemolished in 2018 | the farm buildings were demolished and replaced by four new houses\nNoun: demolition\nCollocate: the demolition of something\nthe factory continued making cars until its closure and demolition in 2017 | they won the\ncontract for the demolition and removal of the old bridge\ndesalination /diːˌsælɪˈneɪʃən/ Noun\ndesalination is the process of removing salt from sea water to make it suitable for drinking and\nfarming\ndesalination is a solution to water shortages in some areas | they’re building a new desalination\nplant near the coast | the technology for desalination has improved over the years\nemerge /ɪˈmɜː(r)dʒ/ Verb\nif something emerges, it becomes visible or known about after having been hidden or unknown\nthese urban myths apparently emerge from nowhere and take on a life of their own | the truth\nwill emerge eventually | ‘Mindfulness’ has recently emerged as a multi-billion-dollar industry |\nmore details have emerged about the new iPhone\nNoun: emergence\nCollocate: the emergence of something\nthe 1960s saw the emergence of a new popular culture | the emergence of digital learning has\nbeen both a challenge and an opportunity for our universities\nentity /ˈentɪti/ Noun\nan entity is something that exists as a single and whole unit\nthe company is now a separate entity from its parent corporation | each department in the\norganization is a distinct entity\nenvisage /ɪnˈvɪzɪdʒ/ Verb\nto envisage is to imagine or expect something in the future, especially something good\nhe doesn’t envisage working with them again | she envisages a positive outcome from the talks\nestablish /ɪˈstæblɪʃ/ Verb\nto establish is to start or set up something that is meant to last for a long time\nhe wants to establish a new school in his hometown | they are working to establish a thriving\ntech industry\n12\nUse the Text Notes tool to add\nyour own notes and translations.\nexpertise /ˌekspərˈtiːz/ Noun\nexpertise is a high level of knowledge or skill\nhe has a lot of expertise in computer programming | we need someone with financial expertise\nto help\nNoun: expert\nshe’s an expert in the field of biology\ngive or take /gɪv ɔː teɪk/ Binomial\napproximately, or about\nthere were 50 people there, give or take a few | I think the journey is ten miles, give or take\nharness /ˈhɑːnɪs/ Verb\nto harness something is to use something in a way that helps you\nwe need to harness the sun’s energy for power | she harnessed her communication skills to start\nher own business\nhouse /haʊz/ Verb\nto house something means to be the building where that thing is or where it operates from.\nTo house people means to provide them with somewhere to live. To re-house people means to\nprovide them with a new home after their original home is destroyed or no longer available for\nthem to live in\nthe Geffrye Museum houses a collection of photographs of English domestic life | the building\nnow houses offices, classrooms and seminar rooms | we were offered a flat that could house\nup to six people | social housing was created to temporarily house those in need | the former\ninhabitants of the slums were re-housed in new estates outside London\nNoun: housing\nmost farms used to provide housing for the workers | the city has a severe housing shortage\n(not enough places for everyone to live)\nhurdle /ˈhɜːdəl/ Noun\nsomething\nto overcome\na hurdle is a problem or difficulty that must be solved or dealt with before you can achieve\nfunding was the biggest hurdle for the project | getting approval was another hurdle they had\nimpose /ɪmˈpəʊz/ Verb\nto impose a law, rule, or restriction means to introduce it officially and make people accept it,\neven if they do not want to\nCollocates: impose something on someone | impose a fine/punishment/penalty | impose a\ncondition/deadline/limit/restriction | impose a ban\nthe government has imposed restrictions on car use | it’s difficult to impose controls on internet\nuse | there can be no justification for imposing limits on the amounts that can be spent | they\nimposed a ban on all tobacco advertising\nNoun: imposition\nCollocate: the imposition of something (on someone or something)\nthe Chicago Convention prevents the imposition of tax on aviation fuel (the fuel that aeroplanes\nuse) | the imposition of import controls\ninitiate /ɪˈnɪʃieɪt/ Verb\nif you initiate a process, you officially start it\nCollocates: initiate a discussion/negotiation/debate | initiate an inquiry/investigation | initiate\na process\nthe mayor initiated an ambitious plan to redevelop the city centre | the government initiated\nan inquiry into the causes of the war | Alexander initiated substantial reforms in education |\nhe has initiated legal proceedings against his neighbour (he has started a court case to solve\na disagreement) | peace negotiations were initiated in May, and agreement was reached in July\nNoun: initiation\nCollocate: the initiation of something\nlast year saw the initiation of a programme of major reforms\nUnit 1 Vocabulary Builder 13\nUse the Text Notes tool to add\nyour own notes and translations.\ninward /ˈɪnwə(r)d/ Adjective\ninward actions or movements are directed towards the centre of something. Inward investment\nis investment made in one country by people and companies from other countries\nCollocates: inward investment | inward migration\nthe city has managed to attract a lot of inward investment | over that period, inward migration\nto the UK fell by 42,000 to 536,00 | up to 100 jobs will be created in the town by a new\ninward investor\nmaterialize /məˈtɪriəlaɪz/ Verb\nto become real or to appear is to materialize\nthe investment promised much, but it failed to materialize | she waited but her friend never\nmaterialized\nmoonshot project /ˈmuːnʃɒt ˈprɒdʒekt/ Expression\na moonshot project is an ambitious, ground-breaking project, especially one without any\nexpectation of near-term profitability or benefits\nthe company announced its moonshot project to make cars fly | developing a new energy\nsource is a moonshot project\npenetrate /ˈpenɪtreɪt/ Verb\nto penetrate means to move into or go through something\nthe sunlight penetrates the lower levels of the forest | the cold wind penetrated through their\nthin coats\nperipheral /pəˈrɪfərəl/ Adjective\nnot as important as the main aim or subject being considered\nthese are just peripheral issues compared to the main problem | to some, art might seem a\nperipheral element of a good city, but it’s actually vital\npilot project /ˈpaɪlət ˈprɒdʒekt/ Noun\na pilot project is a small-scale activity done as a test to see if a larger project will be successful\nthe pilot project was a success, so we’re going to expand it | they’re running a pilot project to\nsee how people react\npump /pʌmp/ Verb\nto pump something into something else means to put a lot of money, effort, etc., into\nsomething to make it work or improve it\nthe government decided to pump billions of dollars into renewables | they’re pumping more\nmoney into the project to get it finished | she pumped all her energy into her studies\nrenewables /rɪˈnjuːəbəlz/ Noun\nrenewables are sources of energy that can be used and replaced naturally\nCollocate: renewable energy\nthe country is investing heavily in renewable energies | wind and solar are popular forms of\nrenewables | we need to shift our focus to renewables to combat climate change\nrenovate /ˈrenəveɪt/ Verb\nto renovate means to repair or improve something, especially a building\nthey decided to renovate the old house instead of moving | the museum is closed while it’s\nbeing renovated\nNoun: renovation\nthey’re doing some renovation on the property\nscale up /skeɪl ʌp/ Phrasal verb\nto scale up means to increase the size, amount, or importance of something, usually an\norganization or process\nafter the success of the product, they decided to scale it up | the company is planning to scale\nup its operations next year\nOpposite: scale down\nthey’ve had to scale down the business due to losses\nshrink /ʃrɪŋk/ Verb\nto shrink means to become smaller in size or amount, or less in number\nthe company has shrunk in recent years | my favourite shirt shrank in the wash | as the\nresources shrink, the competition gets tougher\n14\nUse the Text Notes tool to add\nyour own notes and translations.\nspiral /ˈspaɪrəl/ Verb\nto spiral means to continuously become worse or to get out of control\ncosts have spiralled since the start of the project | after losing his job, his life began to spiral out\nof control | the team’s performance started to spiral after the key player got injured\nstart from scratch /stɑːt frəm skrætʃ/ Phrase\nto begin something from the beginning, especially when you’ve already started it once\nwe lost all our work, so we have to start from scratch | instead of fixing it, it’s sometimes better\nto start from scratch\nthriving /ˈθraɪvɪŋ/ Adjective\ngrowing, developing, or being successful\nthe city has a thriving tech industry | her business is thriving and expanding | the park has\nbecome a thriving community spot\nVerb: thrive\nif you put the plant in direct sunlight and water it regularly, it will thrive\ntop-down /tɒp daʊn/ Noun\norganized or controlled by the people in the highest positions in a company or organization\nrather than by the people in lower positions\nthe company has a top-down management style | it was a top-down decision, so there wasn’t\nmuch discussion | many people prefer a bottom-up approach rather than top-down\nundertake /ˌʌndəˈteɪk/ Verb\nto agree to be responsible for a job or project and do it\nshe undertook the task of organizing the event | the mayor undertook a big campaign against\nantisocial behaviour | he has undertaken to complete the report by next week\nVerb: undertake | Noun: undertaking\nhe undertook the short-term project | the project was a massive undertaking | she knew the\nresponsibility was a big undertaking\nvisionary /ˈvɪʒəneri/ Adjective\nhaving the ability to see and plan for the future\nher visionary leadership transformed the company | he was a visionary artist, ahead of his time"};
+    const vocabularyTitles = {
+      '1A': '1A. A real buzz about the place',
+      '1B': '1B. Urban tales',
+      '1C': '1C. Urban planning'
+    };
+
+    const excludedVocabulary = {
+      '1A': new Set(['chaotic', 'lively', 'mask', 'metro system', 'neon', 'seek', 'tram']),
+      '1B': new Set(['aspect', 'cockroach', 'conspiracy', 'epidemic', 'fake news', 'folklore', 'imitation', 'legend', 'misogynistic', 'rumour']),
+      '1C': new Set(['bankrupt', 'consultation', 'demographic'])
+    };
+
+    const wordBuildingBinomials = new Set([
+      'every now and then', 'first and foremost', 'here and there',
+      'on and off', 'peace and quiet', 'sick and tired'
+    ]);
+
+    function cleanVocabularyText(text) {
+      return text.split('\n').filter(line => {
+        const t = line.trim();
+        return !/^Unit 1 Vocabulary Builder \d+$/.test(t) &&
+               !/^Use the Text Notes tool to add$/.test(t) &&
+               !/^your own notes and translations\.$/.test(t) &&
+               !/^\d+$/.test(t);
+      }).join('\n').replace(/\n{3,}/g, '\n\n').trim();
+    }
+
+    function parseHead(line) {
+      const match = line.match(/^(.+?)\s+(\/[^/]+\/)\s+(.+)$/);
+      if (match) return { word: match[1].trim(), phonetic: match[2].trim(), pos: match[3].trim() };
+      return { word: line.trim(), phonetic: '', pos: 'Binomial' };
+    }
+
+    function normalizeBodyLines(lines) {
+      const groups = [];
+      let current = '';
+      const isMeta = line => /^(Collocates?|Verb|Noun|Adjective|Adverb|Opposite)(\s*–\s*Adjective)?:/.test(line);
+      lines.forEach(line => {
+        if (isMeta(line)) {
+          if (current) groups.push({ type: 'text', text: current.trim() });
+          groups.push({ type: 'meta', text: line.trim() });
+          current = '';
+        } else {
+          if (line.includes('|') && current) {
+            groups.push({ type: 'text', text: current.trim() });
+            current = '';
+          }
+          current += (current ? ' ' : '') + line.trim();
+          if (line.includes('|')) {
+            groups.push({ type: 'text', text: current.trim() });
+            current = '';
+          }
+        }
+      });
+      if (current) groups.push({ type: 'text', text: current.trim() });
+      return groups;
+    }
+
+    function formatBody(lines) {
+      const groups = normalizeBodyLines(lines);
+      let definitionUsed = false;
+      return groups.map(group => {
+        if (group.type === 'meta') return `<p class="vocab-meta">${escapeHtml(group.text)}</p>`;
+        if (!definitionUsed) {
+          definitionUsed = true;
+          return `<p class="vocab-definition">${escapeHtml(group.text)}</p>`;
+        }
+        return `<p class="vocab-examples">${escapeHtml(group.text)}</p>`;
+      }).join('');
+    }
+
+    function parseVocabulary(text) {
+      const lines = cleanVocabularyText(text).split('\n').map(x => x.trim()).filter(Boolean);
+      const blocks = [];
+      let current = null;
+      let inWordBuilding = false;
+      const entryPattern = /^(.+?)\s+(\/[^/]+\/)\s+(.+)$/;
+
+      lines.forEach(line => {
+        if (line === 'WORD BUILDING: BINOMIALS') {
+          if (current) blocks.push(current);
+          blocks.push({ section: line });
+          current = null;
+          inWordBuilding = true;
+          return;
+        }
+        if (entryPattern.test(line) || (inWordBuilding && wordBuildingBinomials.has(line.toLowerCase()))) {
+          if (current) blocks.push(current);
+          current = { ...parseHead(line), body: [], binomial: inWordBuilding || /Binomial/i.test(line) };
+        } else if (current) {
+          current.body.push(line);
+        }
+      });
+      if (current) blocks.push(current);
+      return blocks;
+    }
+
+    function getFilteredVocabulary(key) {
+      const order = ['1A', '1B', '1C'];
+      const seen = new Set();
+      let result = [];
+      for (const lesson of order) {
+        const blocks = parseVocabulary(vocabularyData[lesson]);
+        const filtered = [];
+        for (const block of blocks) {
+          if (block.section) { filtered.push(block); continue; }
+          const normalized = block.word.toLowerCase().trim();
+          if (excludedVocabulary[lesson].has(normalized) || seen.has(normalized)) continue;
+          seen.add(normalized);
+          filtered.push(block);
+        }
+        if (lesson === key) { result = filtered; break; }
+      }
+      return result;
+    }
+
+    function renderVocabulary(key) {
+      const blocks = getFilteredVocabulary(key);
+      const container = document.getElementById('vocabContent');
+      container.innerHTML = blocks.map(block => {
+        if (block.section) return `<div class="vocab-section-title">${escapeHtml(block.section)}</div>`;
+        const head = `<span class="vocab-word">${escapeHtml(block.word)}</span>` +
+          (block.phonetic ? `<span class="vocab-phonetic">${escapeHtml(block.phonetic)}</span>` : '') +
+          `<span class="vocab-pos">${escapeHtml(block.pos)}</span>`;
+        return `<article class="vocab-entry${block.binomial ? ' binomial-entry' : ''}" data-search="${escapeHtml((block.word + ' ' + block.phonetic + ' ' + block.pos + ' ' + block.body.join(' ')).toLowerCase())}">
+          <h3 class="vocab-headword">${head}</h3>
+          <div class="vocab-body">${formatBody(block.body)}</div>
+        </article>`;
+      }).join('');
+      updateVocabCount();
+    }
+
+    function escapeHtml(value) {
+      return value.replace(/[&<>"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[char]));
+    }
+
+    function updateVocabCount() {
+      const visible = [...document.querySelectorAll('.vocab-entry')].filter(x => !x.classList.contains('hidden-entry')).length;
+      document.getElementById('vocabCount').textContent = `${visible} vocabulary entries`;
+    }
+
+    document.querySelectorAll('[data-vocab]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.vocab;
+        document.getElementById('vocabTitle').textContent = vocabularyTitles[key];
+        document.getElementById('vocabKicker').textContent = `Unit 1 · ${key} vocabulary`;
+        document.getElementById('vocabSearch').value = '';
+        renderVocabulary(key);
+        document.getElementById('vocabBackdrop').hidden = false;
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeVocabulary() {
+      document.getElementById('vocabBackdrop').hidden = true;
+      document.body.style.overflow = '';
+    }
+    document.getElementById('closeVocab').addEventListener('click', closeVocabulary);
+    document.getElementById('vocabBackdrop').addEventListener('click', e => { if (e.target.id === 'vocabBackdrop') closeVocabulary(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVocabulary(); });
+    document.getElementById('vocabSearch').addEventListener('input', e => {
+      const query = e.target.value.trim().toLowerCase();
+      document.querySelectorAll('.vocab-entry').forEach(entry => {
+        entry.classList.toggle('hidden-entry', query && !entry.dataset.search.includes(query));
+      });
+      updateVocabCount();
+    });
+
+    let toastTimer;
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+  </script>
+</body>
+</html>
