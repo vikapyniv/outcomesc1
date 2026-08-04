@@ -699,11 +699,10 @@ const speakingData = [
           if(allowed.includes(active.textContent)){
             const availableNatural=availableIntensifiers.filter(x=>allowed.includes(x));
             active.classList.remove('active');
-            active.classList.add('matched');
             b.classList.add('matched');
             const chip=document.createElement('span');
             chip.className='built-chip';
-            chip.textContent='Natural: '+availableNatural.map(x=>x+' '+adjective).join(' · ');
+            chip.textContent='Natural: '+allowed.map(x=>x+' '+adjective).join(' · ');
             built.querySelector('.built-list').appendChild(chip);
             active=null;
           } else {
