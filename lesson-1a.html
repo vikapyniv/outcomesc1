@@ -235,7 +235,7 @@
 
   <section class="panel lesson-section" data-title="Build the groups">
     <div class="section-head">
-      <div><h2>2. Build the two groups</h2><p>Match each adjective with the intensifier that sounds most natural.</p></div>
+      <div><h2>2. Build the two groups</h2><p>Match each adjective with any natural intensifier. More than one answer may be correct.</p></div>
       <span class="tag">Matching</span>
     </div>
 
@@ -256,7 +256,7 @@
 
   <section class="panel lesson-section" data-title="Strong equivalents">
     <div class="section-head">
-      <div><h2>3. Match ordinary adjectives with stronger equivalents</h2><p>After each correct match, notice the natural intensifier + adjective chunk.</p></div>
+      <div><h2>3. Match ordinary adjectives with stronger equivalents</h2><p>After each correct match, explore all the natural intensifiers shown for the stronger adjective.</p></div>
       <span class="tag">Upgrade</span>
     </div>
 
@@ -305,7 +305,7 @@
     <div class="section-head">
       <div>
         <h2>5. Speaking practice: What is the city like?</h2>
-        <p>Read each city description, notice the key phrase, build two natural intensifier + adjective combinations, then answer the questions.</p>
+        <p>Read each city description, notice the key phrase, build natural intensifier + adjective combinations, then answer the questions.</p>
       </div>
       <span class="tag">Speak</span>
     </div>
@@ -362,30 +362,34 @@
     const right=document.createElement('div');
     left.className='match-col'; right.className='match-col';
     container.append(left,right);
-    let active=null, matched=0;
+    let active=null;
     items.forEach(item=>{
       const b=document.createElement('button');
-      b.className='match-btn'; b.textContent=item.adj; b.dataset.answer=item.intensifier;
+      b.className='match-btn'; b.textContent=item.adj;
       b.addEventListener('click',()=>{
         if(b.classList.contains('matched')) return;
         left.querySelectorAll('.match-btn').forEach(x=>x.classList.remove('active'));
-        b.classList.add('active'); active=b;
+        b.classList.add('active'); active={button:b,item};
       });
       left.appendChild(b);
     });
-    shuffle(items).forEach(item=>{
+    const intensifiers=[...new Set(items.flatMap(item=>item.intensifiers))];
+    shuffle(intensifiers).forEach(intensifier=>{
       const b=document.createElement('button');
-      b.className='match-btn'; b.textContent=item.intensifier;
+      b.className='match-btn'; b.textContent=intensifier;
       b.addEventListener('click',()=>{
-        if(!active || b.classList.contains('matched')) return;
+        if(!active) return;
         const res=document.getElementById(resultId);
-        if(active.dataset.answer===b.textContent){
-          const phrase=`${b.textContent} ${active.textContent}`;
-          active.classList.remove('active'); active.classList.add('matched'); b.classList.add('matched');
-          matched++; active=null;
-          res.classList.add('show'); res.innerHTML=`<strong>${phrase}</strong>`;
+        if(active.item.intensifiers.includes(intensifier)){
+          const adjective=active.item.adj;
+          active.button.classList.remove('active'); active.button.classList.add('matched');
+          b.classList.add('correct'); setTimeout(()=>b.classList.remove('correct'),500);
+          res.classList.add('show');
+          res.innerHTML='<strong>Natural combinations with '+adjective+':</strong><br>'+active.item.intensifiers.map(x=>x+' '+adjective).join(' · ');
+          active=null;
         } else {
-          res.classList.add('show'); res.textContent='Try another intensifier.';
+          res.classList.add('show');
+          res.innerHTML='<strong>Not conventional here.</strong> Try another intensifier for '+active.item.adj+'.';
         }
       });
       right.appendChild(b);
@@ -393,21 +397,20 @@
   }
 
   buildSimpleMatching('gradableMatch',[
-    {adj:'beautiful',intensifier:'very'},
-    {adj:'tired',intensifier:'extremely'},
-    {adj:'crowded',intensifier:'really'},
-    {adj:'interesting',intensifier:'incredibly'},
-    {adj:'expensive',intensifier:'very'}
+    {adj:'beautiful',intensifiers:['very','really','extremely','incredibly']},
+    {adj:'tired',intensifiers:['very','really','extremely','incredibly']},
+    {adj:'crowded',intensifiers:['very','really','extremely','incredibly']},
+    {adj:'interesting',intensifiers:['very','really','extremely','incredibly']},
+    {adj:'expensive',intensifiers:['very','really','extremely','incredibly']}
   ],'gradableResult');
 
   buildSimpleMatching('ungradableMatch',[
-    {adj:'stunning',intensifier:'absolutely'},
-    {adj:'exhausted',intensifier:'completely'},
-    {adj:'packed',intensifier:'totally'},
-    {adj:'brilliant',intensifier:'absolutely'},
-    {adj:'fascinating',intensifier:'really'},
+    {adj:'stunning',intensifiers:['absolutely','really','truly','simply']},
+    {adj:'exhausted',intensifiers:['absolutely','completely','totally','utterly','really']},
+    {adj:'packed',intensifiers:['absolutely','completely','totally','really']},
+    {adj:'brilliant',intensifiers:['absolutely','really','truly','simply']},
+    {adj:'fascinating',intensifiers:['absolutely','really','truly','utterly']}
   ],'ungradableResult');
-
   document.querySelectorAll('.tab').forEach(tab=>tab.addEventListener('click',()=>{
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
     document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
@@ -447,31 +450,31 @@
   }
 
   buildPairMatching('r1left','r1right','r1result',[
-    {a:'cold',b:'freezing',chunk:'absolutely freezing'},
-    {a:'hot',b:'boiling',chunk:'absolutely boiling'},
-    {a:'tasty',b:'delicious',chunk:'absolutely delicious'},
-    {a:'tired',b:'exhausted',chunk:'completely exhausted'},
-    {a:'hungry',b:'starving',chunk:'absolutely starving'}
+    {a:'cold',b:'freezing',chunk:'absolutely freezing · really freezing · literally freezing'},
+    {a:'hot',b:'boiling',chunk:'absolutely boiling · really boiling · positively boiling'},
+    {a:'tasty',b:'delicious',chunk:'absolutely delicious · really delicious · truly delicious'},
+    {a:'tired',b:'exhausted',chunk:'absolutely exhausted · completely exhausted · totally exhausted · utterly exhausted · really exhausted'},
+    {a:'hungry',b:'starving',chunk:'absolutely starving · really starving · positively starving'}
   ]);
 
   buildPairMatching('r2left','r2right','r2result',[
-    {a:'angry',b:'furious',chunk:'absolutely furious'},
-    {a:'funny',b:'hilarious',chunk:'absolutely hilarious'},
-    {a:'surprised',b:'flabbergasted',chunk:'completely flabbergasted'},
-    {a:'rich',b:'rolling-in-it',chunk:'absolutely rolling-in-it'},
-    {a:'poor',b:'penniless',chunk:'completely penniless'}
+    {a:'angry',b:'furious',chunk:'absolutely furious · really furious · utterly furious'},
+    {a:'funny',b:'hilarious',chunk:'absolutely hilarious · really hilarious · utterly hilarious'},
+    {a:'surprised',b:'flabbergasted',chunk:'absolutely flabbergasted · completely flabbergasted · totally flabbergasted · utterly flabbergasted'},
+    {a:'rich',b:'rolling-in-it',chunk:'absolutely rolling-in-it · really rolling-in-it'},
+    {a:'poor',b:'penniless',chunk:'absolutely penniless · completely penniless · totally penniless · utterly penniless'}
   ]);
 
   buildPairMatching('r3left','r3right','r3result',[
-    {a:'old',b:'ancient',chunk:'absolutely ancient'},
-    {a:'crowded',b:'packed',chunk:'totally packed'},
-    {a:'loud',b:'deafening',chunk:'absolutely deafening'},
-    {a:'interesting',b:'fascinating',chunk:'absolutely fascinating'},
-    {a:'important',b:'crucial / vital / essential',chunk:'absolutely crucial / vital / essential'},
-    {a:'big',b:'enormous / huge / massive',chunk:'absolutely enormous / huge / massive'},
-    {a:'small',b:'tiny / minute',chunk:'absolutely tiny / minute'},
-    {a:'good',b:'amazing / awesome / fantastic / brilliant',chunk:'absolutely amazing / awesome / fantastic / brilliant'},
-    {a:'bad',b:'awful / terrible',chunk:'utterly awful / terrible'}
+    {a:'old',b:'ancient',chunk:'absolutely ancient · really ancient · truly ancient'},
+    {a:'crowded',b:'packed',chunk:'absolutely packed · completely packed · totally packed · really packed'},
+    {a:'loud',b:'deafening',chunk:'absolutely deafening · really deafening · truly deafening'},
+    {a:'interesting',b:'fascinating',chunk:'absolutely fascinating · really fascinating · truly fascinating · utterly fascinating'},
+    {a:'important',b:'crucial / vital / essential',chunk:'absolutely / utterly / really crucial, vital or essential'},
+    {a:'big',b:'enormous / huge / massive',chunk:'absolutely / really / truly enormous, huge or massive'},
+    {a:'small',b:'tiny / minute',chunk:'absolutely / really tiny or minute'},
+    {a:'good',b:'amazing / awesome / fantastic / brilliant',chunk:'absolutely / really / truly / simply amazing, awesome, fantastic or brilliant'},
+    {a:'bad',b:'awful / terrible',chunk:'absolutely / really / truly / utterly awful or terrible'}
   ]);
 
   const collocations=[
@@ -538,6 +541,33 @@
   });
 
 
+  const naturalIntensifiers={
+    competitive:['fiercely','highly','extremely','really','very'],
+    stunning:['absolutely','really','truly','simply'],
+    fascinating:['absolutely','really','truly','utterly'],
+    brilliant:['absolutely','really','truly','simply','totally'],
+    suspicious:['highly','deeply','extremely','really','very'],
+    crucial:['absolutely','really','utterly'],
+    flabbergasted:['absolutely','completely','totally','utterly','really'],
+    awful:['absolutely','really','truly','utterly'],
+    disappointed:['bitterly','deeply','extremely','really','very','totally'],
+    furious:['absolutely','really','utterly'],
+    honest:['brutally','completely','totally','perfectly','really'],
+    amazing:['absolutely','really','truly','simply'],
+    spotless:['absolutely','completely','totally','perfectly'],
+    packed:['absolutely','completely','totally','really'],
+    deafening:['absolutely','really','truly'],
+    exhausted:['absolutely','completely','totally','utterly','really'],
+    happy:['blissfully','extremely','really','very','perfectly'],
+    vital:['absolutely','really','utterly'],
+    penniless:['absolutely','completely','totally','utterly'],
+    ancient:['absolutely','really','truly'],
+    missed:['sorely','greatly','deeply'],
+    pointless:['absolutely','completely','totally','utterly'],
+    crowded:['extremely','really','very','incredibly'],
+    tiny:['absolutely','really'],
+    terrible:['absolutely','really','truly','utterly']
+  };
 const speakingData = [
     {
       sentence:'There are new businesses <span class="key-phrase">springing up</span> <span class="inline-gloss">(= appear quickly)</span> all over the place. There’s <span class="key-phrase">a real buzz</span> <span class="inline-gloss">(= an exciting, lively atmosphere)</span> about the place.',
@@ -645,11 +675,11 @@ const speakingData = [
       adjCol.innerHTML='<h4>Adjectives</h4>';
 
       let active=null;
-      item.pairs.forEach(([intensifier, adjective])=>{
+      const availableIntensifiers=item.pairs.map(pair=>pair[0]);
+      item.pairs.forEach(([intensifier])=>{
         const b=document.createElement('button');
         b.className='pair-choice';
         b.textContent=intensifier;
-        b.dataset.answer=adjective;
         b.addEventListener('click',()=>{
           if(b.classList.contains('matched')) return;
           intCol.querySelectorAll('.pair-choice').forEach(x=>x.classList.remove('active'));
@@ -659,36 +689,42 @@ const speakingData = [
         intCol.appendChild(b);
       });
 
-      shuffle(item.pairs).forEach(([intensifier, adjective])=>{
+      shuffle(item.pairs.map(pair=>pair[1])).forEach(adjective=>{
         const b=document.createElement('button');
         b.className='pair-choice';
         b.textContent=adjective;
         b.addEventListener('click',()=>{
           if(!active || b.classList.contains('matched')) return;
-          if(active.dataset.answer===adjective){
-            const phrase=`${active.textContent} ${adjective}`;
+          const allowed=naturalIntensifiers[adjective] || [];
+          if(allowed.includes(active.textContent)){
+            const availableNatural=availableIntensifiers.filter(x=>allowed.includes(x));
             active.classList.remove('active');
             active.classList.add('matched');
             b.classList.add('matched');
             const chip=document.createElement('span');
             chip.className='built-chip';
-            chip.textContent=phrase;
+            chip.textContent='Natural: '+availableNatural.map(x=>x+' '+adjective).join(' · ');
             built.querySelector('.built-list').appendChild(chip);
             active=null;
           } else {
             b.classList.add('wrong');
+            const availableNatural=availableIntensifiers.filter(x=>allowed.includes(x));
+            const hint=document.createElement('span');
+            hint.className='built-chip';
+            hint.textContent='Try '+adjective+' with: '+availableNatural.join(' / ');
+            built.querySelector('.built-list').appendChild(hint);
             setTimeout(()=>b.classList.remove('wrong'),450);
           }
         });
         adjCol.appendChild(b);
       });
 
-      match.append(intCol,adjCol);
+      match.append(intCol,adjCol);      match.append(intCol,adjCol);
       left.appendChild(match);
 
       const built=document.createElement('div');
       built.className='built-phrases';
-      built.innerHTML='<strong>Your phrases:</strong><div class="built-list"></div>';
+      built.innerHTML='<strong>Natural combinations:</strong><div class="built-list"></div>';
       left.appendChild(built);
 
       const right=document.createElement('aside');
@@ -699,7 +735,7 @@ const speakingData = [
           <li>${item.questions[0]}</li>
           <li>${item.questions[1]}</li>
         </ol>
-        <div class="language-prompt"><strong>Use all three phrases</strong> from the matching task in your answers.</div>
+        <div class="language-prompt"><strong>Use several natural combinations</strong> from the matching task in your answers.</div>
       `;
 
       card.append(left,right);
