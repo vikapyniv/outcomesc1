@@ -511,7 +511,7 @@
 
       <nav class="nav">
         <button class="nav-btn active" data-view="homeView"><span class="nav-icon">⌂</span>Home</button>
-        <button class="nav-btn" data-view="bookView"><span class="nav-icon">ⓘ</span>About the book</button>
+        <button class="nav-btn" data-url="https://www.eltngl.com/products/9780357917893"><span class="nav-icon">ⓘ</span>About the book</button>
         <button class="nav-btn" data-view="progressView"><span class="nav-icon">◔</span>Progress</button>
         <button class="nav-btn" data-view="lessonsView"><span class="nav-icon">▤</span>My lessons</button>
         <button class="nav-btn" data-view="mistakesView"><span class="nav-icon">!</span>My mistakes</button>
@@ -723,6 +723,10 @@
 
     navButtons.forEach(btn => {
       btn.addEventListener('click', () => {
+        if (btn.dataset.url) {
+          window.location.href = btn.dataset.url;
+          return;
+        }
         navButtons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         views.forEach(view => view.hidden = true);
