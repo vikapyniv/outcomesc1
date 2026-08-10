@@ -26,6 +26,31 @@ main{max-width:1120px;margin:34px auto 70px;padding:0 20px}.hero{display:grid;gr
 @media(max-width:780px){.topbar-inner{grid-template-columns:1fr;gap:8px}.indicator{display:none}.hero{grid-template-columns:1fr;padding:25px}.pair-bank{grid-template-columns:1fr 1fr}.head{flex-direction:column}.panel{padding:20px}.inline-input{width:min(245px,100%)}}
 @media(max-width:520px){.pair-bank{grid-template-columns:1fr}.vocab-row{grid-template-columns:30px 1fr}.hero h1{font-size:42px}}
 </style>
+
+<style>
+.pair-bank{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pair-group{display:grid;grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr);align-items:center;gap:4px;padding:7px;border:1px solid #b6e1da;border-radius:13px;background:rgba(255,255,255,.72)}
+.word-chip{border:1px solid #8fd8cd;border-radius:9px;padding:8px 9px;background:#fff;color:var(--dark);font-weight:850;cursor:grab;transition:.18s;min-width:0}
+.word-chip:hover{transform:translateY(-1px);box-shadow:0 5px 12px rgba(5,92,82,.11)}
+.word-chip.selected{outline:3px solid rgba(16,185,167,.28);background:#c9f2eb}
+.word-chip.used{opacity:.38;cursor:not-allowed}
+.plus{text-align:center;color:var(--dark);font-weight:950;font-size:1.05rem}
+.pair-group.complete{background:#dff4ea;border-color:#83c8a5}
+.blank{cursor:pointer;min-width:92px}
+.blank:empty:before{content:"drop word"}
+.blank.target{outline:3px solid rgba(16,185,167,.18);background:var(--soft);border-radius:5px}
+.blank.correct-word{color:var(--dark);background:var(--soft);border-radius:5px}
+.blank.wrong-word{color:#9a3030;background:var(--bad);border-radius:5px;border-bottom-color:#db7c7c}
+.grammar-panel{padding:21px 24px}
+.grammar-head{margin-bottom:12px}.grammar-kicker{display:block;margin-bottom:4px;color:var(--accent);font-size:.72rem;font-weight:950;letter-spacing:.14em}
+.grammar-head h2{font-size:clamp(20px,2.6vw,26px)}
+.grammar-list{gap:7px}.grammar-row{padding:9px 12px;border-radius:11px}
+.grammar-sentence{font-size:.94rem}.grammar-row .num{display:inline-grid;width:24px;height:24px;margin-right:4px;font-size:.78rem}
+.grammar-row .inline-input{width:clamp(160px,25vw,275px);padding:5px 8px}
+.grammar-row .prompt{display:inline-block;margin:4px 0 0 34px;font-size:.75rem}
+.grammar-feedback{margin:3px 0 0 34px}.grammar-panel .actions{margin-top:12px}.grammar-panel .btn{padding:9px 14px}
+@media(max-width:650px){.pair-bank{grid-template-columns:1fr}.pair-group{grid-template-columns:minmax(0,1fr) 20px minmax(0,1fr)}.grammar-panel{padding:18px}.grammar-row .inline-input{width:min(230px,100%)}}
+</style>
 </head>
 <body>
 <header class="topbar"><div class="topbar-inner"><div class="brand"><a class="back" href="./">← Back to Unit 1</a><span>HW 1C. Urban planning</span></div><div class="progress"><span id="progressFill"></span></div><div class="indicator" id="indicator">Vocabulary</div></div></header>
@@ -35,15 +60,15 @@ main{max-width:1120px;margin:34px auto 70px;padding:0 20px}.hero{display:grid;gr
 <section class="panel lesson-section" data-title="Vocabulary">
 <div class="head"><div><h2>1. Complete the sentences with the correct pair of words.</h2><p>Select a pair, then click the sentence where it belongs. You can also drag the pair onto the sentence.</p></div><span class="tag">Vocabulary</span></div>
 <div class="pair-bank" id="pairBank">
-<button class="pair-chip" draggable="true" data-pair="consultation-imposed">consultation + imposed</button>
-<button class="pair-chip" draggable="true" data-pair="demolish-scratch">demolish + from scratch</button>
-<button class="pair-chip" draggable="true" data-pair="envisaged-materialize">envisaged + materialize</button>
-<button class="pair-chip" draggable="true" data-pair="harness-renovate">harness + renovate</button>
-<button class="pair-chip" draggable="true" data-pair="initiated-spiralled">initiated + spiralled</button>
-<button class="pair-chip" draggable="true" data-pair="inward-thriving">inward + thriving</button>
-<button class="pair-chip" draggable="true" data-pair="pump-beacon">pump + beacon</button>
-<button class="pair-chip" draggable="true" data-pair="pilot-scale">pilot + scale it up</button>
-<button class="pair-chip" draggable="true" data-pair="undertook-credited">undertook + credited</button>
+<div class="pair-group" data-pair="consultation-imposed"><button class="word-chip" id="word-0a" draggable="true" data-word="consultation">consultation</button><span class="plus">+</span><button class="word-chip" id="word-0b" draggable="true" data-word="imposed">imposed</button></div>
+<div class="pair-group" data-pair="demolish-scratch"><button class="word-chip" id="word-1a" draggable="true" data-word="demolish">demolish</button><span class="plus">+</span><button class="word-chip" id="word-1b" draggable="true" data-word="from scratch">from scratch</button></div>
+<div class="pair-group" data-pair="envisaged-materialize"><button class="word-chip" id="word-2a" draggable="true" data-word="envisaged">envisaged</button><span class="plus">+</span><button class="word-chip" id="word-2b" draggable="true" data-word="materialize">materialize</button></div>
+<div class="pair-group" data-pair="harness-renovate"><button class="word-chip" id="word-3a" draggable="true" data-word="harness">harness</button><span class="plus">+</span><button class="word-chip" id="word-3b" draggable="true" data-word="renovate">renovate</button></div>
+<div class="pair-group" data-pair="initiated-spiralled"><button class="word-chip" id="word-4a" draggable="true" data-word="initiated">initiated</button><span class="plus">+</span><button class="word-chip" id="word-4b" draggable="true" data-word="spiralled">spiralled</button></div>
+<div class="pair-group" data-pair="inward-thriving"><button class="word-chip" id="word-5a" draggable="true" data-word="inward">inward</button><span class="plus">+</span><button class="word-chip" id="word-5b" draggable="true" data-word="thriving">thriving</button></div>
+<div class="pair-group" data-pair="pump-beacon"><button class="word-chip" id="word-6a" draggable="true" data-word="pump">pump</button><span class="plus">+</span><button class="word-chip" id="word-6b" draggable="true" data-word="beacon">beacon</button></div>
+<div class="pair-group" data-pair="pilot-scale"><button class="word-chip" id="word-7a" draggable="true" data-word="pilot">pilot</button><span class="plus">+</span><button class="word-chip" id="word-7b" draggable="true" data-word="scale it up">scale it up</button></div>
+<div class="pair-group" data-pair="undertook-credited"><button class="word-chip" id="word-8a" draggable="true" data-word="undertook">undertook</button><span class="plus">+</span><button class="word-chip" id="word-8b" draggable="true" data-word="credited">credited</button></div>
 </div>
 <div class="sentence-list" id="vocabRows">
 <div class="vocab-row" data-answer="inward-thriving" data-words="inward|thriving"><span class="num">1</span><div>The council cut business taxes to attract <span class="blank"></span> investment and invested heavily in skills training to establish a <span class="blank"></span> tech industry.<div class="row-note"></div></div></div>
@@ -60,8 +85,8 @@ main{max-width:1120px;margin:34px auto 70px;padding:0 20px}.hero{display:grid;gr
 <div class="summary" id="vocabSummary"></div>
 </section>
 
-<section class="panel lesson-section" data-title="Grammar">
-<div class="head"><div><h2>2. Delays</h2><p>Complete the sentences using the words in brackets.</p></div><span class="tag">Grammar</span></div>
+<section class="panel lesson-section grammar-panel" data-title="Grammar">
+<div class="head grammar-head"><div><span class="grammar-kicker">GRAMMAR</span><h2>2. Passive structures for plans and predictions</h2><p>Delays · Complete the sentences using the words in brackets.</p></div><span class="tag">Exercise 2</span></div>
 <div class="grammar-list" id="grammarList">
 <div class="grammar-row" data-answers="are expected to continue"><div class="grammar-sentence"><span class="num">1</span> Delays <input class="inline-input" type="text" aria-label="Answer 1"> for the next few days.</div><span class="prompt">expect / continue</span><div class="grammar-feedback"></div></div>
 <div class="grammar-row" data-answers="is forecast to increase"><div class="grammar-sentence"><span class="num">2</span> The population <input class="inline-input" type="text" aria-label="Answer 2"> considerably over the next five years.</div><span class="prompt">forecast / increase</span><div class="grammar-feedback"></div></div>
@@ -76,25 +101,31 @@ main{max-width:1120px;margin:34px auto 70px;padding:0 20px}.hero{display:grid;gr
 <p class="footer">Created by Viktoriia Pyniv · AI-assisted educational resource developed with ChatGPT (OpenAI).</p>
 </main>
 <script>
-let selectedPair=null,draggedPair=null,completed=0;
-const chips=[...document.querySelectorAll('.pair-chip')],rows=[...document.querySelectorAll('.vocab-row')];
-function chooseChip(chip){if(chip.classList.contains('used'))return;chips.forEach(x=>x.classList.remove('selected'));selectedPair=selectedPair===chip?null:chip;if(selectedPair)selectedPair.classList.add('selected')}
-chips.forEach(chip=>{chip.addEventListener('click',()=>chooseChip(chip));chip.addEventListener('dragstart',()=>{draggedPair=chip});chip.addEventListener('dragend',()=>{draggedPair=null})});
-function placePair(row,chip){
- if(!chip||row.classList.contains('correct'))return;
- row.classList.remove('wrong');
- const note=row.querySelector('.row-note');
- if(chip.dataset.pair===row.dataset.answer){
-   const words=row.dataset.words.split('|'),blanks=row.querySelectorAll('.blank');
-   blanks[0].textContent=words[0];blanks[1].textContent=words[1];
-   row.classList.add('correct');note.textContent='Correct pair!';
-   chip.classList.remove('selected');chip.classList.add('used');chip.draggable=false;
-   selectedPair=null;completed++;
-   const summary=document.getElementById('vocabSummary');summary.classList.add('show');summary.textContent=completed===rows.length?'Excellent — all 9 pairs are correct.':completed+' of '+rows.length+' pairs completed.';
- }else{row.classList.add('wrong');note.textContent='This pair belongs to another sentence. Try again.';setTimeout(()=>row.classList.remove('wrong'),650)}
+let selectedWord=null,draggedWord=null;
+const wordChips=[...document.querySelectorAll('.word-chip')],rows=[...document.querySelectorAll('.vocab-row')];
+rows.forEach(row=>{const answers=row.dataset.words.split('|');row.querySelectorAll('.blank').forEach((blank,index)=>{blank.dataset.answer=answers[index];blank.addEventListener('click',()=>placeWord(blank,selectedWord));blank.addEventListener('dragover',e=>{e.preventDefault();blank.classList.add('target')});blank.addEventListener('dragleave',()=>blank.classList.remove('target'));blank.addEventListener('drop',e=>{e.preventDefault();blank.classList.remove('target');placeWord(blank,draggedWord)})})});
+function chooseWord(chip){if(chip.classList.contains('used'))return;wordChips.forEach(x=>x.classList.remove('selected'));selectedWord=selectedWord===chip?null:chip;if(selectedWord)selectedWord.classList.add('selected')}
+wordChips.forEach(chip=>{chip.addEventListener('click',()=>chooseWord(chip));chip.addEventListener('dragstart',()=>{draggedWord=chip});chip.addEventListener('dragend',()=>{draggedWord=null})});
+function releaseBlank(blank){if(!blank.dataset.chipId)return;const old=document.getElementById(blank.dataset.chipId);if(old){old.classList.remove('used');old.draggable=true;old.closest('.pair-group').classList.remove('complete')}blank.textContent='';blank.classList.remove('correct-word');delete blank.dataset.chipId}
+function updateVocabProgress(){
+ const completed=rows.filter(row=>row.classList.contains('correct')).length;
+ const summary=document.getElementById('vocabSummary');summary.classList.add('show');summary.textContent=completed===rows.length?'Excellent — all 9 pairs are correct.':completed+' of '+rows.length+' sentences completed.';
 }
-rows.forEach(row=>{row.addEventListener('click',()=>placePair(row,selectedPair));row.addEventListener('dragover',e=>e.preventDefault());row.addEventListener('drop',e=>{e.preventDefault();placePair(row,draggedPair)})});
-document.getElementById('resetVocab').addEventListener('click',()=>{completed=0;selectedPair=null;rows.forEach(row=>{row.classList.remove('correct','wrong');row.querySelectorAll('.blank').forEach(x=>x.textContent='');row.querySelector('.row-note').textContent=''});chips.forEach(chip=>{chip.classList.remove('selected','used');chip.draggable=true});document.getElementById('vocabSummary').className='summary'});
+function placeWord(blank,chip){
+ if(!chip)return;
+ const row=blank.closest('.vocab-row'),note=row.querySelector('.row-note');
+ if(chip.dataset.word===blank.dataset.answer){
+   releaseBlank(blank);blank.textContent=chip.dataset.word;blank.dataset.chipId=chip.id;blank.classList.add('correct-word');
+   chip.classList.remove('selected');chip.classList.add('used');chip.draggable=false;selectedWord=null;
+   const pair=chip.closest('.pair-group');if([...pair.querySelectorAll('.word-chip')].every(x=>x.classList.contains('used')))pair.classList.add('complete');
+   if([...row.querySelectorAll('.blank')].every(x=>x.classList.contains('correct-word'))){row.classList.add('correct');note.textContent='Both words are correct!'}else{note.textContent='Good — now place the second word.'}
+   updateVocabProgress();
+ }else{
+   blank.classList.add('wrong-word');row.classList.add('wrong');note.textContent='This word belongs in another gap. Try again.';
+   setTimeout(()=>{blank.classList.remove('wrong-word');row.classList.remove('wrong')},650)
+ }
+}
+document.getElementById('resetVocab').addEventListener('click',()=>{selectedWord=null;draggedWord=null;rows.forEach(row=>{row.classList.remove('correct','wrong');row.querySelectorAll('.blank').forEach(blank=>{blank.textContent='';blank.classList.remove('correct-word','wrong-word','target');delete blank.dataset.chipId});row.querySelector('.row-note').textContent=''});wordChips.forEach(chip=>{chip.classList.remove('selected','used');chip.draggable=true});document.querySelectorAll('.pair-group').forEach(group=>group.classList.remove('complete'));document.getElementById('vocabSummary').className='summary'});
 function norm(value){return value.toLowerCase().replace(/[.,!?]/g,'').replace(/\s+/g,' ').trim()}
 const grammarRows=[...document.querySelectorAll('.grammar-row')];
 document.getElementById('checkGrammar').addEventListener('click',()=>{let score=0;grammarRows.forEach(row=>{const input=row.querySelector('input'),answers=row.dataset.answers.split('|').map(norm),ok=answers.includes(norm(input.value)),feedback=row.querySelector('.grammar-feedback');input.className='inline-input '+(ok?'correct':'wrong');feedback.textContent=ok?'Correct.':'Check the passive structure.';feedback.style.color=ok?'#26733a':'#9a3030';if(ok)score++});const s=document.getElementById('grammarSummary');s.classList.add('show');s.textContent=score+' of '+grammarRows.length+' correct.'});
