@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HW 1B — Binomials</title>
+<style>
+:root{--bg:#eaf8f5;--card:#fff;--text:#103f39;--muted:#5b7873;--accent:#10b9a7;--dark:#087d72;--line:#c9e8e2;--soft:#f1faf8;--ok:#14804a;--bad:#c0362c}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+button,input{font:inherit}
+button{cursor:pointer}
+main{max-width:1040px;margin:0 auto;padding:24px 18px 80px}
+.topbar{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1040px;margin:auto;padding:12px 18px;display:flex;align-items:center;gap:15px}
+.back-link{display:inline-flex;padding:8px 12px;border:1px solid #a9dfd6;border-radius:999px;background:#dff8f3;color:var(--dark);text-decoration:none;font-weight:800}
+.hero{padding:27px;border-radius:22px;background:linear-gradient(135deg,#087d72,#12c8b4);color:#fff;box-shadow:0 13px 30px rgba(8,125,114,.2)}
+.eyebrow{font-size:.76rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;opacity:.84}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.04;margin:7px 0}
+.hero p{margin:0;opacity:.92}
+.section{background:var(--card);border:1px solid var(--line);border-radius:21px;padding:25px;margin:20px 0;box-shadow:0 8px 24px rgba(5,92,82,.07)}
+.section h2{font-size:clamp(1.3rem,3vw,1.75rem);line-height:1.2;margin:0 0 7px}
+.instruction{color:var(--muted);margin-top:0}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px;margin-top:18px}
+.match-col{display:grid;gap:8px;align-content:start}
+.match-col h3{margin:0 0 5px;color:var(--dark);font-size:.85rem;text-transform:uppercase;letter-spacing:.1em}
+.match-btn{width:100%;min-height:47px;text-align:left;border:1px solid var(--line);border-radius:11px;padding:10px 12px;background:#fff;color:var(--text);font-weight:750;transition:.16s ease}
+.match-btn:hover{border-color:#8fd8cd;transform:translateY(-1px)}
+.match-btn.selected{outline:3px solid #7dd3c7;background:#dff8f3}
+.match-btn.matched{border-color:#86d5b1;background:#e8f8ef;color:#176340;opacity:.72}
+.match-btn.wrong{outline:2px solid #f2a5a0;background:#fff0ef}
+.match-results{display:grid;gap:8px;margin-top:17px}
+.match-result{display:none;padding:13px 15px;border-left:4px solid var(--accent);border-radius:11px;background:var(--soft)}
+.match-result.visible{display:block}
+.match-result b{color:var(--dark)}
+.controls{display:flex;flex-wrap:wrap;gap:9px;margin-top:17px}
+.control{border:0;border-radius:11px;padding:10px 14px;font-weight:800}
+.primary{background:var(--accent);color:#fff}.secondary{background:#dff0ed;color:var(--text)}
+.feedback{font-weight:850;margin-top:12px;min-height:24px}
+.sentence-list{display:grid;gap:0;margin-top:12px}
+.item{padding:13px 0;border-bottom:1px solid #d8ede9;line-height:1.8}
+.item:last-child{border-bottom:0}
+.num{display:inline-flex;align-items:center;justify-content:center;width:27px;height:27px;border-radius:50%;background:#dff8f3;color:var(--dark);font-size:.82rem;font-weight:900;margin-right:5px}
+.gap-input{border:1px solid var(--line);border-radius:8px;padding:7px 9px;background:#fff;width:205px;max-width:45vw}
+.gap-input.correct{outline:2px solid #86efac;background:#f0fdf4}
+.gap-input.incorrect{outline:2px solid #fca5a5;background:#fef2f2}
+@media(max-width:680px){
+  .match-grid{grid-template-columns:1fr 1fr;gap:9px}
+  .section,.hero{padding:18px}
+  .topbar-inner{align-items:flex-start;flex-direction:column}
+  .gap-input{display:block;width:100%;max-width:none;margin:6px 0}
+  .controls .control{flex:1}
+}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-inner"><a class="back-link" href="./">← Back to Unit 1</a><strong>HW 1B</strong></div></header>
+<main>
+<section class="hero"><div class="eyebrow">Vocabulary · Binomials</div><h1>HW 1B</h1><p>Build fixed word pairs and use them naturally in context.</p></section>
+
+<section class="section" id="matching">
+<h2>1. Find twelve more binomials by matching words from each box.</h2>
+<p class="instruction">Choose one word from the left and one from the right. Correct pairs will be locked and their meanings will appear below.</p>
+<div class="match-grid">
+<div class="match-col" id="leftWords"><h3>Box A</h3>
+<button class="match-btn" data-side="left" data-key="checks">checks</button>
+<button class="match-btn" data-side="left" data-key="here">here</button>
+<button class="match-btn" data-side="left" data-key="hit">hit</button>
+<button class="match-btn" data-side="left" data-key="hustle">hustle</button>
+<button class="match-btn" data-side="left" data-key="law">law</button>
+<button class="match-btn" data-side="left" data-key="long">long</button>
+<button class="match-btn" data-side="left" data-key="out">out</button>
+<button class="match-btn" data-side="left" data-key="rise">rise</button>
+<button class="match-btn" data-side="left" data-key="rules">rules</button>
+<button class="match-btn" data-side="left" data-key="safe">safe</button>
+<button class="match-btn" data-side="left" data-key="straight">straight</button>
+<button class="match-btn" data-side="left" data-key="to">to</button>
+</div>
+<div class="match-col" id="rightWords"><h3>Box B</h3>
+<button class="match-btn" data-side="right" data-key="out">about</button>
+<button class="match-btn" data-side="right" data-key="checks">balances</button>
+<button class="match-btn" data-side="right" data-key="hustle">bustle</button>
+<button class="match-btn" data-side="right" data-key="rise">fall</button>
+<button class="match-btn" data-side="right" data-key="to">fro</button>
+<button class="match-btn" data-side="right" data-key="long">hard</button>
+<button class="match-btn" data-side="right" data-key="hit">miss</button>
+<button class="match-btn" data-side="right" data-key="straight">narrow</button>
+<button class="match-btn" data-side="right" data-key="law">order</button>
+<button class="match-btn" data-side="right" data-key="rules">regulations</button>
+<button class="match-btn" data-side="right" data-key="safe">sound</button>
+<button class="match-btn" data-side="right" data-key="here">there</button>
+</div>
+</div>
+<div class="controls"><button class="control secondary" id="resetMatching">Reset</button></div>
+<div class="feedback" id="matchingFeedback" aria-live="polite">Matched: 0/12</div>
+
+<div class="match-results">
+<div class="match-result" data-key="checks"><b>checks and balances</b> — sets of rules that help to prevent a person or group from exerting too much power in an organization</div>
+<div class="match-result" data-key="here"><b>here and there</b> — in different places</div>
+<div class="match-result" data-key="hit"><b>hit and miss</b> — not planned or done carefully and so not likely to be successful</div>
+<div class="match-result" data-key="hustle"><b>hustle and bustle</b> — a large amount of activity and noise</div>
+<div class="match-result" data-key="law"><b>law and order</b> — a situation characterized by respect for and obedience to the law and the authorities</div>
+<div class="match-result" data-key="long"><b>long and hard</b> — very carefully, usually used in the expression <em>think long and hard</em></div>
+<div class="match-result" data-key="out"><b>out and about</b> — active and doing things you usually do, especially when you haven’t been able to for some time</div>
+<div class="match-result" data-key="rise"><b>rise and fall</b> — the best and worst moments of something, such as a culture, political power or product</div>
+<div class="match-result" data-key="rules"><b>rules and regulations</b> — guidelines made by an authority to control how things are done or how people behave</div>
+<div class="match-result" data-key="safe"><b>safe and sound</b> — still alive and healthy after a dangerous situation</div>
+<div class="match-result" data-key="straight"><b>straight and narrow</b> — morally acceptable, usually used in the expression <em>the straight and narrow</em></div>
+<div class="match-result" data-key="to"><b>to and fro</b> — alternating movements in opposite directions</div>
+</div>
+</section>
+
+<section class="section" id="sentences">
+<h2>2. Now complete the sentences with binomials.</h2>
+<p class="instruction">Type one binomial in each gap.</p>
+<div class="sentence-list">
+<div class="item"><span class="num">1</span><input class="gap-input" type="text" data-answer="by and large" placeholder="Type a binomial">, cities should be good places for children.</div>
+<div class="item"><span class="num">2</span>A certain amount of crime is just <input class="gap-input" type="text" data-answer="part and parcel" placeholder="Type a binomial"> of life in the city, I’m afraid. It’s unavoidable.</div>
+<div class="item"><span class="num">3</span>It can be quite hard to get away from the <input class="gap-input" type="text" data-answer="hustle and bustle" placeholder="Type a binomial"> in the city and find some peace and quiet.</div>
+<div class="item"><span class="num">4</span>Our capital is very affluent and only has small pockets of poverty <input class="gap-input" type="text" data-answer="here and there" placeholder="Type a binomial">.</div>
+<div class="item"><span class="num">5</span>We should keep <input class="gap-input" type="text" data-answer="rules and regulations" placeholder="Type a binomial"> around planning and life in the city to a minimum.</div>
+<div class="item"><span class="num">6</span>The fortunes of different cities naturally <input class="gap-input" type="text" data-answer="rise and fall" placeholder="Type a binomial">.</div>
+<div class="item"><span class="num">7</span>Anyone thinking about moving out of a city should think <input class="gap-input" type="text" data-answer="long and hard" placeholder="Type a binomial"> because it’ll be impossible to move back.</div>
+<div class="item"><span class="num">8</span>When you’re in the city, you’ll see a lot of homeless people begging <input class="gap-input" type="text" data-answer="out and about" placeholder="Type a binomial">.</div>
+<div class="item"><span class="num">9</span>There are plenty of places to eat in the city, but the quality is very <input class="gap-input" type="text" data-answer="hit and miss" placeholder="Type a binomial">.</div>
+<div class="item"><span class="num">10</span>There has been a breakdown in <input class="gap-input" type="text" data-answer="law and order" placeholder="Type a binomial"> in some cities and crime is out of control.</div>
+</div>
+<div class="controls">
+<button class="control primary" id="checkSentences">Check answers</button>
+<button class="control secondary" id="showSentences">Show answers</button>
+<button class="control secondary" id="resetSentences">Reset</button>
+</div>
+<div class="feedback" id="sentenceFeedback" aria-live="polite"></div>
+</section>
+</main>
+<script>
+let selectedMatch=null;
+const matched=new Set();
+const matchButtons=[...document.querySelectorAll(".match-btn")];
+const matchingFeedback=document.getElementById("matchingFeedback");
+
+function clearSelected(){
+  matchButtons.forEach(button=>button.classList.remove("selected"));
+  selectedMatch=null;
+}
+function selectForMatch(button){
+  if(button.classList.contains("matched"))return;
+  if(!selectedMatch){selectedMatch=button;button.classList.add("selected");return}
+  if(selectedMatch===button){clearSelected();return}
+  if(selectedMatch.dataset.side===button.dataset.side){
+    selectedMatch.classList.remove("selected");selectedMatch=button;button.classList.add("selected");return;
+  }
+  const first=selectedMatch;
+  clearSelected();
+  if(first.dataset.key===button.dataset.key){
+    first.classList.add("matched");button.classList.add("matched");
+    matched.add(button.dataset.key);
+    document.querySelector(`.match-result[data-key="${button.dataset.key}"]`).classList.add("visible");
+    matchingFeedback.textContent=`Matched: ${matched.size}/12${matched.size===12?" — Excellent!":""}`;
+  }else{
+    first.classList.add("wrong");button.classList.add("wrong");
+    setTimeout(()=>{first.classList.remove("wrong");button.classList.remove("wrong")},650);
+  }
+}
+matchButtons.forEach(button=>button.addEventListener("click",()=>selectForMatch(button)));
+document.getElementById("resetMatching").addEventListener("click",()=>{
+  matched.clear();clearSelected();
+  matchButtons.forEach(button=>button.classList.remove("matched","wrong"));
+  document.querySelectorAll(".match-result").forEach(result=>result.classList.remove("visible"));
+  matchingFeedback.textContent="Matched: 0/12";
+});
+
+const inputs=[...document.querySelectorAll(".gap-input")];
+const normalize=value=>String(value).trim().toLowerCase().replace(/[’‘]/g,"'").replace(/\s+/g," ");
+function mark(input,ok){input.classList.remove("correct","incorrect");input.classList.add(ok?"correct":"incorrect")}
+document.getElementById("checkSentences").addEventListener("click",()=>{
+  let score=0;
+  inputs.forEach(input=>{const ok=normalize(input.value)===normalize(input.dataset.answer);mark(input,ok);if(ok)score++});
+  document.getElementById("sentenceFeedback").textContent=`Score: ${score}/${inputs.length}`;
+});
+document.getElementById("showSentences").addEventListener("click",()=>{
+  inputs.forEach(input=>{input.value=input.dataset.answer;mark(input,true)});
+  document.getElementById("sentenceFeedback").textContent="Answers shown.";
+});
+document.getElementById("resetSentences").addEventListener("click",()=>{
+  inputs.forEach(input=>{input.value="";input.classList.remove("correct","incorrect")});
+  document.getElementById("sentenceFeedback").textContent="";
+});
+</script>
+</body>
+</html>
