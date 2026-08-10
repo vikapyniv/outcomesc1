@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HW 1C. Urban planning — Outcomes</title>
+<style>
+:root{--bg:#eaf8f5;--card:#fff;--text:#103f39;--muted:#5b7873;--line:#c9e8e2;--accent:#10b9a7;--dark:#087d72;--deep:#063f3a;--soft:#dff8f3;--good:#e1f7ee;--bad:#fff0f0;--shadow:0 14px 36px rgba(5,92,82,.12)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 82% 7%,rgba(16,185,167,.14),transparent 28%),linear-gradient(145deg,#f3fffc,#eaf8f5 52%,#def4ef);color:var(--text);line-height:1.55}
+button,input{font:inherit}.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1120px;margin:auto;padding:12px 20px;display:grid;grid-template-columns:1fr minmax(220px,420px) auto;gap:18px;align-items:center}
+.brand{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-weight:850}.back{color:var(--dark);text-decoration:none;background:var(--soft);border:1px solid #a9dfd6;border-radius:999px;padding:7px 11px;font-size:.78rem}
+.progress{height:9px;background:#d8ede9;border-radius:99px;overflow:hidden}.progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--accent),#54e0cb);transition:.3s}.indicator{color:var(--muted);font-size:.82rem}
+main{max-width:1120px;margin:34px auto 70px;padding:0 20px}.hero{display:grid;grid-template-columns:1.5fr .65fr;gap:28px;align-items:end;padding:34px;border-radius:24px;background:linear-gradient(135deg,var(--deep),var(--dark) 62%,var(--accent));color:#fff;box-shadow:var(--shadow);margin-bottom:24px}
+.hero h1{margin:12px 0 10px;font-size:clamp(40px,7vw,72px);line-height:.96;letter-spacing:-.055em}.hero p{margin:0;color:#d7f6f0}.label{display:inline-flex;padding:7px 11px;border-radius:99px;background:#20c9b5;font-size:.72rem;font-weight:900;letter-spacing:.12em}
+.hero-note{padding:18px;border:1px solid rgba(255,255,255,.22);border-radius:16px;background:rgba(255,255,255,.12)}.hero-note strong,.hero-note span{display:block}.hero-note span{margin-top:5px;color:#c8eee7;font-size:.86rem}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px;margin-bottom:24px;box-shadow:var(--shadow)}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px}.head h2{margin:0;font-size:clamp(22px,3vw,29px);letter-spacing:-.02em}.head p{margin:6px 0 0;color:var(--muted)}.tag{flex:0 0 auto;padding:7px 10px;border-radius:99px;background:var(--soft);color:var(--dark);font-size:.72rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.pair-bank{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;padding:14px;border:1px solid #bde4dd;border-radius:16px;background:linear-gradient(135deg,#edfdf9,#dff8f3);margin-bottom:18px}
+.pair-chip{border:1px solid #8fd8cd;border-radius:11px;padding:10px 12px;background:#fff;color:var(--dark);font-weight:850;cursor:pointer;transition:.18s}.pair-chip:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(5,92,82,.12)}.pair-chip.selected{outline:3px solid rgba(16,185,167,.27);background:#c9f2eb}.pair-chip.used{opacity:.38;cursor:not-allowed}
+.sentence-list{display:grid;gap:10px}.vocab-row{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;padding:13px 15px;border:1px solid var(--line);border-radius:14px;background:#fbfffe;cursor:pointer;transition:.18s}.vocab-row:hover{border-color:#8fd8cd}.vocab-row.correct{background:var(--good);border-color:#65b692}.vocab-row.wrong{background:var(--bad);border-color:#db7c7c}
+.num{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--soft);color:var(--dark);font-weight:900}.blank{display:inline-flex;min-width:100px;justify-content:center;border-bottom:2px solid #79bdb3;color:var(--dark);font-weight:900;padding:0 5px;margin:0 2px}.blank:empty:before{content:"drop";color:#9bb5b1;font-size:.72rem;font-weight:650}.row-note{display:none;margin-top:6px;font-size:.82rem;font-weight:750}.vocab-row.correct .row-note,.vocab-row.wrong .row-note{display:block}
+.grammar-list{display:grid;gap:11px}.grammar-row{padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:#fbfffe}.grammar-sentence{font-size:1rem}.prompt{display:block;margin-top:7px;color:var(--muted);font-size:.8rem}.inline-input{display:inline-block;width:clamp(180px,31vw,330px);max-width:100%;margin:0 5px;padding:6px 9px;border:1px solid #8fc9c0;border-radius:8px;background:#fff;color:var(--text)}.inline-input:focus{outline:3px solid rgba(16,185,167,.18);border-color:var(--accent)}.inline-input.correct{background:var(--good);border-color:#65b692}.inline-input.wrong{background:var(--bad);border-color:#db7c7c}.grammar-feedback{margin-top:6px;font-size:.82rem;font-weight:800}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.btn{border:1px solid transparent;border-radius:11px;padding:11px 17px;font-weight:850;cursor:pointer}.primary{color:#fff;background:linear-gradient(135deg,var(--accent),var(--dark));box-shadow:0 8px 18px rgba(8,125,114,.2)}.secondary{color:var(--dark);background:#eff9f7;border-color:#b9ded8}.summary{display:none;margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--soft);font-weight:850}.summary.show{display:block}.footer{text-align:center;color:var(--muted);font-size:.78rem;margin-top:34px}
+@media(max-width:780px){.topbar-inner{grid-template-columns:1fr;gap:8px}.indicator{display:none}.hero{grid-template-columns:1fr;padding:25px}.pair-bank{grid-template-columns:1fr 1fr}.head{flex-direction:column}.panel{padding:20px}.inline-input{width:min(245px,100%)}}
+@media(max-width:520px){.pair-bank{grid-template-columns:1fr}.vocab-row{grid-template-columns:30px 1fr}.hero h1{font-size:42px}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-inner"><div class="brand"><a class="back" href="./">← Back to Unit 1</a><span>HW 1C. Urban planning</span></div><div class="progress"><span id="progressFill"></span></div><div class="indicator" id="indicator">Vocabulary</div></div></header>
+<main>
+<section class="hero"><div><span class="label">UNIT 1 · HOMEWORK C</span><h1>Urban planning</h1><p>Practise vocabulary for urban plans and passive structures for plans, forecasts and expectations.</p></div><div class="hero-note"><strong>Homework focus</strong><span>Vocabulary · Grammar · Formal reporting</span></div></section>
+
+<section class="panel lesson-section" data-title="Vocabulary">
+<div class="head"><div><h2>1. Complete the sentences with the correct pair of words.</h2><p>Select a pair, then click the sentence where it belongs. You can also drag the pair onto the sentence.</p></div><span class="tag">Vocabulary</span></div>
+<div class="pair-bank" id="pairBank">
+<button class="pair-chip" draggable="true" data-pair="consultation-imposed">consultation + imposed</button>
+<button class="pair-chip" draggable="true" data-pair="demolish-scratch">demolish + from scratch</button>
+<button class="pair-chip" draggable="true" data-pair="envisaged-materialize">envisaged + materialize</button>
+<button class="pair-chip" draggable="true" data-pair="harness-renovate">harness + renovate</button>
+<button class="pair-chip" draggable="true" data-pair="initiated-spiralled">initiated + spiralled</button>
+<button class="pair-chip" draggable="true" data-pair="inward-thriving">inward + thriving</button>
+<button class="pair-chip" draggable="true" data-pair="pump-beacon">pump + beacon</button>
+<button class="pair-chip" draggable="true" data-pair="pilot-scale">pilot + scale it up</button>
+<button class="pair-chip" draggable="true" data-pair="undertook-credited">undertook + credited</button>
+</div>
+<div class="sentence-list" id="vocabRows">
+<div class="vocab-row" data-answer="inward-thriving" data-words="inward|thriving"><span class="num">1</span><div>The council cut business taxes to attract <span class="blank"></span> investment and invested heavily in skills training to establish a <span class="blank"></span> tech industry.<div class="row-note"></div></div></div>
+<div class="vocab-row" data-answer="demolish-scratch" data-words="demolish|from scratch"><span class="num">2</span><div>They’ve decided to <span class="blank"></span> the derelict buildings and start <span class="blank"></span> with a new development.<div class="row-note"></div></div></div>
+<div class="vocab-row" data-answer="pump-beacon" data-words="pump|beacon"><span class="num">3</span><div>The plan is to <span class="blank"></span> billions into renewables and become a <span class="blank"></span> for green technology and sustainable living in the future.<div class="row-note"></div></div></div>
+<div class="vocab-row" data-answer="envisaged-materialize" data-words="envisaged|materialize"><span class="num">4</span><div>It was originally <span class="blank"></span> that the museum would attract tourists and inward investment, but few tourists came and the investment failed to <span class="blank"></span>.<div class="row-note"></div></div></div>
+<div class="vocab-row" data-answer="harness-renovate" data-words="harness|renovate"><span class="num">5</span><div>The plan aims to <span class="blank"></span> existing expertise in the community to <span class="blank"></span> parks and buildings.<div class="row-note"></div></div></div>
+<div class="vocab-row" data-answer="initiated-spiralled" data-words="initiated|spiralled"><span class="num">6</span><div>The previous mayor <span class="blank"></span> an ambitious plan to redevelop the city centre, but it’s run into financial difficulties as the costs have <span class="blank"></span>.<div class="row-note"></div></div></div>
+<div class="vocab-row" data-answer="undertook-credited" data-words="undertook|credited"><span class="num">7</span><div>The city <span class="blank"></span> a big campaign against antisocial behaviour, which was <span class="blank"></span> with reversing rising crime rates.<div class="row-note"></div></div></div>
+<div class="vocab-row" data-answer="pilot-scale" data-words="pilot|scale it up"><span class="num">8</span><div>The council will <span class="blank"></span> a night-bus service in two districts and, if it succeeds, <span class="blank"></span> across the whole city.<div class="row-note"></div></div></div>
+<div class="vocab-row" data-answer="consultation-imposed" data-words="consultation|imposed"><span class="num">9</span><div>The plan was developed in <span class="blank"></span> with local residents, but many felt it had been <span class="blank"></span> on them.<div class="row-note"></div></div></div>
+</div>
+<div class="actions"><button class="btn secondary" id="resetVocab">Reset</button></div>
+<div class="summary" id="vocabSummary"></div>
+</section>
+
+<section class="panel lesson-section" data-title="Grammar">
+<div class="head"><div><h2>2. Delays</h2><p>Complete the sentences using the words in brackets.</p></div><span class="tag">Grammar</span></div>
+<div class="grammar-list" id="grammarList">
+<div class="grammar-row" data-answers="are expected to continue"><div class="grammar-sentence"><span class="num">1</span> Delays <input class="inline-input" type="text" aria-label="Answer 1"> for the next few days.</div><span class="prompt">expect / continue</span><div class="grammar-feedback"></div></div>
+<div class="grammar-row" data-answers="is forecast to increase"><div class="grammar-sentence"><span class="num">2</span> The population <input class="inline-input" type="text" aria-label="Answer 2"> considerably over the next five years.</div><span class="prompt">forecast / increase</span><div class="grammar-feedback"></div></div>
+<div class="grammar-row" data-answers="is expected to boost"><div class="grammar-sentence"><span class="num">3</span> The new shopping centre <input class="inline-input" type="text" aria-label="Answer 3"> the number of visitors.</div><span class="prompt">expect / boost</span><div class="grammar-feedback"></div></div>
+<div class="grammar-row" data-answers="is intended to enhance"><div class="grammar-sentence"><span class="num">4</span> The new pedestrian area <input class="inline-input" type="text" aria-label="Answer 4"> the shopping experience.</div><span class="prompt">intend / enhance</span><div class="grammar-feedback"></div></div>
+<div class="grammar-row" data-answers="were expected to be finalized|were expected to have been finalized|were expected to be finalised|were expected to have been finalised"><div class="grammar-sentence"><span class="num">5</span> The plans <input class="inline-input" type="text" aria-label="Answer 5"> by now, but they’re not.</div><span class="prompt">expect / finalize</span><div class="grammar-feedback"></div></div>
+<div class="grammar-row" data-answers="was supposed to be"><div class="grammar-sentence"><span class="num">6</span> The new traffic system <input class="inline-input" type="text" aria-label="Answer 6"> in place by now, but it is nowhere near completion.</div><span class="prompt">supposed / be</span><div class="grammar-feedback"></div></div>
+</div>
+<div class="actions"><button class="btn primary" id="checkGrammar">Check answers</button><button class="btn secondary" id="showGrammar">Show answers</button><button class="btn secondary" id="resetGrammar">Reset</button></div>
+<div class="summary" id="grammarSummary"></div>
+</section>
+<p class="footer">Created by Viktoriia Pyniv · AI-assisted educational resource developed with ChatGPT (OpenAI).</p>
+</main>
+<script>
+let selectedPair=null,draggedPair=null,completed=0;
+const chips=[...document.querySelectorAll('.pair-chip')],rows=[...document.querySelectorAll('.vocab-row')];
+function chooseChip(chip){if(chip.classList.contains('used'))return;chips.forEach(x=>x.classList.remove('selected'));selectedPair=selectedPair===chip?null:chip;if(selectedPair)selectedPair.classList.add('selected')}
+chips.forEach(chip=>{chip.addEventListener('click',()=>chooseChip(chip));chip.addEventListener('dragstart',()=>{draggedPair=chip});chip.addEventListener('dragend',()=>{draggedPair=null})});
+function placePair(row,chip){
+ if(!chip||row.classList.contains('correct'))return;
+ row.classList.remove('wrong');
+ const note=row.querySelector('.row-note');
+ if(chip.dataset.pair===row.dataset.answer){
+   const words=row.dataset.words.split('|'),blanks=row.querySelectorAll('.blank');
+   blanks[0].textContent=words[0];blanks[1].textContent=words[1];
+   row.classList.add('correct');note.textContent='Correct pair!';
+   chip.classList.remove('selected');chip.classList.add('used');chip.draggable=false;
+   selectedPair=null;completed++;
+   const summary=document.getElementById('vocabSummary');summary.classList.add('show');summary.textContent=completed===rows.length?'Excellent — all 9 pairs are correct.':completed+' of '+rows.length+' pairs completed.';
+ }else{row.classList.add('wrong');note.textContent='This pair belongs to another sentence. Try again.';setTimeout(()=>row.classList.remove('wrong'),650)}
+}
+rows.forEach(row=>{row.addEventListener('click',()=>placePair(row,selectedPair));row.addEventListener('dragover',e=>e.preventDefault());row.addEventListener('drop',e=>{e.preventDefault();placePair(row,draggedPair)})});
+document.getElementById('resetVocab').addEventListener('click',()=>{completed=0;selectedPair=null;rows.forEach(row=>{row.classList.remove('correct','wrong');row.querySelectorAll('.blank').forEach(x=>x.textContent='');row.querySelector('.row-note').textContent=''});chips.forEach(chip=>{chip.classList.remove('selected','used');chip.draggable=true});document.getElementById('vocabSummary').className='summary'});
+function norm(value){return value.toLowerCase().replace(/[.,!?]/g,'').replace(/\s+/g,' ').trim()}
+const grammarRows=[...document.querySelectorAll('.grammar-row')];
+document.getElementById('checkGrammar').addEventListener('click',()=>{let score=0;grammarRows.forEach(row=>{const input=row.querySelector('input'),answers=row.dataset.answers.split('|').map(norm),ok=answers.includes(norm(input.value)),feedback=row.querySelector('.grammar-feedback');input.className='inline-input '+(ok?'correct':'wrong');feedback.textContent=ok?'Correct.':'Check the passive structure.';feedback.style.color=ok?'#26733a':'#9a3030';if(ok)score++});const s=document.getElementById('grammarSummary');s.classList.add('show');s.textContent=score+' of '+grammarRows.length+' correct.'});
+document.getElementById('showGrammar').addEventListener('click',()=>{grammarRows.forEach(row=>{const input=row.querySelector('input');input.value=row.dataset.answers.split('|')[0];input.className='inline-input correct';row.querySelector('.grammar-feedback').textContent='Answer shown.'});const s=document.getElementById('grammarSummary');s.classList.add('show');s.textContent='Answers shown.'});
+document.getElementById('resetGrammar').addEventListener('click',()=>{grammarRows.forEach(row=>{const input=row.querySelector('input');input.value='';input.className='inline-input';row.querySelector('.grammar-feedback').textContent=''});document.getElementById('grammarSummary').className='summary'});
+const sections=[...document.querySelectorAll('.lesson-section')],fill=document.getElementById('progressFill'),indicator=document.getElementById('indicator');
+const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){const i=sections.indexOf(entry.target);fill.style.width=((i+1)/sections.length*100)+'%';indicator.textContent=entry.target.dataset.title}}),{rootMargin:'-30% 0px -55% 0px'});sections.forEach(s=>observer.observe(s));
+</script>
+</body>
+</html>
