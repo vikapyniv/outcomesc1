@@ -873,6 +873,9 @@
     const vocabularyQuiz1A = {"affluent":{"type":"meaning","options":["having enough wealth for a comfortable life","having very little access to money or services"],"correct":0},"bring up":{"type":"usage","options":["They want to bring up their children near good schools.","The council brought up a new bridge beside the river."],"correct":0},"buzz":{"type":"meaning","options":["a lively feeling created by exciting activity","a rule that keeps public places completely quiet"],"correct":0},"choke":{"type":"usage","options":["The smoke was so thick that people began to choke.","The cars choked quickly along the empty motorway."],"correct":0},"congested":{"type":"meaning","options":["so full of vehicles that movement is slow","located far away from any roads or transport"],"correct":0},"crammed":{"type":"usage","options":["The train was crammed with commuters during rush hour.","The empty stadium was crammed with nobody at all."],"correct":0},"crawl":{"type":"meaning","options":["to move forward at an extremely slow speed","to travel faster than the normal speed limit"],"correct":0},"crumble":{"type":"usage","options":["The neglected brickwork has started to crumble.","The new shopping centre crumbled with excited visitors."],"correct":0},"deprived":{"type":"meaning","options":["lacking resources needed for a healthy life","filled with luxury homes and expensive facilities"],"correct":0},"derelict":{"type":"usage","options":["The derelict factory has stood empty for years.","The carefully maintained new hotel is completely derelict."],"correct":0},"development":{"type":"meaning","options":["a newly built group of homes or other buildings","a long queue of vehicles moving through a city"],"correct":0},"dingy":{"type":"usage","options":["The basement café was dark, dirty and dingy.","The bright, spotless room was dingy because it was so clean."],"correct":0},"drawback":{"type":"meaning","options":["a negative feature that makes something less attractive","a major advantage that improves a situation"],"correct":0},"dull":{"type":"usage","options":["The neighbourhood feels dull because almost nothing happens there.","The festival was dull because it was energetic and full of surprises."],"correct":0},"fine":{"type":"meaning","options":["to require someone to pay money as a punishment","to give someone money as a reward for good behaviour"],"correct":0},"flash":{"type":"usage","options":["Neon signs flashed on and off above the street.","The light flashed by shining at exactly the same level all day."],"correct":0},"fume":{"type":"meaning","options":["unhealthy gas or smoke that is unpleasant to breathe","fresh air produced by trees in a public park"],"correct":0},"gated":{"type":"usage","options":["They chose a gated community with controlled entrances.","The neighbourhood was gated, although it had no gates or barriers."],"correct":0},"gentrification":{"type":"meaning","options":["change caused by wealthier people and investment moving into a poorer area","decline caused by every business and resident permanently leaving an area"],"correct":0},"grand":{"type":"usage","options":["The ceremony took place in a grand nineteenth-century hall.","The ordinary bus ticket was grand because it cost two euros."],"correct":0},"grind":{"type":"meaning","options":["to gradually slow down until movement or progress stops","to suddenly become more efficient and move at top speed"],"correct":0},"halt":{"type":"usage","options":["The authorities introduced measures to halt the spread of the fire.","They halted the project by continuing every part at full speed."],"correct":0},"horn":{"type":"meaning","options":["a device on a vehicle used to make a warning sound","a filter in an engine that removes pollution from the air"],"correct":0},"humid":{"type":"usage","options":["The air felt hot and humid after the summer rain.","The desert air was humid because it contained no moisture."],"correct":0},"infrastructure":{"type":"meaning","options":["basic systems such as roads, power and public transport","entertainment and nightlife that make a district fashionable"],"correct":0},"insane":{"type":"usage","options":["Driving through the market at that speed is insane.","The calm and perfectly reasonable safety plan is insane because it is sensible."],"correct":0},"littering":{"type":"meaning","options":["leaving rubbish in a public place instead of using a bin","collecting rubbish and recycling it correctly"],"correct":0},"neglected":{"type":"usage","options":["The neglected playground has not been repaired for years.","The garden is neglected because a team carefully maintains it every day."],"correct":0},"outskirts":{"type":"meaning","options":["parts of a town furthest from its centre","the busiest streets in the exact centre of a city"],"correct":0},"packed":{"type":"usage","options":["The concert hall was packed, so we could hardly move.","The completely empty theatre was packed with no audience."],"correct":0},"residential":{"type":"meaning","options":["mainly used for homes and places where people live","reserved only for factories and heavy industry"],"correct":0},"settle down":{"type":"usage","options":["After years of travelling, they decided to settle down in Lisbon.","She settled down by moving to a different country every two days."],"correct":0},"smog":{"type":"meaning","options":["dirty air pollution that can look like fog","clean morning mist made only from water"],"correct":0},"smoothly":{"type":"usage","options":["The metro ran smoothly without delays or breakdowns.","The service ran smoothly, with a new breakdown every five minutes."],"correct":0},"spotless":{"type":"meaning","options":["completely clean, without any marks or dirt","seriously damaged and in need of repair"],"correct":0},"sprawling":{"type":"usage","options":["The sprawling city extends for miles in every direction.","The sprawling village fits entirely inside one tiny building."],"correct":0},"spring up":{"type":"meaning","options":["to appear or begin to exist very quickly","to slowly disappear until nothing remains"],"correct":0},"take someone by surprise":{"type":"usage","options":["The sudden announcement took everyone by surprise.","I knew the exact result in advance, so it took me by surprise exactly as planned."],"correct":0},"trace":{"type":"meaning","options":["a very small sign or amount of something","an enormous quantity that completely fills a place"],"correct":0},"unbearably":{"type":"usage","options":["By midday, the underground station was unbearably hot.","The mild temperature was unbearably comfortable and easy to tolerate."],"correct":0},"up-and-coming":{"type":"meaning","options":["becoming more successful, fashionable or important","losing popularity and likely to disappear soon"],"correct":0},"utter":{"type":"usage","options":["The cancellation created utter chaos at the airport.","The street was utter slightly busy for a few minutes."],"correct":0},"vibrant":{"type":"meaning","options":["full of energy, activity and life","quiet, colourless and lacking activity"],"correct":0},"well-run":{"type":"usage","options":["A well-run city responds quickly when public services fail.","The organization is well-run because nobody manages it and nothing works."],"correct":0}};
     let vocabularyPracticeEntries = [];
     let vocabularyPracticeIndex = 0;
+    let activeVocabularyKey = '1A';
+    let activePracticeMeta = vocabularyPractice1A;
+    let activePracticeQuiz = vocabularyQuiz1A;
     const vocabularyPracticeQuiz = new Map();
 
     function showVocabularyList() {
@@ -882,9 +885,82 @@
       document.getElementById('vocabPractice').hidden = true;
     }
 
+    function compactPracticeText(value, limit = 150) {
+      const clean = String(value || '').replace(/\s+/g, ' ').trim();
+      return clean.length > limit ? clean.slice(0, limit - 1).trim() + '…' : clean;
+    }
+
+    function practiceDefinition(block) {
+      const metaLine = /^(Collocates?|Verb|Noun|Adjective|Adverb|Opposite)/;
+      const parts = [];
+      for (const line of block.body) {
+        if (metaLine.test(line) || line.includes('|')) break;
+        parts.push(line);
+        if (parts.join(' ').length > 135 || parts.length === 3) break;
+      }
+      return compactPracticeText(parts.join(' ') || block.body[0] || block.word, 145);
+    }
+
+    function practiceQuickMeaning(block, definition) {
+      let quick = definition.replace(/^if .+?,\s*/i, '').replace(/^to\s+/i, '');
+      const lowerWord = block.word.toLowerCase();
+      const lowerQuick = quick.toLowerCase();
+      if (lowerQuick.startsWith(lowerWord + ' is ')) quick = quick.slice(block.word.length + 4);
+      if (lowerQuick.startsWith(lowerWord + ' means ')) quick = quick.slice(block.word.length + 7);
+      return compactPracticeText(quick, 58);
+    }
+
+    function practicePrompt(block) {
+      const pos = block.pos.toLowerCase();
+      if (pos.includes('adjective') || pos.includes('adverb')) return `What person, place or situation would you describe as “${block.word}”, and why?`;
+      if (pos.includes('verb')) return `When might someone “${block.word}”? Give a real or imagined example.`;
+      if (pos.includes('binomial') || pos.includes('idiom') || pos.includes('phrase') || pos.includes('expression')) return `Describe a situation where you could naturally use “${block.word}”.`;
+      return `What is one real-life example of “${block.word}” in a city, community or project?`;
+    }
+
+    function practiceExample(block) {
+      const word = block.word.toLowerCase();
+      const segments = block.body.join(' ').split('|').map(x => x.replace(/\s+/g, ' ').trim()).filter(Boolean);
+      const found = segments.find((segment, index) => index > 0 && segment.toLowerCase().includes(word));
+      return compactPracticeText(found || `Someone used “${block.word}” naturally while describing the situation.`, 175);
+    }
+
+    function buildAutomaticPractice(entries) {
+      const meta = {};
+      const quizzes = {};
+      entries.forEach((block, index) => {
+        const key = block.word.toLowerCase().trim();
+        const definition = practiceDefinition(block);
+        const distractor = entries[(index + 9) % entries.length];
+        const distractorDefinition = practiceDefinition(distractor);
+        meta[key] = [practiceQuickMeaning(block, definition), practicePrompt(block)];
+        if (index % 2 === 0) {
+          quizzes[key] = { type:'meaning', options:[definition, distractorDefinition], correct:0 };
+        } else {
+          const correctSentence = practiceExample(block);
+          const otherMeaning = practiceQuickMeaning(distractor, distractorDefinition);
+          quizzes[key] = {
+            type:'usage',
+            options:[correctSentence, `In this sentence, “${block.word}” means ${otherMeaning}.`],
+            correct:0
+          };
+        }
+      });
+      return { meta, quizzes };
+    }
+
     function startVocabularyPractice() {
-      vocabularyPracticeEntries = getFilteredVocabulary('1A').filter(block => !block.section && vocabularyPractice1A[block.word.toLowerCase().trim()]);
+      vocabularyPracticeEntries = getFilteredVocabulary(activeVocabularyKey).filter(block => !block.section);
       vocabularyPracticeIndex = 0;
+      if (activeVocabularyKey === '1A') {
+        vocabularyPracticeEntries = vocabularyPracticeEntries.filter(block => vocabularyPractice1A[block.word.toLowerCase().trim()]);
+        activePracticeMeta = vocabularyPractice1A;
+        activePracticeQuiz = vocabularyQuiz1A;
+      } else {
+        const generated = buildAutomaticPractice(vocabularyPracticeEntries);
+        activePracticeMeta = generated.meta;
+        activePracticeQuiz = generated.quizzes;
+      }
       document.getElementById('vocabToolbar').hidden = true;
       document.getElementById('vocabContent').hidden = true;
       document.getElementById('vocabPracticeToolbar').hidden = false;
@@ -896,9 +972,10 @@
       const entry = vocabularyPracticeEntries[vocabularyPracticeIndex];
       if (!entry) return;
       const key = entry.word.toLowerCase().trim();
-      const meta = vocabularyPractice1A[key];
-      const quiz = vocabularyQuiz1A[key];
-      const savedQuiz = vocabularyPracticeQuiz.get(key);
+      const stateKey = activeVocabularyKey + ':' + key;
+      const meta = activePracticeMeta[key];
+      const quiz = activePracticeQuiz[key];
+      const savedQuiz = vocabularyPracticeQuiz.get(stateKey);
       const progress = vocabularyPracticeIndex + 1;
       const quizTitle = quiz.type === 'usage'
         ? `Which sentence uses “${entry.word}” naturally?`
@@ -918,13 +995,13 @@
             <h4>Mini quiz · ${escapeHtml(quizTitle)}</h4>
             <div class="practice-options">
               ${quiz.options.map((option, index) => {
-                const isCorrect = index === quiz.correct;
+                const isCorrect = option === quiz.options[quiz.correct];
                 let stateClass = '';
                 if (savedQuiz) {
                   if (isCorrect) stateClass = ' correct';
-                  else if (savedQuiz.selected === index) stateClass = ' wrong';
+                  else if (savedQuiz.selected === option) stateClass = ' wrong';
                 }
-                return `<button class="practice-option${stateClass}" data-index="${index}" data-correct="${isCorrect}" ${savedQuiz ? 'disabled' : ''}>${escapeHtml(option)}</button>`;
+                return `<button class="practice-option${stateClass}" data-option="${escapeHtml(option)}" data-correct="${isCorrect}" ${savedQuiz ? 'disabled' : ''}>${escapeHtml(option)}</button>`;
               }).join('')}
             </div>
             <div class="practice-quiz-feedback${savedQuiz ? (savedQuiz.correct ? ' ok' : ' bad') : ''}" id="practiceQuizFeedback">${savedQuiz ? (savedQuiz.correct ? 'Correct!' : 'Not quite — the correct option is highlighted.') : ''}</div>
@@ -936,7 +1013,7 @@
         </article>`;
       document.querySelectorAll('.practice-option').forEach(button => button.addEventListener('click', () => {
         const correct = button.dataset.correct === 'true';
-        vocabularyPracticeQuiz.set(key, { selected: Number(button.dataset.index), correct });
+        vocabularyPracticeQuiz.set(stateKey, { selected: button.dataset.option, correct });
         renderVocabularyPractice();
       }));
       document.getElementById('practicePrev').addEventListener('click', () => {
@@ -1096,8 +1173,9 @@
         document.getElementById('vocabKicker').textContent = `Unit 1 · ${key} vocabulary`;
         document.getElementById('vocabSearch').value = '';
         renderVocabulary(key);
+        activeVocabularyKey = key;
         showVocabularyList();
-        document.getElementById('startVocabPractice').hidden = key !== '1A';
+        document.getElementById('startVocabPractice').hidden = !['1A', '1B', '1C'].includes(key);
         document.getElementById('vocabBackdrop').hidden = false;
         document.body.style.overflow = 'hidden';
       });
