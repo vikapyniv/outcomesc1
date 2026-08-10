@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Additional exercises 1A — Cities</title>
+<style>
+:root{--bg:#eaf8f5;--card:#fff;--text:#103f39;--muted:#5b7873;--accent:#10b9a7;--line:#c9e8e2;--ok:#14804a;--bad:#c0362c}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text)}
+button,input{font:inherit}
+button{border:0;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
+main{max-width:980px;margin:0 auto;padding:22px 16px 70px}
+.topbar{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:980px;margin:auto;padding:12px 18px;display:flex;align-items:center;gap:15px}
+.topbar strong{font-size:1.05rem}
+.back-link{display:inline-flex;padding:8px 12px;border:1px solid #a9dfd6;border-radius:999px;background:#dff8f3;color:#087d72;text-decoration:none;font-weight:800}
+.content-label{margin:28px 0 10px;color:#087d72;font-size:.78rem;font-weight:900;letter-spacing:.14em}
+.section{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin:16px 0;box-shadow:0 8px 24px rgba(5,92,82,.07)}
+.section h1{margin:0 0 8px;font-size:clamp(1.35rem,3vw,1.8rem)}
+.instruction{color:var(--muted);margin-top:0}
+.item{padding:11px 0;border-bottom:1px solid #d8ede9;line-height:1.7}
+.item:last-of-type{border-bottom:0}
+input[type="text"]{font:inherit;border:1px solid var(--line);border-radius:8px;padding:7px 9px;background:white;min-width:185px}
+.controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.primary{background:var(--accent);color:#fff}
+.secondary{background:#dff0ed;color:var(--text)}
+.feedback{font-weight:800;margin-top:12px}
+.correct{outline:2px solid #86efac;background:#f0fdf4}
+.incorrect{outline:2px solid #fca5a5;background:#fef2f2}
+@media(max-width:560px){main{padding:16px 12px 36px}.section{padding:16px}input[type="text"]{display:block;width:100%;margin:6px 0}.controls button{flex:1}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-inner"><a class="back-link" href="./">← Back to Unit 1</a><strong>Additional exercises · Optional · 1A</strong></div></header>
+<main>
+<div class="content-label">ADDITIONAL EXERCISES · OPTIONAL · 1A</div>
+<section class="section" id="a2">
+<h1>3. Complete the sentences with the correct form of the words in brackets.</h1>
+<p class="instruction">Complete the sentences with the correct form of the words in brackets.</p>
+<div class="item"><strong>Example:</strong> I hate that this is your last day; you’ll be <strong>sorely missed</strong> (sore / miss).</div>
+<div class="item"><strong>1.</strong> I hate to be <input type="text" data-answer="brutally honest" placeholder="Type your answer"> (brutal / honest), but you’re not cut out for this city.</div>
+<div class="item"><strong>2.</strong> The competition to build the new bridge was <input type="text" data-answer="fiercely competitive" placeholder="Type your answer"> (fierce / compete).</div>
+<div class="item"><strong>3.</strong> I can’t believe the city replaced the park with a car park. It’s <input type="text" data-answer="totally and utterly" placeholder="Type your answer"> (total / utter) unfair.</div>
+<div class="item"><strong>4.</strong> I think the science fair is going to be <input type="text" data-answer="super interesting" placeholder="Type your answer"> (super / interest).</div>
+<div class="item"><strong>5.</strong> That’s the ugliest building I’ve ever seen. It’s <input type="text" data-answer="really, really" placeholder="Type your answer"> (real / real) awful.</div>
+<div class="item"><strong>6.</strong> I hope you’ll be <input type="text" data-answer="blissfully happy" placeholder="Type your answer"> (bliss / happy) with life in your new city.</div>
+<div class="item"><strong>7.</strong> It’s <input type="text" data-answer="completely boiling" placeholder="Type your answer"> (complete / boil) in the city today. I have to get out of here!</div>
+<div class="item"><strong>8.</strong> If you think rent’s going to be cheaper here, you’ll be <input type="text" data-answer="bitterly disappointed" placeholder="Type your answer"> (bitter / disappoint).</div>
+<div class="controls">
+<button class="primary" id="checkAnswers">Check answers</button>
+<button class="secondary" id="showAnswers">Show answers</button>
+<button class="secondary" id="resetAnswers">Reset</button>
+</div>
+<div class="feedback" aria-live="polite"></div>
+</section>
+</main>
+<script>
+const section=document.getElementById("a2");
+const fields=[...section.querySelectorAll("[data-answer]")];
+const feedback=section.querySelector(".feedback");
+const normalize=value=>String(value).trim().toLowerCase().replace(/[’‘]/g,"'").replace(/\s+/g," ");
+const mark=(field,ok)=>{field.classList.remove("correct","incorrect");field.classList.add(ok?"correct":"incorrect")};
+document.getElementById("checkAnswers").addEventListener("click",()=>{
+  let score=0;
+  fields.forEach(field=>{const ok=normalize(field.value)===normalize(field.dataset.answer);mark(field,ok);if(ok)score++});
+  feedback.textContent=`Score: ${score}/${fields.length}`;
+});
+document.getElementById("showAnswers").addEventListener("click",()=>{
+  fields.forEach(field=>{field.value=field.dataset.answer;mark(field,true)});
+  feedback.textContent="Answers shown.";
+});
+document.getElementById("resetAnswers").addEventListener("click",()=>{
+  fields.forEach(field=>{field.value="";field.classList.remove("correct","incorrect")});
+  feedback.textContent="";
+});
+</script>
+</body>
+</html>
