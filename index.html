@@ -270,7 +270,7 @@
 
     .lesson-row {
       display: grid;
-      grid-template-columns: minmax(190px, 1.2fr) minmax(150px, .8fr) minmax(170px, .9fr);
+      grid-template-columns: minmax(190px, 1.2fr) minmax(260px, 1.25fr) minmax(150px, .8fr);
       gap: 12px;
       align-items: stretch;
       margin-bottom: 12px;
@@ -278,6 +278,7 @@
 
     .lesson-btn,
     .hw-btn,
+    .additional-btn,
     .extra-btn,
     .vocab-btn,
     .assessment-btn {
@@ -290,9 +291,12 @@
       background: #fff;
     }
 
-    .lesson-btn:hover, .hw-btn:hover, .extra-btn:hover, .vocab-btn:hover { transform: translateY(-1px); border-color: #8fd8cd; }
+    .lesson-btn:hover, .hw-btn:hover, .additional-btn:hover, .extra-btn:hover, .vocab-btn:hover { transform: translateY(-1px); border-color: #8fd8cd; }
     .lesson-btn { font-weight: 800; }
-    .hw-btn { color: var(--accent-dark); font-weight: 750; background: #edfbf8; }
+    .practice-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .hw-btn { color: var(--accent-dark); font-weight: 800; background: #edfbf8; }
+    .additional-btn { color: #4f736d; font-weight: 750; background: #fff; border-style: dashed; }
+    .optional-label { display: block; margin-top: 3px; color: #78958f; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
     .extra-btn { color: #4f736d; background: #f3fbf9; }
 
 
@@ -583,19 +587,28 @@
 
             <div class="lesson-row">
               <button class="lesson-btn" onclick="window.location.href=&quot;lesson-1a.html&quot;">1A. A real buzz about the place</button>
-              <button class="hw-btn" onclick="window.location.href=&quot;homework-1a.html&quot;">HW 1A</button>
+              <div class="practice-buttons">
+                <button class="hw-btn" onclick="window.location.href=&quot;homework-1a.html&quot;">HW 1A</button>
+                <button class="additional-btn" data-message="Additional exercises 1A will be added here.">Additional exercises<span class="optional-label">Optional · 1A</span></button>
+              </div>
               <button class="extra-btn vocab-btn" data-vocab="1A">Vocabulary</button>
             </div>
 
             <div class="lesson-row">
               <button class="lesson-btn" onclick="window.location.href=&quot;lesson-1b.html&quot;">1B. Urban tales</button>
-              <button class="hw-btn" data-message="Homework 1B will be connected here.">HW 1B</button>
+              <div class="practice-buttons">
+                <button class="hw-btn" data-message="Homework 1B will be connected here.">HW 1B</button>
+                <button class="additional-btn" data-message="Additional exercises 1B will be added here.">Additional exercises<span class="optional-label">Optional · 1B</span></button>
+              </div>
               <button class="extra-btn vocab-btn" data-vocab="1B">Vocabulary</button>
             </div>
 
             <div class="lesson-row">
               <button class="lesson-btn" onclick="window.location.href=&quot;lesson-1c.html&quot;">1C. Urban planning</button>
-              <button class="hw-btn" onclick="window.location.href=&quot;homework-1c.html&quot;">HW 1C</button>
+              <div class="practice-buttons">
+                <button class="hw-btn" onclick="window.location.href=&quot;homework-1c.html&quot;">HW 1C</button>
+                <button class="additional-btn" data-message="Additional exercises 1C will be added here.">Additional exercises<span class="optional-label">Optional · 1C</span></button>
+              </div>
               <button class="extra-btn vocab-btn" data-vocab="1C">Vocabulary</button>
             </div>
 
