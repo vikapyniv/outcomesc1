@@ -413,7 +413,106 @@
       font-weight: 900;
       letter-spacing: .08em;
     }
+    .vocab-practice-launch {
+      flex: 0 0 auto;
+      border: 0;
+      border-radius: 11px;
+      padding: 11px 16px;
+      color: #fff;
+      background: linear-gradient(135deg, #087d72, #10b9a7);
+      font-weight: 850;
+      cursor: pointer;
+      box-shadow: 0 7px 18px rgba(8,125,114,.22);
+    }
+    .vocab-practice-launch[hidden] { display: none; }
+    .vocab-list-tools { display:flex; align-items:center; gap:12px; flex:1; justify-content:flex-end; }
+    .vocab-practice-toolbar {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:14px 28px;
+      border-bottom:1px solid var(--line);
+      background:#e9fbf7;
+    }
+    .vocab-practice-toolbar[hidden], .vocab-practice[hidden], .vocab-toolbar[hidden], .vocab-content[hidden] { display:none; }
+    .vocab-back-to-list {
+      border:1px solid #a9dfd6;
+      border-radius:10px;
+      padding:9px 12px;
+      background:#fff;
+      color:var(--accent-dark);
+      font-weight:800;
+      cursor:pointer;
+    }
+    .vocab-practice-progress { color:var(--muted); font-size:13px; font-weight:750; }
+    .vocab-practice {
+      overflow-y:auto;
+      padding:24px 28px 34px;
+      background:#eff9f7;
+    }
+    .practice-progress-track { height:8px; border-radius:999px; background:#d2ebe6; overflow:hidden; margin-bottom:18px; }
+    .practice-progress-fill { height:100%; border-radius:inherit; background:linear-gradient(90deg,#087d72,#10b9a7); transition:width .25s ease; }
+    .practice-card {
+      max-width:760px;
+      margin:0 auto;
+      padding:26px;
+      border:1px solid #cce7e2;
+      border-radius:20px;
+      background:#fff;
+      box-shadow:0 10px 28px rgba(5,92,82,.1);
+    }
+    .practice-card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
+    .practice-word { margin:0; color:var(--accent-dark); font-size:clamp(30px,5vw,45px); line-height:1.05; }
+    .practice-pos { display:inline-block; margin-top:8px; padding:4px 9px; border-radius:999px; background:var(--soft-accent); color:var(--accent-dark); font-size:11px; font-weight:850; text-transform:uppercase; }
+    .practice-meaning-label { display:block; margin-top:18px; color:var(--muted); font-size:11px; font-weight:850; letter-spacing:.1em; text-transform:uppercase; }
+    .practice-meaning { margin:3px 0 0; color:#103f39; font-size:19px; font-weight:850; }
+    .practice-prompt { margin:22px 0 8px; padding:16px 18px; border-left:4px solid var(--accent); border-radius:12px; background:#f1faf8; font-size:16px; font-weight:750; }
+    .practice-answer {
+      width:100%;
+      min-height:92px;
+      resize:vertical;
+      border:1px solid #b9ded8;
+      border-radius:12px;
+      padding:12px 14px;
+      font:inherit;
+      color:#103f39;
+      outline:none;
+    }
+    .practice-answer:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(16,185,167,.16); }
+    .practice-tip { margin:7px 0 0; color:var(--muted); font-size:12px; }
+    .practice-quiz { margin-top:22px; padding-top:20px; border-top:1px solid var(--line); }
+    .practice-quiz h4 { margin:0 0 11px; font-size:16px; }
+    .practice-options { display:grid; gap:9px; }
+    .practice-option {
+      width:100%;
+      border:1px solid #cce7e2;
+      border-radius:12px;
+      padding:12px 14px;
+      background:#fff;
+      color:#103f39;
+      text-align:left;
+      cursor:pointer;
+      font-weight:700;
+    }
+    .practice-option:hover { border-color:#8fd8cd; background:#f6fffd; }
+    .practice-option.correct { border-color:#6bc493; background:#eaf9f0; }
+    .practice-option.wrong { border-color:#e89590; background:#fff1f0; }
+    .practice-option:disabled { cursor:default; }
+    .practice-quiz-feedback { min-height:23px; margin-top:9px; font-weight:850; }
+    .practice-quiz-feedback.ok { color:#14804a; }
+    .practice-quiz-feedback.bad { color:#c0362c; }
+    .practice-nav { display:flex; justify-content:space-between; gap:10px; margin-top:22px; }
+    .practice-nav button { border:0; border-radius:11px; padding:10px 15px; font-weight:850; cursor:pointer; }
+    .practice-prev { background:#dff0ed; color:#103f39; }
+    .practice-next { background:#087d72; color:#fff; margin-left:auto; }
+    .practice-nav button:disabled { opacity:.45; cursor:not-allowed; }
     @media (max-width: 650px) {
+      .vocab-list-tools { align-items:stretch; flex-direction:column; }
+      .vocab-practice-toolbar { padding-left:18px; padding-right:18px; }
+      .vocab-practice { padding:18px; }
+      .practice-card { padding:19px; }
+
       .modal-backdrop { padding: 0; }
       .vocab-modal { max-height: 100vh; height: 100vh; border-radius: 0; }
       .vocab-header, .vocab-content { padding-left: 18px; padding-right: 18px; }
@@ -678,11 +777,19 @@
         <div><div class="vocab-kicker" id="vocabKicker">Unit 1 vocabulary</div><h2 id="vocabTitle">Vocabulary</h2></div>
         <button class="modal-close" id="closeVocab" aria-label="Close vocabulary">×</button>
       </header>
-      <div class="vocab-toolbar">
+      <div class="vocab-toolbar" id="vocabToolbar">
         <div class="vocab-count" id="vocabCount"></div>
-        <input class="vocab-search" id="vocabSearch" type="search" placeholder="Search a word, phrase or example…" />
+        <div class="vocab-list-tools">
+          <input class="vocab-search" id="vocabSearch" type="search" placeholder="Search a word, phrase or example…" />
+          <button class="vocab-practice-launch" id="startVocabPractice" type="button" hidden>Practice</button>
+        </div>
+      </div>
+      <div class="vocab-practice-toolbar" id="vocabPracticeToolbar" hidden>
+        <button class="vocab-back-to-list" id="backToVocabList" type="button">← Vocabulary list</button>
+        <div class="vocab-practice-progress" id="vocabPracticeProgress"></div>
       </div>
       <div class="vocab-content" id="vocabContent"></div>
+      <div class="vocab-practice" id="vocabPractice" hidden></div>
     </section>
   </div>
 
@@ -751,6 +858,96 @@
       '1B': '1B. Urban tales',
       '1C': '1C. Urban planning'
     };
+
+
+    const vocabularyPractice1A = {"affluent":["rich and comfortable","Would you enjoy living in an affluent neighbourhood? Why or why not?"],"bring up":["raise a child","Where do you think is the best place to bring up children?"],"buzz":["exciting atmosphere","Which place in your city has a real buzz, and what creates it?"],"choke":["struggle to breathe","Have you ever been somewhere where fumes or smoke made you choke?"],"congested":["full of traffic","Which roads near you become congested, and when?"],"crammed":["too full","When was the last time you were on a crammed bus or train?"],"crawl":["move very slowly","Where does traffic usually crawl in your city?"],"crumble":["break into pieces","Is there an old building near you that has started to crumble?"],"deprived":["lacking basic needs","What could a city do to support deprived areas?"],"derelict":["abandoned and damaged","Should derelict buildings be renovated or demolished?"],"development":["new building project","What kind of new development would improve your neighbourhood?"],"dingy":["dark and dirty","Have you ever stayed in a dingy room or visited a dingy café?"],"drawback":["disadvantage or problem","What is the biggest drawback of living in a large city?"],"dull":["boring; not lively","What can make a neighbourhood feel dull?"],"fine":["make someone pay","Should people be fined for dropping litter?"],"flash":["shine briefly","Where can you see neon lights flashing in your city?"],"fume":["unhealthy gas or smoke","What can cities do to reduce traffic fumes?"],"gated":["protected by gates","Would you feel comfortable living in a gated community?"],"gentrification":["wealthier area transformation","Who benefits from gentrification, and who might lose out?"],"grand":["large and impressive","What is the grandest building you have ever seen?"],"grind":["slowly get stuck","What could cause city traffic to grind to a halt?"],"halt":["stop completely","What problem in your city should the authorities try to halt?"],"horn":["vehicle warning sound","When is it acceptable for a driver to sound their horn?"],"humid":["warm and damp","How does humid weather affect what you do?"],"infrastructure":["essential public systems","Which part of your city’s infrastructure most needs improvement?"],"insane":["extreme or unreasonable","What kind of city behaviour do you think is completely insane?"],"littering":["dropping rubbish","What is the best way to discourage littering?"],"neglected":["not cared for","Is there a neglected place near you that deserves attention?"],"outskirts":["outer parts of town","Would you prefer to live in the centre or on the outskirts?"],"packed":["extremely crowded","Which places become packed at weekends?"],"residential":["used for housing","What makes a residential area pleasant to live in?"],"settle down":["begin a stable life","Where would you like to settle down in the future?"],"smog":["polluted foggy air","Has smog ever affected daily life where you live?"],"smoothly":["without problems","What helps public transport run smoothly?"],"spotless":["perfectly clean","Should city streets be kept spotless? How?"],"sprawling":["spread over wide area","What problems can a sprawling city create?"],"spring up":["appear very quickly","What new businesses have sprung up near your home recently?"],"take someone by surprise":["happen unexpectedly","What place or event has taken you by surprise?"],"trace":["small sign or amount","Can you name a place with not a trace of litter?"],"unbearably":["too extreme to tolerate","When does the weather become unbearably hot or cold for you?"],"up-and-coming":["becoming successful","Is there an up-and-coming neighbourhood in your city?"],"utter":["complete; total","What situation would you describe as utter chaos?"],"vibrant":["lively and energetic","What makes a city feel vibrant?"],"well-run":["managed effectively","What makes a city or organization well-run?"]};
+    let vocabularyPracticeEntries = [];
+    let vocabularyPracticeIndex = 0;
+    const vocabularyPracticeAnswers = new Map();
+    const vocabularyPracticeQuiz = new Map();
+
+    function showVocabularyList() {
+      document.getElementById('vocabToolbar').hidden = false;
+      document.getElementById('vocabContent').hidden = false;
+      document.getElementById('vocabPracticeToolbar').hidden = true;
+      document.getElementById('vocabPractice').hidden = true;
+    }
+
+    function startVocabularyPractice() {
+      vocabularyPracticeEntries = getFilteredVocabulary('1A').filter(block => !block.section && vocabularyPractice1A[block.word.toLowerCase().trim()]);
+      vocabularyPracticeIndex = 0;
+      document.getElementById('vocabToolbar').hidden = true;
+      document.getElementById('vocabContent').hidden = true;
+      document.getElementById('vocabPracticeToolbar').hidden = false;
+      document.getElementById('vocabPractice').hidden = false;
+      renderVocabularyPractice();
+    }
+
+    function renderVocabularyPractice() {
+      const entry = vocabularyPracticeEntries[vocabularyPracticeIndex];
+      if (!entry) return;
+      const key = entry.word.toLowerCase().trim();
+      const meta = vocabularyPractice1A[key];
+      const distractorIndex = (vocabularyPracticeIndex + 7) % vocabularyPracticeEntries.length;
+      const distractorKey = vocabularyPracticeEntries[distractorIndex].word.toLowerCase().trim();
+      const distractor = vocabularyPractice1A[distractorKey][0];
+      const correctFirst = vocabularyPracticeIndex % 2 === 0;
+      const options = correctFirst ? [meta[0], distractor] : [distractor, meta[0]];
+      const savedQuiz = vocabularyPracticeQuiz.get(key);
+      const progress = vocabularyPracticeIndex + 1;
+      document.getElementById('vocabPracticeProgress').textContent = `${progress} / ${vocabularyPracticeEntries.length}`;
+      document.getElementById('vocabPractice').innerHTML = `
+        <div class="practice-progress-track"><div class="practice-progress-fill" style="width:${progress / vocabularyPracticeEntries.length * 100}%"></div></div>
+        <article class="practice-card">
+          <div class="practice-card-top">
+            <div><h3 class="practice-word">${escapeHtml(entry.word)}</h3><span class="practice-pos">${escapeHtml(entry.pos)}</span></div>
+          </div>
+          <span class="practice-meaning-label">Quick meaning</span>
+          <p class="practice-meaning">${escapeHtml(meta[0])}</p>
+          <div class="practice-prompt">${escapeHtml(meta[1])}</div>
+          <textarea class="practice-answer" id="practiceAnswer" placeholder="Write or say your answer using “${escapeHtml(entry.word)}”…">${escapeHtml(vocabularyPracticeAnswers.get(key) || '')}</textarea>
+          <p class="practice-tip">Try to include <strong>${escapeHtml(entry.word)}</strong> naturally in your answer. This response is for self-practice and is not automatically graded.</p>
+          <div class="practice-quiz">
+            <h4>Mini quiz · What does “${escapeHtml(entry.word)}” mean?</h4>
+            <div class="practice-options">
+              ${options.map(option => {
+                const isCorrect = option === meta[0];
+                let stateClass = '';
+                if (savedQuiz) {
+                  if (isCorrect) stateClass = ' correct';
+                  else if (savedQuiz.selected === option) stateClass = ' wrong';
+                }
+                return `<button class="practice-option${stateClass}" data-option="${escapeHtml(option)}" data-correct="${isCorrect}" ${savedQuiz ? 'disabled' : ''}>${escapeHtml(option)}</button>`;
+              }).join('')}
+            </div>
+            <div class="practice-quiz-feedback${savedQuiz ? (savedQuiz.correct ? ' ok' : ' bad') : ''}" id="practiceQuizFeedback">${savedQuiz ? (savedQuiz.correct ? 'Correct!' : 'Not quite — the correct meaning is highlighted.') : ''}</div>
+          </div>
+          <div class="practice-nav">
+            <button class="practice-prev" id="practicePrev" ${vocabularyPracticeIndex === 0 ? 'disabled' : ''}>← Previous</button>
+            <button class="practice-next" id="practiceNext">${vocabularyPracticeIndex === vocabularyPracticeEntries.length - 1 ? 'Finish' : 'Next →'}</button>
+          </div>
+        </article>`;
+      const answer = document.getElementById('practiceAnswer');
+      answer.addEventListener('input', () => vocabularyPracticeAnswers.set(key, answer.value));
+      document.querySelectorAll('.practice-option').forEach(button => button.addEventListener('click', () => {
+        const correct = button.dataset.correct === 'true';
+        vocabularyPracticeQuiz.set(key, { selected: button.dataset.option, correct });
+        renderVocabularyPractice();
+      }));
+      document.getElementById('practicePrev').addEventListener('click', () => {
+        if (vocabularyPracticeIndex > 0) { vocabularyPracticeIndex--; renderVocabularyPractice(); }
+      });
+      document.getElementById('practiceNext').addEventListener('click', () => {
+        if (vocabularyPracticeIndex < vocabularyPracticeEntries.length - 1) {
+          vocabularyPracticeIndex++; renderVocabularyPractice();
+        } else {
+          showVocabularyList();
+        }
+      });
+    }
+
+    document.getElementById('startVocabPractice').addEventListener('click', startVocabularyPractice);
+    document.getElementById('backToVocabList').addEventListener('click', showVocabularyList);
 
     const excludedVocabulary = {
       '1A': new Set(['chaotic', 'lively', 'mask', 'metro system', 'neon', 'seek', 'tram']),
@@ -894,6 +1091,8 @@
         document.getElementById('vocabKicker').textContent = `Unit 1 · ${key} vocabulary`;
         document.getElementById('vocabSearch').value = '';
         renderVocabulary(key);
+        showVocabularyList();
+        document.getElementById('startVocabPractice').hidden = key !== '1A';
         document.getElementById('vocabBackdrop').hidden = false;
         document.body.style.overflow = 'hidden';
       });
