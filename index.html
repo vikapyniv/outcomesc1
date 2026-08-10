@@ -980,7 +980,8 @@
       const quizTitle = quiz.type === 'usage'
         ? `Which sentence uses “${entry.word}” naturally?`
         : `Which explanation best matches “${entry.word}”?`;
-      document.getElementById('vocabPracticeProgress').textContent = `${progress} / ${vocabularyPracticeEntries.length}`;
+      const displayOptions = vocabularyPracticeIndex % 2 === 0 ? [...quiz.options] : [...quiz.options].reverse();
+      document.getElementById('vocabPracticeProgress').textContent = `${activeVocabularyKey} · ${progress} / ${vocabularyPracticeEntries.length}`;
       document.getElementById('vocabPractice').innerHTML = `
         <div class="practice-progress-track"><div class="practice-progress-fill" style="width:${progress / vocabularyPracticeEntries.length * 100}%"></div></div>
         <article class="practice-card">
@@ -994,7 +995,7 @@
           <div class="practice-quiz">
             <h4>Mini quiz · ${escapeHtml(quizTitle)}</h4>
             <div class="practice-options">
-              ${quiz.options.map((option, index) => {
+              ${displayOptions.map((option) => {
                 const isCorrect = option === quiz.options[quiz.correct];
                 let stateClass = '';
                 if (savedQuiz) {
