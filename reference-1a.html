@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference 1A — A real buzz about the place</title>
+<style>
+:root{--bg:#eaf8f5;--card:#fff;--text:#103f39;--muted:#5b7873;--accent:#10b9a7;--dark:#087d72;--line:#c9e8e2;--soft:#f1faf8;--warm:#fff8e8}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+main{max-width:1040px;margin:0 auto;padding:26px 18px 80px}
+.topbar{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1040px;margin:auto;padding:12px 18px;display:flex;align-items:center;gap:15px}
+.topbar strong{font-size:1.05rem}
+.back-link{display:inline-flex;padding:8px 12px;border:1px solid #a9dfd6;border-radius:999px;background:#dff8f3;color:var(--dark);text-decoration:none;font-weight:800}
+.hero{padding:28px;border-radius:24px;background:linear-gradient(135deg,#087d72,#12c8b4);color:#fff;box-shadow:0 14px 34px rgba(8,125,114,.2)}
+.eyebrow{font-size:.76rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;opacity:.82}
+.hero h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.03;margin:8px 0}
+.hero p{max-width:720px;margin:0;opacity:.92}
+.quick-nav{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+.quick-nav a{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:7px 11px;font-size:.88rem;font-weight:750}
+.section{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px;margin:20px 0;box-shadow:0 8px 24px rgba(5,92,82,.07)}
+.section h2{font-size:clamp(1.55rem,4vw,2.25rem);line-height:1.1;margin:0 0 18px}
+.section h3{font-size:1.12rem;color:var(--dark);margin:26px 0 9px}
+.rule{padding:15px 17px;border-left:4px solid var(--accent);border-radius:12px;background:var(--soft);margin:12px 0}
+.rule strong{color:var(--dark)}
+.examples{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.example{padding:13px 15px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.note{padding:15px 17px;border-radius:14px;background:var(--warm);border:1px solid #f2dfa9;margin:14px 0}
+.note::before{content:"NOTE";display:block;color:#8b6814;font-size:.7rem;font-weight:900;letter-spacing:.12em;margin-bottom:4px}
+.scale{display:grid;grid-template-columns:1fr auto 1fr;gap:8px 13px;align-items:center;margin-top:16px}
+.scale-head{font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.scale .arrow{color:var(--accent);font-weight:900}
+.scale .plain,.scale .strong{padding:9px 11px;border-radius:10px}
+.scale .plain{background:#f5f8f7}.scale .strong{background:#e3f8f3;font-weight:750}
+.collocations{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chip{padding:8px 11px;border-radius:999px;background:#dff8f3;color:#075f57;font-weight:750}
+.pattern-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pattern{padding:16px;border:1px solid var(--line);border-radius:14px;background:#fff}
+.pattern b{display:block;color:var(--dark);margin-bottom:5px}
+.formula{display:inline-block;padding:4px 8px;border-radius:7px;background:#dff8f3;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:800}
+.dialogue{max-width:780px;margin:18px auto 0}
+.bubble{max-width:82%;padding:13px 16px;border-radius:18px;margin:9px 0}
+.bubble.a{background:#dff8f3;border-bottom-left-radius:5px}
+.bubble.b{background:#eef2f1;margin-left:auto;border-bottom-right-radius:5px}
+.bubble strong{display:block;font-size:.73rem;letter-spacing:.08em;color:var(--dark);margin-bottom:3px}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0}
+.flow span{padding:9px 12px;border-radius:10px;background:var(--soft);font-weight:750}
+.flow i{color:var(--accent);font-style:normal;font-weight:900}
+@media(max-width:700px){
+  .examples,.pattern-grid{grid-template-columns:1fr}
+  .scale{grid-template-columns:1fr auto 1fr;font-size:.92rem}
+  .section,.hero{padding:19px}
+  .topbar-inner{align-items:flex-start;flex-direction:column}
+  .bubble{max-width:94%}
+}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-inner"><a class="back-link" href="./">← Back to Unit 1</a><strong>Reference · 1A</strong></div></header>
+<main>
+<section class="hero">
+<div class="eyebrow">Unit 1A · Grammar &amp; conversation reference</div>
+<h1>A real buzz about the place</h1>
+<p>A compact reference for intensifying descriptions and reinforcing a point in conversation.</p>
+<nav class="quick-nav"><a href="#grammar">Intensifying language</a><a href="#conversation">Developing conversations</a></nav>
+</section>
+
+<section class="section" id="grammar">
+<div class="eyebrow" style="color:var(--dark)">Grammar</div>
+<h2>Intensifying Adverbs and Adjectives</h2>
+
+<h3>Adverb + adjective</h3>
+<div class="rule"><strong>Gradable adjectives</strong> can be made stronger with adverbs such as <em>very</em>, <em>extremely</em> and <em>incredibly</em>.</div>
+<div class="examples"><div class="example">It’s <strong>very cold</strong>.</div><div class="example">I was <strong>extremely tired</strong>.</div></div>
+
+<div class="rule"><strong>Ungradable adjectives</strong> already express an extreme idea. We do not normally use them with <em>very</em>, <em>extremely</em> or <em>incredibly</em>. Instead, use <em>absolutely</em>, <em>completely</em>, <em>totally</em> or <em>utterly</em>.</div>
+<div class="examples"><div class="example">It was <strong>absolutely brilliant</strong>.</div><div class="example">I’m <strong>completely exhausted</strong>.</div></div>
+
+<div class="note"><strong>Really</strong> usually works with both gradable and ungradable adjectives.<br>It was <strong>really good</strong>. · It was <strong>really amazing</strong>.</div>
+
+<div class="note">Some adjectives work with intensifiers used for both groups. Notice and learn these combinations as complete phrases.<br>He’s <strong>very happy</strong>. · I’m <strong>totally happy</strong>.</div>
+
+<h3>Gradable and ungradable equivalents</h3>
+<p>Many gradable adjectives have one or more stronger, ungradable equivalents.</p>
+<div class="scale">
+<div class="scale-head">Gradable</div><div></div><div class="scale-head">Ungradable</div>
+<div class="plain">cold</div><div class="arrow">→</div><div class="strong">freezing</div>
+<div class="plain">interesting</div><div class="arrow">→</div><div class="strong">fascinating</div>
+<div class="plain">hot</div><div class="arrow">→</div><div class="strong">boiling</div>
+<div class="plain">surprised</div><div class="arrow">→</div><div class="strong">flabbergasted</div>
+<div class="plain">tasty</div><div class="arrow">→</div><div class="strong">delicious</div>
+<div class="plain">rich</div><div class="arrow">→</div><div class="strong">rolling-in-it</div>
+<div class="plain">tired</div><div class="arrow">→</div><div class="strong">exhausted</div>
+<div class="plain">poor</div><div class="arrow">→</div><div class="strong">penniless</div>
+<div class="plain">angry</div><div class="arrow">→</div><div class="strong">furious</div>
+<div class="plain">important</div><div class="arrow">→</div><div class="strong">crucial · vital · essential</div>
+<div class="plain">old</div><div class="arrow">→</div><div class="strong">ancient</div>
+<div class="plain">big</div><div class="arrow">→</div><div class="strong">enormous · huge · massive</div>
+<div class="plain">funny</div><div class="arrow">→</div><div class="strong">hilarious</div>
+<div class="plain">small</div><div class="arrow">→</div><div class="strong">tiny · minute</div>
+<div class="plain">hungry</div><div class="arrow">→</div><div class="strong">starving</div>
+<div class="plain">good</div><div class="arrow">→</div><div class="strong">awesome · fantastic · brilliant</div>
+<div class="plain">crowded</div><div class="arrow">→</div><div class="strong">packed</div>
+<div class="plain">bad</div><div class="arrow">→</div><div class="strong">awful · terrible</div>
+<div class="plain">loud</div><div class="arrow">→</div><div class="strong">deafening</div>
+</div>
+
+<h3>Useful collocations</h3>
+<p>Some intensifying adverb + adjective combinations are fixed or especially common. Learn them as complete phrases.</p>
+<div class="collocations"><span class="chip">bitterly disappointed</span><span class="chip">blissfully happy</span><span class="chip">brutally honest</span><span class="chip">fiercely competitive</span><span class="chip">sorely missed</span></div>
+<div class="examples">
+<div class="example">She’s always been <strong>fiercely competitive</strong>.</div>
+<div class="example">To be <strong>brutally honest</strong>, this is not good enough.</div>
+<div class="example">You’ll be <strong>sorely missed</strong> when you leave.</div>
+</div>
+
+<h3>Adjective + noun</h3>
+<div class="rule">The adjective forms <em>absolute</em>, <em>complete</em>, <em>total</em> and <em>utter</em> can intensify nouns.</div>
+<div class="pattern-grid">
+<div class="pattern"><b>absolute + noun</b>It’s an <strong>absolute mess</strong>.</div>
+<div class="pattern"><b>complete + noun</b>I’m in <strong>complete shock</strong>.</div>
+<div class="pattern"><b>total + noun</b>It’s <strong>total chaos</strong>.</div>
+<div class="pattern"><b>utter + noun</b>It’s an <strong>utter disaster</strong>.</div>
+</div>
+
+<h3>Combining intensifiers</h3>
+<div class="rule">We sometimes join <em>absolute(ly)</em>, <em>complete(ly)</em>, <em>total(ly)</em> and <em>utter(ly)</em> with <strong>and</strong> for extra emphasis. <em>Utter(ly)</em> commonly comes second.</div>
+<div class="examples"><div class="example">It was <strong>totally and utterly unfair</strong>.</div><div class="example">It’s a <strong>complete and utter disgrace</strong>.</div></div>
+
+<div class="note">We do not usually combine <em>very</em>, <em>really</em>, <em>extremely</em> and <em>incredibly</em> with <strong>and</strong>. However, we can repeat an intensifier.<br>She’s <strong>very, very lucky</strong>. · It was <strong>really, really interesting</strong>.</div>
+
+<h3>Informal intensifier: super</h3>
+<div class="rule">In informal English, <strong>super</strong> can intensify some adjectives.</div>
+<div class="examples"><div class="example">The museum is <strong>super interesting</strong>.</div><div class="example">The place is <strong>super cool</strong>.</div></div>
+</section>
+
+<section class="section" id="conversation">
+<div class="eyebrow" style="color:var(--dark)">Developing conversations</div>
+<h2>Reinforcing, emphasizing and exemplifying a point</h2>
+<p>We often use a <strong>simile</strong> to emphasize or exaggerate a point in an anecdote. The listener may respond with <em>Really?</em>, <em>Yeah?</em> or a similar reaction. The speaker then reinforces the point with another example introduced by <em>Honestly</em>, <em>Absolutely</em>, <em>I swear</em>, and similar expressions.</p>
+
+<div class="flow"><span>Simile or strong image</span><i>→</i><span>Listener’s reaction</span><i>→</i><span>Reinforcement + example</span></div>
+
+<div class="dialogue">
+<div class="bubble a"><strong>A · STRONG IMAGE</strong>It’s like hitting this thick wall of heat.</div>
+<div class="bubble b"><strong>B · REACTION</strong>Gosh. Really?</div>
+<div class="bubble a"><strong>A · REINFORCEMENT</strong><em>Honestly.</em> You’d just die if you walked for any length of time.</div>
+</div>
+</section>
+</main>
+</body>
+</html>
