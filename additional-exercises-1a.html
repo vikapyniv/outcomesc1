@@ -16,8 +16,10 @@ main{max-width:980px;margin:0 auto;padding:22px 16px 70px}
 .topbar strong{font-size:1.05rem}
 .back-link{display:inline-flex;padding:8px 12px;border:1px solid #a9dfd6;border-radius:999px;background:#dff8f3;color:#087d72;text-decoration:none;font-weight:800}
 .content-label{margin:28px 0 10px;color:#087d72;font-size:.78rem;font-weight:900;letter-spacing:.14em}
+.grammar-title{font-size:clamp(1.8rem,4vw,2.6rem);margin:4px 0}
+.grammar-subtitle{font-size:clamp(1.15rem,3vw,1.45rem);margin:0 0 22px;color:#087d72}
 .section{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin:16px 0;box-shadow:0 8px 24px rgba(5,92,82,.07)}
-.section h1{margin:0 0 8px;font-size:clamp(1.35rem,3vw,1.8rem)}
+.section h2{margin:0 0 8px;font-size:clamp(1.25rem,3vw,1.6rem)}
 .instruction{color:var(--muted);margin-top:0}
 .item{padding:11px 0;border-bottom:1px solid #d8ede9;line-height:1.7}
 .item:last-of-type{border-bottom:0}
@@ -25,18 +27,68 @@ input[type="text"]{font:inherit;border:1px solid var(--line);border-radius:8px;p
 .controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
 .primary{background:var(--accent);color:#fff}
 .secondary{background:#dff0ed;color:var(--text)}
-.feedback{font-weight:800;margin-top:12px}
+.feedback{font-weight:800;margin-top:12px;min-height:24px}
 .correct{outline:2px solid #86efac;background:#f0fdf4}
 .incorrect{outline:2px solid #fca5a5;background:#fef2f2}
-@media(max-width:560px){main{padding:16px 12px 36px}.section{padding:16px}input[type="text"]{display:block;width:100%;margin:6px 0}.controls button{flex:1}}
+.phrase-bank{display:flex;flex-wrap:wrap;gap:9px;padding:14px;margin:16px 0 20px;border:1px solid var(--line);border-radius:14px;background:#f3fbf9;min-height:58px}
+.phrase-chip{border:1px solid #9dded4;background:#fff;color:var(--text);padding:8px 11px;border-radius:999px;font-weight:750;cursor:grab;user-select:none;touch-action:none}
+.phrase-chip:active{cursor:grabbing}
+.phrase-chip.selected{outline:3px solid #7dd3c7;background:#dff8f3}
+.drop-gap{display:inline-flex;vertical-align:middle;align-items:center;justify-content:center;min-width:210px;min-height:42px;margin:4px 5px;padding:4px 7px;border:2px dashed #9bcfc7;border-radius:10px;background:#f8fdfc}
+.drop-gap.over{border-color:var(--accent);background:#dff8f3}
+.drop-gap .phrase-chip{width:100%;text-align:center;border-radius:8px}
+.example{background:#f3fbf9;border-left:4px solid var(--accent);padding:12px 14px;border-radius:10px;margin:14px 0}
+@media(max-width:560px){
+  main{padding:16px 12px 36px}.section{padding:16px}
+  input[type="text"]{display:block;width:100%;margin:6px 0}
+  .controls button{flex:1}
+  .drop-gap{display:flex;width:100%;margin:7px 0}
+  .topbar-inner{align-items:flex-start;flex-direction:column}
+}
 </style>
 </head>
 <body>
 <header class="topbar"><div class="topbar-inner"><a class="back-link" href="./">← Back to Unit 1</a><strong>Additional exercises · Optional · 1A</strong></div></header>
 <main>
-<div class="content-label">ADDITIONAL EXERCISES · OPTIONAL · 1A</div>
-<section class="section" id="a2">
-<h1>3. Complete the sentences with the correct form of the words in brackets.</h1>
+<div class="content-label">GRAMMAR</div>
+<h1 class="grammar-title">Grammar</h1>
+<h2 class="grammar-subtitle">Intensifying Adverbs and Adjectives</h2>
+
+<section class="section" id="intensifiers">
+<h2>1. Complete the second sentence so it means the same as the first with ungradable adverb-adjective phrases from the box.</h2>
+<p class="instruction">Drag each phrase into the correct gap. One phrase is not used.</p>
+<div class="phrase-bank" id="phraseBank">
+<button type="button" class="phrase-chip" draggable="true" data-value="absolutely freezing">absolutely freezing</button>
+<button type="button" class="phrase-chip" draggable="true" data-value="absolutely rolling-in-it">absolutely rolling-in-it</button>
+<button type="button" class="phrase-chip" draggable="true" data-value="completely ancient">completely ancient</button>
+<button type="button" class="phrase-chip" draggable="true" data-value="completely deafening">completely deafening</button>
+<button type="button" class="phrase-chip" draggable="true" data-value="extremely minute">extremely minute</button>
+<button type="button" class="phrase-chip" draggable="true" data-value="totally flabbergasted">totally flabbergasted</button>
+<button type="button" class="phrase-chip" draggable="true" data-value="totally packed">totally packed</button>
+<button type="button" class="phrase-chip" draggable="true" data-value="utterly huge">utterly huge</button>
+<button type="button" class="phrase-chip" draggable="true" data-value="utterly pointless">utterly pointless</button>
+</div>
+
+<div class="example"><strong>Example:</strong><br>It was really cold in her house.<br>It was <strong>absolutely freezing</strong> in her house.</div>
+
+<div class="item"><strong>1.</strong> My sister got a job in the city and now she’s really rich.<br>My sister got a job in the city and now she’s <span class="drop-gap" data-answer="absolutely rolling-in-it"></span>.</div>
+<div class="item"><strong>2.</strong> The bus was rather crowded and I had to stand.<br>The bus was <span class="drop-gap" data-answer="totally packed"></span> and I had to stand.</div>
+<div class="item"><strong>3.</strong> No one drives on this new road. It has no purpose.<br>No one drives on this new road. It’s <span class="drop-gap" data-answer="utterly pointless"></span>.</div>
+<div class="item"><strong>4.</strong> I was really surprised to see Sandy at the office.<br>I was <span class="drop-gap" data-answer="totally flabbergasted"></span> when I saw Sandy at the office.</div>
+<div class="item"><strong>5.</strong> The music from the bar downstairs was very loud.<br>The music from the bar downstairs was <span class="drop-gap" data-answer="completely deafening"></span>.</div>
+<div class="item"><strong>6.</strong> That new building is really big.<br>That new building is <span class="drop-gap" data-answer="utterly huge"></span>.</div>
+<div class="item"><strong>7.</strong> I hate this house because it’s very old.<br>I hate this house because it’s <span class="drop-gap" data-answer="completely ancient"></span>.</div>
+<div class="item"><strong>8.</strong> I wouldn’t worry about the design flaw. It’s very small.<br>I wouldn’t worry about the design flaw. It’s <span class="drop-gap" data-answer="extremely minute"></span>.</div>
+
+<div class="controls">
+<button class="primary" id="checkDrag">Check answers</button>
+<button class="secondary" id="resetDrag">Reset</button>
+</div>
+<div class="feedback" id="dragFeedback" aria-live="polite"></div>
+</section>
+
+<section class="section" id="wordForms">
+<h2>2. Complete the sentences with the correct form of the words in brackets.</h2>
 <p class="instruction">Complete the sentences with the correct form of the words in brackets.</p>
 <div class="item"><strong>Example:</strong> I hate that this is your last day; you’ll be <strong>sorely missed</strong> (sore / miss).</div>
 <div class="item"><strong>1.</strong> I hate to be <input type="text" data-answer="brutally honest" placeholder="Type your answer"> (brutal / honest), but you’re not cut out for this city.</div>
@@ -48,31 +100,89 @@ input[type="text"]{font:inherit;border:1px solid var(--line);border-radius:8px;p
 <div class="item"><strong>7.</strong> It’s <input type="text" data-answer="completely boiling" placeholder="Type your answer"> (complete / boil) in the city today. I have to get out of here!</div>
 <div class="item"><strong>8.</strong> If you think rent’s going to be cheaper here, you’ll be <input type="text" data-answer="bitterly disappointed" placeholder="Type your answer"> (bitter / disappoint).</div>
 <div class="controls">
-<button class="primary" id="checkAnswers">Check answers</button>
-<button class="secondary" id="showAnswers">Show answers</button>
-<button class="secondary" id="resetAnswers">Reset</button>
+<button class="primary" id="checkWordForms">Check answers</button>
+<button class="secondary" id="showWordForms">Show answers</button>
+<button class="secondary" id="resetWordForms">Reset</button>
 </div>
-<div class="feedback" aria-live="polite"></div>
+<div class="feedback" id="wordFormsFeedback" aria-live="polite"></div>
 </section>
 </main>
 <script>
-const section=document.getElementById("a2");
-const fields=[...section.querySelectorAll("[data-answer]")];
-const feedback=section.querySelector(".feedback");
+const phraseBank=document.getElementById("phraseBank");
+const dropGaps=[...document.querySelectorAll(".drop-gap")];
+const phraseChips=[...document.querySelectorAll(".phrase-chip")];
+let draggedChip=null;
+let selectedChip=null;
+
+function clearSelection(){
+  phraseChips.forEach(chip=>chip.classList.remove("selected"));
+  selectedChip=null;
+}
+function placeChip(chip,gap){
+  const existing=gap.querySelector(".phrase-chip");
+  if(existing&&existing!==chip) phraseBank.appendChild(existing);
+  gap.appendChild(chip);
+  gap.classList.remove("correct","incorrect","over");
+  clearSelection();
+}
+phraseChips.forEach(chip=>{
+  chip.addEventListener("dragstart",event=>{
+    draggedChip=chip;
+    event.dataTransfer.effectAllowed="move";
+    event.dataTransfer.setData("text/plain",chip.dataset.value);
+  });
+  chip.addEventListener("dragend",()=>{draggedChip=null;dropGaps.forEach(gap=>gap.classList.remove("over"))});
+  chip.addEventListener("click",()=>{
+    if(selectedChip===chip){clearSelection();return}
+    clearSelection();selectedChip=chip;chip.classList.add("selected");
+  });
+  chip.addEventListener("dblclick",()=>{phraseBank.appendChild(chip);clearSelection()});
+});
+dropGaps.forEach(gap=>{
+  gap.addEventListener("dragover",event=>{event.preventDefault();event.dataTransfer.dropEffect="move";gap.classList.add("over")});
+  gap.addEventListener("dragleave",()=>gap.classList.remove("over"));
+  gap.addEventListener("drop",event=>{event.preventDefault();gap.classList.remove("over");if(draggedChip)placeChip(draggedChip,gap)});
+  gap.addEventListener("click",()=>{if(selectedChip)placeChip(selectedChip,gap)});
+});
+phraseBank.addEventListener("dragover",event=>event.preventDefault());
+phraseBank.addEventListener("drop",event=>{event.preventDefault();if(draggedChip)phraseBank.appendChild(draggedChip);clearSelection()});
+
+document.getElementById("checkDrag").addEventListener("click",()=>{
+  let score=0;
+  dropGaps.forEach(gap=>{
+    const chip=gap.querySelector(".phrase-chip");
+    const ok=chip?.dataset.value===gap.dataset.answer;
+    gap.classList.remove("correct","incorrect");
+    gap.classList.add(ok?"correct":"incorrect");
+    if(ok)score++;
+  });
+  document.getElementById("dragFeedback").textContent=`Score: ${score}/${dropGaps.length}`;
+});
+document.getElementById("resetDrag").addEventListener("click",()=>{
+  phraseChips.forEach(chip=>phraseBank.appendChild(chip));
+  dropGaps.forEach(gap=>gap.classList.remove("correct","incorrect","over"));
+  clearSelection();
+  document.getElementById("dragFeedback").textContent="";
+});
+
+const wordFormSection=document.getElementById("wordForms");
+const wordFormFields=[...wordFormSection.querySelectorAll("[data-answer]")];
+const wordFormsFeedback=document.getElementById("wordFormsFeedback");
 const normalize=value=>String(value).trim().toLowerCase().replace(/[’‘]/g,"'").replace(/\s+/g," ");
 const mark=(field,ok)=>{field.classList.remove("correct","incorrect");field.classList.add(ok?"correct":"incorrect")};
-document.getElementById("checkAnswers").addEventListener("click",()=>{
+
+document.getElementById("checkWordForms").addEventListener("click",()=>{
   let score=0;
-  fields.forEach(field=>{const ok=normalize(field.value)===normalize(field.dataset.answer);mark(field,ok);if(ok)score++});
-  feedback.textContent=`Score: ${score}/${fields.length}`;
+  wordFormFields.forEach(field=>{const ok=normalize(field.value)===normalize(field.dataset.answer);mark(field,ok);if(ok)score++});
+  wordFormsFeedback.textContent=`Score: ${score}/${wordFormFields.length}`;
 });
-document.getElementById("showAnswers").addEventListener("click",()=>{
-  fields.forEach(field=>{field.value=field.dataset.answer;mark(field,true)});
-  feedback.textContent="Answers shown.";
+document.getElementById("showWordForms").addEventListener("click",()=>{
+  wordFormFields.forEach(field=>{field.value=field.dataset.answer;mark(field,true)});
+  wordFormsFeedback.textContent="Answers shown.";
 });
-document.getElementById("resetAnswers").addEventListener("click",()=>{
-  fields.forEach(field=>{field.value="";field.classList.remove("correct","incorrect")});
-  feedback.textContent="";
+document.getElementById("resetWordForms").addEventListener("click",()=>{
+  wordFormFields.forEach(field=>{field.value="";field.classList.remove("correct","incorrect")});
+  wordFormsFeedback.textContent="";
 });
 </script>
 </body>
