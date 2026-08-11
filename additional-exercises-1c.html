@@ -31,6 +31,10 @@ input[type="text"]{font-family:Inter,system-ui,sans-serif;border:1px solid var(-
 .correct{outline:2px solid #86efac;background:#f0fdf4}
 .incorrect{outline:2px solid #fca5a5;background:#fef2f2}
 .example{background:#f3fbf9;border-left:4px solid var(--accent);padding:12px 14px;border-radius:10px;margin:14px 0;font-family:Inter,system-ui,sans-serif;line-height:1.55}
+.listening-section{padding:0;overflow:hidden}
+.listening-heading{padding:24px 24px 0}
+.listening-frame{display:block;width:100%;height:980px;border:0;background:var(--bg)}
+@media(max-width:620px){.listening-heading{padding:16px 16px 0}.listening-frame{height:900px}}
 @media(max-width:620px){
   main{padding:16px 12px 36px}.section{padding:16px}
   .topbar-inner{align-items:flex-start;flex-direction:column}
@@ -78,6 +82,14 @@ by November.
 <button class="secondary" id="resetAnswers">Reset</button>
 </div>
 <div class="feedback" id="feedback" aria-live="polite"></div>
+</section>
+
+<section class="section listening-section" id="listeningExercise">
+<div class="listening-heading">
+<h2>2. Listening</h2>
+<p class="instruction">Listen and complete the gaps. The recording pauses automatically after each target sentence, and you can replay each fragment.</p>
+</div>
+<iframe class="listening-frame" src="listening-gapfill-1c.html" title="Listening gap-fill exercise" loading="lazy" allow="autoplay"></iframe>
 </section>
 </main>
 <script>
