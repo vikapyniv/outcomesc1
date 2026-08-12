@@ -198,8 +198,8 @@
     .unit-hero {
       padding: 28px;
       display: grid;
-      grid-template-columns: minmax(220px, .85fr) minmax(300px, 1.4fr);
-      gap: 28px;
+      grid-template-columns: 1fr;
+      gap: 24px;
       border-bottom: 1px solid var(--line);
       background: linear-gradient(135deg, #ffffff 0%, #e9fbf7 100%);
     }
@@ -207,8 +207,10 @@
     .unit-title-wrap {
       display: flex;
       flex-direction: column;
+      align-items: center;
       justify-content: center;
-      min-height: 150px;
+      min-height: 120px;
+      text-align: center;
     }
 
     .unit-label {
@@ -741,6 +743,89 @@
           </div>
         </section>
 
+        <section class="section-card" id="unit2Content" hidden>
+          <div class="unit-hero">
+            <div class="unit-title-wrap">
+              <div>
+                <span class="unit-label">Unit 2</span>
+                <h2 class="unit-main-title">Relationships</h2>
+              </div>
+            </div>
+
+            <div class="syllabus">
+              <div class="syllabus-block">
+                <h3>SPEAKING</h3>
+                <ul>
+                  <li>Explain what people are like and describe personality traits</li>
+                  <li>Discuss issues around love and long-term relationships</li>
+                  <li>Roleplay sharing and talking through problems</li>
+                </ul>
+              </div>
+              <div class="syllabus-block">
+                <h3>GRAMMAR</h3>
+                <ul>
+                  <li>Phrasal verbs</li>
+                  <li><em>Would</em></li>
+                </ul>
+              </div>
+              <div class="syllabus-block">
+                <h3>VOCABULARY</h3>
+                <ul>
+                  <li>Describing people</li>
+                  <li>Relationships</li>
+                </ul>
+              </div>
+              <div class="syllabus-block">
+                <h3>READING</h3>
+                <ul>
+                  <li>An article about long-term partnerships and science</li>
+                </ul>
+              </div>
+              <div class="syllabus-block">
+                <h3>LISTENING</h3>
+                <ul>
+                  <li>Three short conversations about different people</li>
+                  <li>Five people talk about an incident involving a young man</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="lessons">
+            <h2>Lessons and practice</h2>
+
+            <div class="lesson-row">
+              <button class="lesson-btn" data-message="Lesson 2A · Get the impression — materials are coming soon.">2A. Get the impression</button>
+              <div class="practice-buttons">
+                <button class="hw-btn" data-message="Homework 2A is coming soon.">HW 2A</button>
+                <button class="additional-btn" data-message="Additional exercises 2A are coming soon.">Additional exercises<span class="optional-label">Optional · 2A</span></button>
+                <button class="reference-btn" data-message="Reference 2A is coming soon.">Reference</button>
+              </div>
+              <button class="extra-btn vocab-btn" data-message="Vocabulary 2A is coming soon.">Vocabulary</button>
+            </div>
+
+            <div class="lesson-row">
+              <button class="lesson-btn" data-message="Lesson 2B · Getting together — materials are coming soon.">2B. Getting together</button>
+              <div class="practice-buttons">
+                <button class="hw-btn" data-message="Homework 2B is coming soon.">HW 2B</button>
+                <button class="additional-btn" data-message="Additional exercises 2B are coming soon.">Additional exercises<span class="optional-label">Optional · 2B</span></button>
+                <button class="reference-btn" data-message="Reference 2B is coming soon.">Reference</button>
+              </div>
+              <button class="extra-btn vocab-btn" data-message="Vocabulary 2B is coming soon.">Vocabulary</button>
+            </div>
+
+            <div class="lesson-row">
+              <button class="lesson-btn" data-message="Lesson 2C · Mixed messages — materials are coming soon.">2C. Mixed messages</button>
+              <div class="practice-buttons">
+                <button class="hw-btn" data-message="Homework 2C is coming soon.">HW 2C</button>
+                <button class="additional-btn" data-message="Additional exercises 2C are coming soon.">Additional exercises<span class="optional-label">Optional · 2C</span></button>
+                <button class="reference-btn" data-message="Reference 2C is coming soon.">Reference</button>
+              </div>
+              <button class="extra-btn vocab-btn" data-message="Vocabulary 2C is coming soon.">Vocabulary</button>
+            </div>
+          </div>
+        </section>
+
         <section class="placeholder-panel" id="emptyUnitContent" hidden>
           <div><h2>Unit</h2><p>This unit is ready to be developed.</p></div>
         </section>
@@ -805,7 +890,7 @@
 
   <script>
     const units = [
-      'Cities', 'Unit 2', 'Unit 3', 'Unit 4',
+      'Cities', 'Relationships', 'Unit 3', 'Unit 4',
       'Unit 5', 'Unit 6', 'Unit 7', 'Unit 8',
       'Unit 9', 'Unit 10', 'Unit 11', 'Unit 12',
       'Unit 13', 'Unit 14', 'Unit 15', 'Unit 16'
@@ -814,23 +899,27 @@
     const unitGrid = document.getElementById('unitGrid');
     units.forEach((name, index) => {
       const btn = document.createElement('button');
-      btn.className = 'unit-chip ' + (index === 0 ? 'active' : 'empty');
+      btn.className = 'unit-chip ' + (index === 0 ? 'active' : (index === 1 ? '' : 'empty'));
       btn.innerHTML = `
         <div class="unit-number">UNIT ${index + 1}</div>
         <div class="unit-name">${name}</div>
-        <div class="unit-status">${index === 0 ? 'Open unit' : 'Coming later'}</div>`;
+        <div class="unit-status">${index < 2 ? 'Open unit' : 'Coming later'}</div>`;
       btn.addEventListener('click', () => {
         document.querySelectorAll('.unit-chip').forEach(chip => chip.classList.remove('active'));
         btn.classList.add('active');
 
+        const unit1 = document.getElementById('unitContent');
+        const unit2 = document.getElementById('unit2Content');
+        const emptyPanel = document.getElementById('emptyUnitContent');
+        unit1.hidden = index !== 0;
+        unit2.hidden = index !== 1;
+        emptyPanel.hidden = index < 2;
+
         if (index === 0) {
-          document.getElementById('unitContent').hidden = false;
-          document.getElementById('emptyUnitContent').hidden = true;
-          document.getElementById('unitContent').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          unit1.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else if (index === 1) {
+          unit2.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else {
-          document.getElementById('unitContent').hidden = true;
-          const emptyPanel = document.getElementById('emptyUnitContent');
-          emptyPanel.hidden = false;
           emptyPanel.querySelector('h2').textContent = `Unit ${index + 1}`;
           emptyPanel.querySelector('p').textContent = 'This unit is ready to be developed. Its lessons, homework and vocabulary materials will appear here.';
           emptyPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
