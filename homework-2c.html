@@ -5,7 +5,54 @@
 main{max-width:1040px;margin:auto;padding:28px 18px 70px}.hero{padding:28px;border-radius:23px;background:linear-gradient(135deg,#087d72,#12c8b4);color:#fff;box-shadow:var(--shadow)}.eyebrow{font-size:.75rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;opacity:.85}h1{font-size:clamp(2.2rem,5vw,3.7rem);margin:7px 0;line-height:1}.hero p{margin:0;opacity:.92}
 .exercise{margin-top:20px;padding:24px;background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}.exercise h2{margin:0 0 5px;font-size:1.35rem}.instruction{margin:0 0 18px;color:var(--muted)}.frame{display:block;width:100%;height:1080px;border:0;border-radius:16px;background:var(--bg)}
 @media(max-width:650px){main{padding:18px 10px 45px}.exercise{padding:10px}.frame{height:980px}}
+
+.grammar-label{margin:28px 0 8px;color:var(--dark);font-size:.78rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.grammar-card{margin-top:0;padding:24px;background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+.grammar-card h2{margin:0 0 5px;font-size:1.45rem}.grammar-card .instruction{margin-bottom:18px}
+.would-list{display:grid;gap:10px}.would-item{display:grid;grid-template-columns:auto 31px 1fr;gap:10px;align-items:start;padding:14px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(120deg,#fff,#f5fcfa);cursor:pointer;transition:.18s}
+.would-item:hover{border-color:#8fd8cd;transform:translateY(-1px)}.would-item input{width:20px;height:20px;margin:3px 0;accent-color:var(--accent)}.would-num{display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:#dff8f3;color:var(--dark);font-size:.78rem;font-weight:900}.would-text{line-height:1.55}
+.would-item.chosen-correct{border-color:#65bd88;background:#effaf3}.would-item.chosen-wrong{border-color:#df8b86;background:#fff1f0}.would-item.missed{border-color:#e4b84d;background:#fff9e9}
+.correction{display:none;grid-column:3;margin-top:5px;padding:10px 12px;border-left:4px solid var(--accent);border-radius:9px;background:#e6f8f4;color:var(--dark);font-weight:750}.would-item.reveal .correction{display:block}
+.grammar-controls{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.grammar-controls button{border:0;border-radius:11px;padding:10px 15px;font-weight:850;cursor:pointer}.grammar-check{background:var(--accent);color:#fff}.grammar-reset{background:#dff0ed;color:var(--text)}.grammar-feedback{min-height:24px;margin-top:10px;font-weight:850}
+@media(max-width:650px){.grammar-card{padding:16px}.would-item{grid-template-columns:auto 28px 1fr;padding:12px}.correction{grid-column:2/4}}
 </style></head><body><header class="topbar"><div class="topbar-inner"><a class="back" href="./">← Back to Unit 2</a><strong>Homework · 2C</strong></div></header><main>
 <section class="hero"><div class="eyebrow">Homework 2C</div><h1>Listening</h1><p>Listen carefully and complete the gaps.</p></section>
 <section class="exercise"><h2>1. Listen and fill in the gaps.</h2><p class="instruction">The recording pauses automatically after each target line. Fill in the missing words, replay the fragment if necessary, and then continue.</p><iframe class="frame" src="listening-gapfill-2c.html" title="Interactive listening gap-fill for Homework 2C" allow="autoplay"></iframe></section>
-</main></body></html>
+<div class="grammar-label">Grammar</div>
+<section class="grammar-card" id="wouldExercise">
+<h2>2. Would</h2>
+<p class="instruction">Which five sentences are incorrect? Select only the incorrect sentences, then check your answers.</p>
+<div class="would-list">
+<label class="would-item" data-incorrect="false"><input type="checkbox"><span class="would-num">1</span><span class="would-text">I didn’t think I would enjoy the course, but the teacher has been great.</span></label>
+<label class="would-item" data-incorrect="true"><input type="checkbox"><span class="would-num">2</span><span class="would-text">I often got into trouble at school just because I would have really long hair.</span><span class="correction">I often got into trouble at school just because I <strong>had</strong> really long hair.</span></label>
+<label class="would-item" data-incorrect="false"><input type="checkbox"><span class="would-num">3</span><span class="would-text">I’d hope that it’d all be sorted out pretty quickly.</span></label>
+<label class="would-item" data-incorrect="true"><input type="checkbox"><span class="would-num">4</span><span class="would-text">My parents wish we would live a bit closer to them.</span><span class="correction">My parents wish we <strong>lived</strong> a bit closer to them.</span></label>
+<label class="would-item" data-incorrect="true"><input type="checkbox"><span class="would-num">5</span><span class="would-text">I wouldn’t be here if I wouldn’t have had the surgery.</span><span class="correction">I wouldn’t be here if I <strong>hadn’t had</strong> the surgery.</span></label>
+<label class="would-item" data-incorrect="false"><input type="checkbox"><span class="would-num">6</span><span class="would-text">I wouldn’t have said it was a big problem.</span></label>
+<label class="would-item" data-incorrect="true"><input type="checkbox"><span class="would-num">7</span><span class="would-text">Seriously, I wish my brother shut up sometimes.</span><span class="correction">Seriously, I wish my brother <strong>would shut up</strong> sometimes.</span></label>
+<label class="would-item" data-incorrect="false"><input type="checkbox"><span class="would-num">8</span><span class="would-text">I tried to talk him out of it, but he wouldn’t listen and carried on.</span></label>
+<label class="would-item" data-incorrect="true"><input type="checkbox"><span class="would-num">9</span><span class="would-text">It doesn’t surprise me. I knew he’ll say that! He’s so predictable!</span><span class="correction">It doesn’t surprise me. I knew <strong>he’d say</strong> that! He’s so predictable!</span></label>
+<label class="would-item" data-incorrect="false"><input type="checkbox"><span class="would-num">10</span><span class="would-text">I would have thought it’d be fine if you arrived a little bit late.</span></label>
+</div>
+<div class="grammar-controls"><button class="grammar-check" id="checkWould">Check answers</button><button class="grammar-reset" id="resetWould">Reset</button></div>
+<div class="grammar-feedback" id="wouldFeedback" aria-live="polite"></div>
+</section>
+</main><script>
+const wouldItems=[...document.querySelectorAll('.would-item')];
+document.getElementById('checkWould').addEventListener('click',()=>{
+ let score=0;
+ wouldItems.forEach(item=>{
+   const incorrect=item.dataset.incorrect==='true',chosen=item.querySelector('input').checked,ok=chosen===incorrect;
+   if(ok)score++;
+   item.classList.remove('chosen-correct','chosen-wrong','missed','reveal');
+   if(chosen)item.classList.add(incorrect?'chosen-correct':'chosen-wrong');
+   else if(incorrect)item.classList.add('missed');
+   if(incorrect)item.classList.add('reveal');
+ });
+ document.getElementById('wouldFeedback').textContent='Score: '+score+'/'+wouldItems.length+' · The five incorrect sentences and their corrections are now shown.';
+});
+document.getElementById('resetWould').addEventListener('click',()=>{
+ wouldItems.forEach(item=>{item.querySelector('input').checked=false;item.classList.remove('chosen-correct','chosen-wrong','missed','reveal')});
+ document.getElementById('wouldFeedback').textContent='';
+});
+</script></body></html>
