@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>2C. Mixed messages — Would</title>
+<style>
+*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#f7f7f5;color:#222;line-height:1.5}.wrap{max-width:1120px;margin:0 auto;padding:28px 18px 60px}.task{background:#fff;border:1px solid #ddd;border-radius:14px;padding:22px;margin-bottom:24px}.task h2{margin:0 0 8px;font-size:22px}.inst{margin:0 0 18px;color:#555}.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-bottom:18px}.cat{border:1px solid #cfcfcf;border-radius:10px;padding:12px;background:#fafafa;min-height:92px}.cat strong{display:block;margin-bottom:2px}.cat small{color:#666}.drop{margin-top:9px;min-height:34px;border:1px dashed #bbb;border-radius:8px;padding:6px;background:#fff}.bank{display:flex;flex-wrap:wrap;gap:8px}.chip{border:1px solid #bbb;background:white;border-radius:999px;padding:8px 11px;cursor:grab;font-size:14px}.chip:active{cursor:grabbing}.chip.correct{border-color:#4f8a4f;background:#eff8ef}.chip.wrong{border-color:#b85b5b;background:#fff0f0}button{border:1px solid #aaa;background:#fff;border-radius:9px;padding:8px 12px;cursor:pointer;margin-right:7px;font:inherit}button:hover{background:#f1f1f1}.actions{margin-top:16px}.feedback{margin-top:12px;font-weight:700}.card{border:1px solid #ddd;border-radius:12px;padding:18px;background:#fff;min-height:270px}.counter{font-size:13px;color:#777;margin-bottom:10px}.situation-text{font-size:18px;margin:0 0 18px}.opts{display:grid;gap:9px}.opt{display:block;border:1px solid #ccc;border-radius:9px;padding:11px 13px;cursor:pointer;background:#fff;text-align:left}.opt:hover{background:#fafafa}.opt.selected{border-color:#777;background:#f5f5f5}.opt.good{border-color:#4f8a4f;background:#eff8ef}.opt.bad{border-color:#b85b5b;background:#fff0f0}.nav{display:flex;align-items:center;justify-content:space-between;margin-top:16px;gap:10px}.nav-right{display:flex}.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}.tab{padding:8px 10px;border-radius:999px}.tab.active{background:#222;color:#fff;border-color:#222}.panel{display:none}.panel.active{display:block}.vocab{font-weight:700;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:pointer;position:relative}.tip{display:none;position:absolute;z-index:10;left:0;top:1.7em;min-width:130px;background:#222;color:#fff;padding:6px 8px;border-radius:7px;font-size:12px;font-weight:400;text-decoration:none}.vocab.open .tip{display:block}.structures{margin-top:16px;padding-top:14px;border-top:1px solid #eee}.structures b{display:block;margin-bottom:8px}.structure-list{display:flex;flex-wrap:wrap;gap:8px}.structure{border:1px solid #d7d7d7;background:#fafafa;border-radius:999px;padding:7px 10px;font-size:14px}.next-only{margin-top:16px}
+
+:root{--bg:#eaf8f5;--card:#fff;--text:#103f39;--muted:#5b7873;--line:#c9e8e2;--accent:#10b9a7;--dark:#087d72;--soft:#dff8f3;--ok:#14804a;--bad:#c0362c;--shadow:0 13px 32px rgba(5,92,82,.1)}
+body{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(circle at 84% 4%,rgba(16,185,167,.14),transparent 28%),var(--bg);color:var(--text)}
+.topbar{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1120px;margin:auto;padding:12px 18px;display:flex;align-items:center;gap:15px}
+.back{display:inline-flex;padding:8px 12px;border:1px solid #a9dfd6;border-radius:999px;background:var(--soft);color:var(--dark);text-decoration:none;font-size:.8rem;font-weight:850}
+.wrap{padding-top:28px}
+.hero{padding:30px;margin-bottom:24px;border-radius:24px;background:linear-gradient(135deg,#063f3a,#0a998a);color:#fff;box-shadow:var(--shadow)}
+.eyebrow{font-size:.75rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;color:#9af2e5}
+.hero h1{font-size:clamp(2.2rem,5vw,3.8rem);line-height:1;margin:8px 0}.hero p{margin:0;color:#d4f4ef}
+.task{border-color:var(--line);border-radius:20px;box-shadow:var(--shadow);padding:25px}.task h2{color:var(--dark)}
+.cat,.card{border-color:var(--line);border-radius:14px}.cat{background:#f5fcfa}.drop{border-color:#9fd8cf}
+.chip,.opt,.structure,button{border-color:#a9d9d2}.chip{color:var(--dark);font-weight:800}.chip.correct,.opt.good{border-color:#65bd88;background:#ebfaf1}.chip.wrong,.opt.bad{border-color:#df8b86;background:#fff0ef}
+.actions button,#check7,#next7,.next9{border:0;background:var(--accent);color:#fff;font-weight:850}
+.tabs .tab{color:var(--dark);font-weight:800}.tab.active{background:var(--dark);border-color:var(--dark)}
+.vocab{display:inline-block;padding:0 4px;border-radius:5px;color:var(--dark);background:#dcf8f3;text-decoration-color:var(--accent);font-weight:850}
+.tip{min-width:145px;background:#063f3a;box-shadow:0 8px 20px rgba(0,0,0,.2);text-align:center}
+.structure{background:var(--soft);color:var(--dark);font-weight:750}
+@media(max-width:600px){.wrap{padding:18px 10px 50px}.hero,.task{padding:18px}.tip{left:50%;transform:translateX(-50%)}}
+</style>
+</head>
+<body><header class="topbar"><div class="topbar-inner"><a class="back" href="./">← Back to Unit 2</a><strong>2C · Mixed messages</strong></div></header><main class="wrap"><section class="hero"><div class="eyebrow">Grammar</div><h1>Would</h1><p>Explore the main functions of <strong>would</strong> and practise choosing natural structures in context.</p></section>
+<section class="task" id="task8">
+<h2>1. Functions of would</h2><p class="inst">Match the phrases to the function they perform.</p>
+<div class="cats" id="cats8">
+<div class="cat" data-cat="conditional"><strong>Hypothetical result</strong><small>imagined result or consequence</small><div class="drop"></div></div>
+<div class="cat" data-cat="advice"><strong>Advice</strong><small>what you recommend doing</small><div class="drop"></div></div>
+<div class="cat" data-cat="opinion"><strong>Cautious opinion</strong><small>soften what you think</small><div class="drop"></div></div>
+<div class="cat" data-cat="prediction"><strong>Cautious prediction</strong><small>soften a prediction</small><div class="drop"></div></div>
+<div class="cat" data-cat="request"><strong>Polite request</strong><small>ask more carefully</small><div class="drop"></div></div>
+<div class="cat" data-cat="habit"><strong>Past habit</strong><small>repeated action in past</small><div class="drop"></div></div>
+<div class="cat" data-cat="wish"><strong>Wish + would</strong><small>want behaviour to change</small><div class="drop"></div></div>
+<div class="cat" data-cat="reported"><strong>Past form of will</strong><small>report promise or expectation</small><div class="drop"></div></div>
+</div>
+<div class="bank" id="bank8">
+<div class="chip" draggable="true" data-cat="opinion">I’d say it’s a warning sign.</div><div class="chip" draggable="true" data-cat="request">Would you mind waiting outside?</div><div class="chip" draggable="true" data-cat="habit">She’d call me every Sunday.</div><div class="chip" draggable="true" data-cat="advice">I’d give him some space.</div><div class="chip" draggable="true" data-cat="wish">I wish he’d stop interrupting.</div><div class="chip" draggable="true" data-cat="prediction">I’d expect things to improve.</div><div class="chip" draggable="true" data-cat="reported">He promised he’d come early.</div><div class="chip" draggable="true" data-cat="conditional">I’d leave if it got worse.</div><div class="chip" draggable="true" data-cat="opinion">I wouldn’t say she’s rude.</div><div class="chip" draggable="true" data-cat="request">Would it be OK to reschedule?</div><div class="chip" draggable="true" data-cat="advice">If I were you, I’d apologise.</div><div class="chip" draggable="true" data-cat="prediction">I would think they’d agree.</div><div class="chip" draggable="true" data-cat="habit">My grandad would always help.</div><div class="chip" draggable="true" data-cat="wish">I wish it would stop raining.</div><div class="chip" draggable="true" data-cat="reported">I knew it would happen.</div><div class="chip" draggable="true" data-cat="conditional">I would have stayed if he’d apologised.</div>
+</div><div class="actions"><button onclick="checkTask8()">Check</button><button onclick="resetTask8()">Reset</button><span class="feedback" id="fb8"></span></div>
+</section>
+
+<section class="task" id="task7">
+<h2>2. Mini-check</h2>
+<p class="inst">Read one situation at a time, choose the most natural opening and check your answer.</p>
+<div class="card"><div class="counter" id="counter7"></div><p class="situation-text" id="s7"></p><div class="opts" id="opts7"></div><div class="feedback" id="fb7"></div><div class="nav"><span></span><div class="nav-right"><button id="check7">Check</button><button id="next7">Next</button></div></div></div>
+</section>
+
+<section class="task" id="task9">
+<h2>3. Respond naturally</h2>
+<p class="inst">Choose a category, read one situation at a time and respond using one of the structures below. Click the underlined vocabulary for a short meaning.</p>
+<div class="tabs" id="tabs9"></div><div id="panels9"></div>
+</section>
+</main>
+<script>
+let dragged=null;document.querySelectorAll('.chip').forEach(c=>c.addEventListener('dragstart',()=>dragged=c));document.querySelectorAll('.drop,#bank8').forEach(z=>{z.addEventListener('dragover',e=>e.preventDefault());z.addEventListener('drop',e=>{e.preventDefault();if(dragged)z.appendChild(dragged)})});
+function checkTask8(){let right=0,total=0;document.querySelectorAll('.cat').forEach(cat=>cat.querySelectorAll('.chip').forEach(ch=>{total++;const ok=ch.dataset.cat===cat.dataset.cat;ch.classList.toggle('correct',ok);ch.classList.toggle('wrong',!ok);if(ok)right++}));document.querySelectorAll('#bank8>.chip').forEach(ch=>{ch.classList.remove('correct');ch.classList.add('wrong');total++});document.getElementById('fb8').textContent=`${right}/${total} correct`;}
+function resetTask8(){const bank=document.getElementById('bank8');document.querySelectorAll('.chip').forEach(ch=>{bank.appendChild(ch);ch.classList.remove('correct','wrong')});document.getElementById('fb8').textContent='';}
+
+const q7=[
+{s:'Your friend has been offered a promotion, but the new role would mean much more stress and almost no free time. She asks what you think she should do.',a:['I’d say the salary is probably higher.','If I were you, I’d think about what matters more long-term.','Would you mind taking the promotion?'],c:1},
+{s:'Someone asks whether a small disagreement between two colleagues means their whole working relationship is ruined.',a:['I wouldn’t say it’s a disaster.','I’d recommend talking to HR tomorrow.','I wish they’d stop arguing.'],c:0},
+{s:'Your friend tells you that her grandfather is still weak after an operation, but doctors say his recovery is going well.',a:['Would it be OK to visit him?','I’d expect him to get stronger gradually.','If I were you, I’d change hospitals.'],c:1},
+{s:'You need to leave a class ten minutes early because you have a medical appointment.',a:['I’d say I need to leave.','I wish the class would finish early.','Would it be OK if I left ten minutes early?'],c:2},
+{s:'You are describing your childhood. Every Sunday your grandmother made a huge family lunch and everyone came over.',a:['My grandmother would cook for the whole family every Sunday.','I’d recommend cooking for the family.','I would think she cooks every Sunday.'],c:0},
+{s:'Your flatmate keeps leaving dirty dishes everywhere, even after several conversations about it.',a:['I’d expect the dishes to disappear.','I wish he’d clean up after himself.','Would you mind if I cleaned them?'],c:1},
+{s:'Yesterday your manager promised that she was going to send you the final schedule today.',a:['I’d say she should send it.','She promised she’d send it today.','I wish she’d sent it yesterday.'],c:1},
+{s:'Your friend asks what would happen if she confronted her boss aggressively in front of the whole team.',a:['I’d say your boss is difficult.','Would you mind speaking to him privately?','It would probably make the situation worse.'],c:2},
+{s:'A colleague asks for your impression of a new manager who seems strict but fair.',a:['I’d say she comes across as demanding but reasonable.','If I were you, I’d resign.','I wish she’d be less strict.'],c:0},
+{s:'Your brother said he would help your parents move, but when the day came he simply refused.',a:['I’d expect him to help next time.','He just wouldn’t help them.','Would it be OK if he helped them?'],c:1},
+{s:'Your friend is thinking of sending an angry message immediately after a serious argument.',a:['I’d suggest waiting until you’ve calmed down.','I wouldn’t say the message is angry.','I wish the argument would happen later.'],c:0},
+{s:'You are not certain, but you think two people in your team will eventually resolve their disagreement.',a:['If I were you, I’d resolve it.','I would think they’d work it out eventually.','Would you mind resolving it?'],c:1}
+];
+let q7i=0,selected7=null;const s7=document.getElementById('s7'),opts7=document.getElementById('opts7'),fb7=document.getElementById('fb7'),counter7=document.getElementById('counter7');
+function render7(){selected7=null;fb7.textContent='';const q=q7[q7i];counter7.textContent=`${q7i+1} / ${q7.length}`;s7.textContent=q.s;opts7.innerHTML=q.a.map((x,j)=>`<button class="opt" data-j="${j}">${x}</button>`).join('');}
+opts7.addEventListener('click',e=>{const b=e.target.closest('.opt');if(!b)return;opts7.querySelectorAll('.opt').forEach(x=>x.classList.remove('selected','good','bad'));b.classList.add('selected');selected7=+b.dataset.j;fb7.textContent='';});
+document.getElementById('check7').addEventListener('click',()=>{if(selected7===null){fb7.textContent='Choose an answer first.';return}const q=q7[q7i];opts7.querySelectorAll('.opt').forEach((x,j)=>{x.classList.remove('selected');if(j===q.c)x.classList.add('good');else if(j===selected7)x.classList.add('bad')});fb7.textContent=selected7===q.c?'Correct.':'Try the green option — it fits the situation best.';});
+document.getElementById('next7').addEventListener('click',()=>{q7i=(q7i+1)%q7.length;render7()});render7();
+
+const groups={
+'Hypothetical result':{structures:['I’d … if …','It would … if …','I would have … if …','It would have … if …'],items:[
+['If your manager <v data-d="chooses for special attention">singled you out</v> in front of the whole team for a mistake everyone made, what would happen to your relationship?'],
+['If the project suffered another serious <v data-d="temporary problem">setback</v>, what would you change?'],
+['If two colleagues kept being <v data-d="arguing constantly">at each other’s throats</v> during every meeting, how would it affect the team?'],
+['If she hadn’t <v data-d="made someone relaxed">put you at ease</v> before the interview, how would you have felt?'],
+['If the disagreement developed into a direct <v data-d="conflict">confrontation</v>, what would you do?'] ]},
+'Advice':{structures:['I’d …','I’d advise you to …','I’d recommend …-ing','I’d suggest …-ing','If I were you, I’d …','If I were in your shoes, I’d …'],items:[
+['Your friend is going through a rough <v data-d="difficult period">patch</v> and wants to quit university immediately.'],
+['Your colleague has become <v data-d="too self-satisfied">complacent</v> and has stopped preparing for important meetings.'],
+['Your younger cousin has started getting into trouble, and his parents want to help him stay on <v data-d="honest way of life">the straight and narrow</v>.'],
+['A teammate keeps <v data-d="not working enough">slacking</v>, and the rest of the group now has to do his work.'],
+['Your friend keeps receiving a <v data-d="unclear contradictory signal">mixed message</v> from someone she is dating.'],
+['They’re not on <v data-d="friendly enough to speak">speaking terms</v> at the moment, which can make it awkward at meetings.'],
+['They’re <v data-d="arguing constantly">at each other’s throats</v> all day and they’re constantly competing for my attention.'],
+['Whenever there’s trouble, he always seems to <v data-d="choose for special attention">single me out</v>. It’s not fair.'] ]},
+'Cautious opinion':{structures:['I’d say …','I wouldn’t say …','I would have said …','I wouldn’t have said …'],items:[
+['Her criticism was a real <v data-d="sudden bad event">blow</v> to his confidence, but he still wants to continue. Is his career in serious trouble?'],
+['He has a lot of <v data-d="pleasant attractiveness">charm</v>, but people sometimes confuse that with real competence. What’s your impression of him?'],
+['The promotion <v data-d="was very surprising">came as a shock</v> to everyone. Do you think she was completely unprepared for it?'],
+['There is some <v data-d="tension between people">friction</v> between the two departments, but they still work together successfully. Is that a major problem?'],
+['He has a stubborn <v data-d="strong character trait">streak</v>, but he is also extremely loyal. How would you describe him?'],
+['He <v data-d="helped me survive">got me through</v> a difficult <v data-d="series of losses">losing streak</v> when I <v data-d="stopped performing well">lost my form</v> and helped me <v data-d="recover quickly">bounce back</v>.'],
+['When I was a teenager, she really <v data-d="created my interest">sparked my interest</v> in science.'],
+['I’ve <v data-d="worked together with">collaborated with</v> him on a number of projects and he’s taught me a lot.'],
+['We’re on <v data-d="friendly first-name relationship">first-name terms</v> as I have to go and see him so often.'],
+['They <v data-d="keep work boundaries">maintain a professional relationship</v>, but they don’t <v data-d="agree with each other">see eye to eye</v> on many issues.'],
+['She <v data-d="makes people relaxed">puts people at ease</v> and reassures them about the whole process.'] ]},
+'Cautious prediction':{structures:['I’d expect … to …','I don’t imagine there’d be …','I’d hope to …','I would think … would …','I would have thought … would …'],items:[
+['They had a terrible argument this morning, but both usually calm down quickly. Do you think it will <v data-d="finish and return to normal">blow over</v>?'],
+['The final decision <v data-d="depends mainly on">comes down to</v> whether the company gets funding. What do you expect will happen?'],
+['The doctor may <v data-d="officially let leave">discharge</v> him tomorrow if his test results are good.'],
+['She is still quite <v data-d="weak and delicate">frail</v>, but her recovery has been steady.'],
+['His career <v data-d="chances of success">prospects</v> look much better after the successful launch.'],
+['She <v data-d="makes them work hard">pushes them incredibly hard</v> and if she thinks someone’s <v data-d="not working enough">slacking</v> they get dropped from the next competition.'] ]},
+'Polite request':{structures:['Would it be OK to …?','Would it be OK if I …?','Would you mind …-ing?','Would you mind if I …?'],items:[
+['You need to <v data-d="save and not waste">conserve</v> your energy before tomorrow’s race. Ask your coach to let you skip one optional session.'],
+['You are on <v data-d="friendly first-name relationship">first-name terms</v> with a colleague. Ask them to swap shifts with you.'],
+['Your grandmother is a little <v data-d="not steady on feet">unsteady</v> today. Ask a neighbour to check on her while you are out.'],
+['She’s quite <v data-d="weak and delicate">frail</v> and <v data-d="not steady on feet">unsteady on her feet</v> so I <v data-d="watch and check">keep an eye on her</v> as she has no relatives nearby.'],
+['Ask someone to <v data-d="watch and check">keep an eye on</v> your bag for two minutes.'],
+['A nervous guest has just arrived. Ask your colleague to help <v data-d="make relaxed">put them at ease</v>.'] ]},
+'Past habit':{structures:['I’d often …','I’d always …','We would usually …','Whenever …, I’d …','Every …, we would …'],items:[
+['At university, our professor would <v data-d="organise or manage">conduct</v> a short debate every Friday.'],
+['Before tournaments, our coach used to <v data-d="make work hard">push</v> us incredibly hard.'],
+['Before competitions, the coach would put us through our <v data-d="show ability in practice">paces</v> for nearly two hours.'],
+['When we were teenagers, one small comment could <v data-d="cause to begin">spark</v> an hour-long discussion at dinner.'],
+['Whenever my little brother had an angry <v data-d="sudden emotional explosion">outburst</v>, my grandmother knew exactly how to calm him down.'] ]},
+'Wish + would':{structures:['I wish he’d …','I wish she’d …','I wish they’d …','I wish he wouldn’t …','I wish it would …'],items:[
+['My sister and I never <v data-d="agree with each other">see eye to eye</v> about money, and she brings it up at every family dinner.'],
+['My partner keeps having angry <v data-d="sudden emotional explosions">outbursts</v> over tiny things.'],
+['He always makes a <v data-d="public angry argument">scene</v> when service is slow.'],
+['They are not on <v data-d="friendly enough to speak">speaking terms</v>, and every family event is awkward.'],
+['My parents keep trying to <v data-d="teach or encourage">instil</v> their habits in me even though I’m an adult.'],
+['He doesn’t really <v data-d="do his fair share">pull his weight</v> with the kids, which can cause some <v data-d="tension between people">friction</v>.'] ]},
+'Past form of will':{structures:['He said he’d …','She promised she’d …','They told us it would …','I knew it would …','I thought it would …','He wouldn’t …'],items:[
+['The celebrity knew that life <v data-d="visible to the public">in the public eye</v> would be difficult, but she accepted the role anyway.'],
+['The two departments had a long <v data-d="argument or disagreement">dispute</v>, but the director said they would find a compromise.'],
+['I asked him to apologise, but he refused <v data-d="very directly">point blank</v>.'],
+['She promised she would <v data-d="behave in a way">conduct herself</v> professionally during the hearing.'],
+['The manager assured us that the new rules would help <v data-d="teach or encourage">instil</v> more discipline in the team.'] ]}
+};
+const tabs=document.getElementById('tabs9'),panels=document.getElementById('panels9');const idx9={};
+function vocabify(html){return html.replaceAll('<v ','<span class="vocab" ').replaceAll('</v>','<span class="tip"></span></span>')}
+function renderPanel(name){const p=document.querySelector(`[data-name="${CSS.escape(name)}"]`);const data=groups[name];const i=idx9[name]||0;const item=data.items[i][0];p.querySelector('.counter9').textContent=`${i+1} / ${data.items.length}`;p.querySelector('.s9').innerHTML=vocabify(item);p.querySelector('.structure-list').innerHTML=data.structures.map(x=>`<span class="structure">${x}</span>`).join('');attachTips(p)}
+function attachTips(scope){scope.querySelectorAll('.vocab').forEach(v=>{v.querySelector('.tip').textContent=v.dataset.d;v.addEventListener('click',e=>{e.stopPropagation();document.querySelectorAll('.vocab.open').forEach(x=>{if(x!==v)x.classList.remove('open')});v.classList.toggle('open')})})}
+Object.entries(groups).forEach(([name,data],idx)=>{idx9[name]=0;const b=document.createElement('button');b.className='tab'+(idx===0?' active':'');b.textContent=name;b.dataset.panel='p'+idx;tabs.appendChild(b);const p=document.createElement('div');p.className='panel'+(idx===0?' active':'');p.id='p'+idx;p.dataset.name=name;p.innerHTML=`<div class="card"><div class="counter counter9"></div><p class="situation-text s9"></p><div class="structures"><b>Useful structures</b><div class="structure-list"></div></div><div class="next-only"><button class="next9">Next</button></div></div>`;panels.appendChild(p);p.querySelector('.next9').addEventListener('click',()=>{idx9[name]=(idx9[name]+1)%data.items.length;renderPanel(name)});renderPanel(name)});
+tabs.addEventListener('click',e=>{if(!e.target.classList.contains('tab'))return;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));e.target.classList.add('active');document.getElementById(e.target.dataset.panel).classList.add('active')});document.addEventListener('click',()=>document.querySelectorAll('.vocab.open').forEach(x=>x.classList.remove('open')));
+</script></body></html>
