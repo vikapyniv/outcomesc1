@@ -161,31 +161,18 @@
     .book-badge strong { display: block; font-size: 15px; }
     .book-badge span { color: var(--muted); font-size: 12px; }
 
-    .units-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(160px, 1fr));
-      gap: 14px;
-      margin-bottom: 34px;
-    }
-
-    .unit-chip {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      border-radius: 14px;
-      padding: 16px;
-      min-height: 88px;
-      text-align: left;
-      cursor: pointer;
-      transition: .2s ease;
-      box-shadow: 0 5px 18px rgba(36, 45, 54, .04);
-    }
-
-    .unit-chip:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-    .unit-chip.active { border-color: var(--accent); background: var(--soft-accent); }
-    .unit-chip.empty { color: #a1a8ae; }
-    .unit-number { font-size: 12px; font-weight: 800; color: var(--accent); }
-    .unit-name { margin-top: 8px; font-weight: 750; }
-    .unit-status { margin-top: 5px; font-size: 11px; color: var(--muted); }
+    .units-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-bottom:34px}
+.unit-pair{padding:15px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.72);box-shadow:0 8px 24px rgba(5,92,82,.07)}
+.pair-heading{margin:0 0 11px;color:var(--accent-dark);font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.pair-units{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.unit-chip{border:1px solid var(--line);background:var(--panel);border-radius:13px;padding:14px;min-height:92px;text-align:left;cursor:pointer;transition:.2s ease;box-shadow:0 4px 14px rgba(36,45,54,.04)}
+.unit-chip:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.unit-chip.active{border-color:var(--accent);background:var(--soft-accent)}.unit-chip.empty{color:#a1a8ae}
+.unit-number{font-size:11px;font-weight:850;color:var(--accent)}.unit-name{margin-top:7px;font-weight:800}.unit-status{margin-top:4px;font-size:10px;color:var(--muted)}
+.pair-resources{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.pair-resource{border:1px dashed #9fd8cf;border-radius:10px;padding:9px 7px;background:#f6fcfb;color:#416b65;cursor:pointer;text-align:center;font-size:10px;font-weight:850;line-height:1.25;transition:.2s ease}
+.pair-resource:hover{border-color:var(--accent);background:var(--soft-accent);color:var(--accent-dark)}
+.midcourse-card{grid-column:1/-1;width:100%;border:0;border-radius:16px;padding:17px 20px;color:#fff;background:linear-gradient(135deg,#063f3a,#087d72 60%,#10b9a7);box-shadow:0 10px 27px rgba(5,92,82,.18);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:15px;text-align:left}
+.midcourse-card strong{font-size:15px;letter-spacing:.04em}.midcourse-card span{color:#c9eee8;font-size:11px}
 
     .section-card {
       background: var(--panel);
@@ -597,15 +584,16 @@
       .nav { flex-direction: row; overflow-x: auto; }
       .nav-btn { flex: 0 0 auto; padding: 10px 12px; font-size: 12px; }
       main { padding-bottom: 110px; }
-      .units-grid { grid-template-columns: repeat(2, 1fr); }
+      .units-grid { grid-template-columns: 1fr; }
       .unit-hero { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 650px) {
       .topbar { flex-direction: column; }
       .book-badge { width: 100%; }
-      .units-grid { grid-template-columns: 1fr 1fr; }
-      .unit-chip { min-height: 78px; }
+      .units-grid { grid-template-columns: 1fr; }
+      .pair-resources { grid-template-columns: 1fr; }
+      .unit-chip { min-height: 82px; }
       .syllabus { grid-template-columns: 1fr; }
       .lesson-row { grid-template-columns: 1fr; }
       .assessment-btn { align-items: flex-start; gap: 8px; flex-direction: column; }
@@ -889,44 +877,24 @@
 
 
   <script>
-    const units = [
-      'Cities', 'Relationships', 'Unit 3', 'Unit 4',
-      'Unit 5', 'Unit 6', 'Unit 7', 'Unit 8',
-      'Unit 9', 'Unit 10', 'Unit 11', 'Unit 12',
-      'Unit 13', 'Unit 14', 'Unit 15', 'Unit 16'
-    ];
-
-    const unitGrid = document.getElementById('unitGrid');
-    units.forEach((name, index) => {
-      const btn = document.createElement('button');
-      btn.className = 'unit-chip ' + (index === 0 ? 'active' : (index === 1 ? '' : 'empty'));
-      btn.innerHTML = `
-        <div class="unit-number">UNIT ${index + 1}</div>
-        <div class="unit-name">${name}</div>
-        <div class="unit-status">${index < 2 ? 'Open unit' : 'Coming later'}</div>`;
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.unit-chip').forEach(chip => chip.classList.remove('active'));
-        btn.classList.add('active');
-
-        const unit1 = document.getElementById('unitContent');
-        const unit2 = document.getElementById('unit2Content');
-        const emptyPanel = document.getElementById('emptyUnitContent');
-        unit1.hidden = index !== 0;
-        unit2.hidden = index !== 1;
-        emptyPanel.hidden = index < 2;
-
-        if (index === 0) {
-          unit1.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else if (index === 1) {
-          unit2.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else {
-          emptyPanel.querySelector('h2').textContent = `Unit ${index + 1}`;
-          emptyPanel.querySelector('p').textContent = 'This unit is ready to be developed. Its lessons, homework and vocabulary materials will appear here.';
-          emptyPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-      unitGrid.appendChild(btn);
-    });
+    const units=['Cities','Relationships','Unit 3','Unit 4','Unit 5','Unit 6','Unit 7','Unit 8','Unit 9','Unit 10','Unit 11','Unit 12','Unit 13','Unit 14','Unit 15','Unit 16'];
+    const unitGrid=document.getElementById('unitGrid');
+    function openUnit(index,btn){
+      document.querySelectorAll('.unit-chip').forEach(x=>x.classList.remove('active'));btn.classList.add('active');
+      const u1=document.getElementById('unitContent'),u2=document.getElementById('unit2Content'),empty=document.getElementById('emptyUnitContent');
+      u1.hidden=index!==0;u2.hidden=index!==1;empty.hidden=index<2;
+      if(index===0)u1.scrollIntoView({behavior:'smooth',block:'start'});
+      else if(index===1)u2.scrollIntoView({behavior:'smooth',block:'start'});
+      else{empty.querySelector('h2').textContent='Unit '+(index+1);empty.querySelector('p').textContent='This unit is ready to be developed. Its lessons, homework and vocabulary materials will appear here.';empty.scrollIntoView({behavior:'smooth',block:'start'})}
+    }
+    for(let pairIndex=0;pairIndex<8;pairIndex++){
+      const first=pairIndex*2,pair=document.createElement('section');pair.className='unit-pair';
+      pair.innerHTML='<h2 class="pair-heading">Units '+(first+1)+'–'+(first+2)+'</h2><div class="pair-units"></div><div class="pair-resources"><button class="pair-resource" data-message="Writing for Units '+(first+1)+'–'+(first+2)+' is ready to be developed.">Writing</button><button class="pair-resource" data-message="Video for Units '+(first+1)+'–'+(first+2)+' is ready to be developed.">Video</button><button class="pair-resource" data-message="Grammar and Vocabulary for Units '+(first+1)+'–'+(first+2)+' is ready to be developed.">Grammar and Vocabulary</button></div>';
+      const holder=pair.querySelector('.pair-units');
+      [first,first+1].forEach(index=>{const btn=document.createElement('button');btn.className='unit-chip '+(index===0?'active':index===1?'':'empty');btn.innerHTML='<div class="unit-number">UNIT '+(index+1)+'</div><div class="unit-name">'+units[index]+'</div><div class="unit-status">'+(index<2?'Open unit':'Coming later')+'</div>';btn.onclick=()=>openUnit(index,btn);holder.appendChild(btn)});
+      unitGrid.appendChild(pair);
+      if((pairIndex+1)%2===0){const n=(pairIndex+1)/2,test=document.createElement('button');test.className='midcourse-card';test.dataset.message='Mid-course test '+n+' is ready to be developed.';test.innerHTML='<strong>Mid-course test '+n+'</strong><span>Units '+(first-2)+'–'+(first+2)+'</span>';unitGrid.appendChild(test)}
+    }
 
     const navButtons = document.querySelectorAll('.nav-btn');
     const views = document.querySelectorAll('.view');
